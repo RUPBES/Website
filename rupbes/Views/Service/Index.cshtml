@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = Resources.Resource.MenuServices;
+}
+<h2 class="headline">@Resources.Resource.MenuServices</h2>
+<section class="service-content">
+    <a href="https://corp.rupbes.by:6565/" class="service-item">
+        <div class="service-item-logo"></div>
+        <div class="service-item-text">@Resources.Resource.ServiceSoftware</div>
+        <span style="font-size:16px">@Resources.Resource.APGPBes</span>
+    </a>
+    <a href="@Url.Action("Products","Service")" class="service-item">
+        <div class="service-item-logo"></div>
+        <div class="service-item-text">@Resources.Resource.ServiceProduct</div>
+    </a>
+    <a href="@Url.Action("Services","Service")" class="service-item">
+        <div class="service-item-logo"></div>
+        <div class="service-item-text">@Resources.Resource.ServiceService</div>
+    </a>
+    <a href="@Url.Action("Mechs","Service")" class="service-item">
+        <div class="service-item-logo"></div>
+        <div class="service-item-text">@Resources.Resource.ServiceMech</div>
+    </a>
+    <a href="@Url.Action("Realty","Service")" class="service-item">
+        <div class="service-item-logo"></div>
+        <div class="service-item-text">@Resources.Resource.ServiceRealty</div>
+    </a>
+    <a href="@Url.Action("Sale","Service")" class="service-item">
+        <div class="service-item-logo"></div>
+        <div class="service-item-text">@Resources.Resource.ServiceSale</div>
+    </a>
+</section>
+

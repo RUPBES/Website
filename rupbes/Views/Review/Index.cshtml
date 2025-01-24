@@ -1,0 +1,58 @@
+﻿@model rupbes.Models.ViewModels.Review.IndexModel
+@{
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using BotDetect.Web.Mvc;
+
+@{ MvcCaptcha captcha = new MvcCaptcha("Captcha");}
+@{ Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+<section class="form-block">
+
+    @using (Html.BeginForm("Index", "Review", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="window-label">
+            <label for="CompanyName">@Resources.Resource.ReviewYourCompanyName</label>
+            @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="window-label">
+            <label for="CompanyEmail">@Resources.Resource.ReviewYourEmail</label>
+            @Html.EditorFor(model => model.CompanyEmail, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CompanyEmail, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="window-label">
+            <label for="ReviewText">@Resources.Resource.ReviewReviewText</label>
+            @Html.EditorFor(model => model.ReviewText, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ReviewText, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="window-label">
+            @Html.Label("CaptchaCode", Resources.Resource.MessageCaptcha)
+            <span class="field-validation-valid text-danger">@ViewBag.CaptchaMessage</span>
+            <div class="captcha-label">
+                @Html.Captcha(captcha)
+                @Html.TextBox("CaptchaCode")
+            </div>
+        </div>
+
+        <div class="window-label">
+            <span>@Resources.Resource.MessageAttention</span>
+            <input type="submit" value="@Resources.Resource.ReviewButton" class="btn btn-default" />
+        </div>
+    }
+    </section>
+@section Scripts{
+@Scripts.Render("~/bundles/jqueryval")
+}
+
+

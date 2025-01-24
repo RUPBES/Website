@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = Resources.Resource.MenuContacts;
+}
+
+<h2 class="headline">@Resources.Resource.MenuContacts</h2>
+
+<section class="contacts-block">
+    <div id="contacts" class="contacts">
+        <div class="contacts-item">
+            <div class="contacts-icon icon-adress"></div>
+            <div class="contacts-item-text">
+                <span><b>@Model.Adress</b></span>
+                <span>
+                    <b>Режим работы:</b>
+                </span>
+                <span>
+                    Пн-Чт 8:30 - 17:30, обед 13:00 - 13:48
+                </span>
+                <span>
+                    Пт 8:30 - 16:30, обед 13:00 - 13:48
+                </span>
+            </div>
+        </div>
+        <div class="contacts-item">
+            <div class="contacts-icon icon-phone"></div>
+            <div class="contacts-item-text">
+                <span><b>@Resources.Resource.Reception:</b></span>
+                <span><a href="tel:@Model.Phone">@Model.Phone</a></span>
+                <span><b>@Resources.Resource.PublicSpecialist:</b></span>
+                <span><a href="tel:@ViewBag.Pressa.phone">@ViewBag.Pressa.phone</a></span>
+            </div>
+        </div>
+        <div class="contacts-item">
+            <div class="contacts-icon icon-mail"></div>
+            <div class="contacts-item-text">
+                <span><b>@Resources.Resource.Reception:</b></span>
+                <span><a href="mailto:@Model.Email">@Model.Email</a></span>
+                <span><b>@Resources.Resource.PublicSpecialist:</b></span>
+                <span><a href="mailto:@ViewBag.Pressa.email">@ViewBag.Pressa.email</a></span>
+            </div>
+        </div>
+        <div class="contacts-item">
+            <div class="contacts-icon icon-fax"></div>
+            <div class="contacts-item-text">
+                <span><b>@Resources.Resource.ReceptionFax:</b></span>
+                <span>@Model.Fax</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="one-window-link centered">
+        <a href="@Url.Action("Index","Directory")">@Resources.Resource.EmailDirectory</a>
+    </div>
+
+</section>
+<section class="map-block" id="map">
+    <script>
+        function initMap() {
+            var uluru = { lat: 53.914817, lng: 27.565457 };
+            var centermap = { lat: 53.9151595, lng: 27.564959 }
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 17,
+                center: centermap
+            });
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABoDk-ytLzGHkwZ2HdxALZN-_VxlLpAHY&callback=initMap">
+    </script>
+</section>
+
+<div class="hotline">
+    <p><b>Горячая линия проводится ежедневно по телефону <a href="365 46 80">365 46 80:</a></b></p>
+    <p><b>понедельник - четверг</b> с 8.30 до 13.00 и с 13.48 до 17.30;</p>
+    <p><b>пятница</b> с 8.30 до 13.00 и с 13.48 до 16.30.</p>
+</div>
+
+<section class="contacts-block">
+    <h3 class="h3" id="private">@Resources.Resource.ContactsPrivate</h3>
+    <div class="meet-block">
+        <div class="meet-line">
+            <div class="meet-item">@Resources.Resource.ContactsName</div>
+            <div class="meet-item">@Resources.Resource.ContactsPost</div>
+            <div class="meet-item">@Resources.Resource.ContactsMeetDay</div>
+            <div class="meet-item">@Resources.Resource.ContactsMeetTime</div>
+            <div class="meet-item">@Resources.Resource.ContactsPhone</div>
+        </div>
+        @foreach (rupbes.Models.Bosses boss in ViewBag.Bosses)
+        {
+            <div class="meet-line">
+                <div class="meet-item"><a href="@Url.Action("Bosses","Home")/#@boss.id" class="dep-link">@boss.name</a></div>
+                <div class="meet-item">@boss.post</div>
+                <div class="meet-item">@boss.meet_day</div>
+                <div class="meet-item">@boss.meet_time</div>
+                <div class="meet-item">@boss.phone</div>
+            </div>
+        }
+    </div>
+
+</section>
+
+

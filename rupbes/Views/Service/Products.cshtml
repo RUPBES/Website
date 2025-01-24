@@ -1,0 +1,119 @@
+﻿@using rupbes.Models.Products
+@model List<GroupProduct>
+@{
+    ViewData["Title"] = Resources.Resource.ServiceProduct;
+}
+
+<h2 class="headline">@ViewData["Title"]</h2>
+
+<h2 class="h2-pointer" onclick="ShowBlock('urls');">Ссылки на сайты производителей</h2>
+
+<div id="urls" class="construction-materials">
+    <a class="h2-pointer" href="https://bsess.by/katalog" target="_blank">ОАО «Белсельэлектросетьстрой»</a>
+    <a class="h2-pointer" href="https://bemn.by/production/" target="_blank">ОАО «Белэлектромонтажналадка»</a>
+    <a class="h2-pointer" href="https://www.zess.by/ru/work_activity/products" target="_blank">ОАО «Западэлектросетьстрой»</a>
+    <a class="h2-pointer" href="https://ecm.by/uslugi-i-produkciya/" target="_blank">ОАО «Электроцентрмонтаж»</a>
+    <a class="h2-pointer" href="https://besv.by/ru/own-production/" target="_blank">ОАО «Белэнергосвязь»</a>
+    <a class="h2-pointer" href="http://www.bez.by/perechen-rabot/" target="_blank">ОАО «Белэнергозащита»</a>
+    <a class="h2-pointer" href="https://energotexprom.by/raboty-i-uslugi.html" target="_blank">ОАО «Энерготехпром»</a>
+</div>
+<div id="materials">
+    <section class="form-block">
+        <form>
+            <div class="dir-label">
+                <input id="searchForm" type="text" placeholder="@Resources.Resource.MaterialSearchLine" />
+            </div>
+        </form>
+        <div class="one-window-link centered">
+            <button id="advSearchBtn">@Resources.Resource.DirAdvSearch</button>
+        </div>
+    </section>
+    <section class="content">
+        <div id="advSearchForm" class="dir-adv-search-form" style="display:none;">
+            <div class="dir-label">
+                <select id="selGroupProduct" class="select dir-select">
+                    <option>@Resources.Resource.SelectGroupProduct</option>
+                    @foreach (GroupProduct groupProduct in Model)
+                    {
+                        <option value="@groupProduct.id">@groupProduct.name</option>
+                    }
+                </select>
+            </div>
+            <div id="selDepBlock" class="dir-label"></div>
+        </div>
+        <div id="searchResult"></div>
+    </section>
+</div>
+@section scripts {
+    <script>
+    var searchResult = document.getElementById('searchResult');
+    var advSearchForm = document.getElementById('advSearchForm');
+    var selGroupProduct = $("#selGroupProduct");
+    var selDepBlock = $("#selDepBlock");
+    var searchResult = $("#searchResult");
+    var searchForm = $("#searchForm");
+    var searchFormJS = document.getElementById('searchForm');
+
+    function ShowBlock(code) {
+        if (document.getElementById(code).style.display == 'grid') {
+            document.getElementById(code).style.display = 'none';
+        }
+        else {
+            document.getElementById(code).style.display = 'grid';
+        }
+    }
+
+    selGroupProduct.bind("change", function () {
+     $.ajax({
+             type: "get",
+             url: '@Url.Action("SelectGroupProduct", "Service")',
+         data: { 'id': this.value },
+                 success: function (data) {
+                     selDepBlock.html(data);
+                     searchResult.empty();
+                 }
+           })
+     });
+
+    advSearchBtn.onclick = function (e) {
+        e.preventDefault();
+        document.getElementById('searchForm').value = '';
+        if (advSearchForm.style.display == 'none') {
+            advSearchForm.style.display = 'block';
+        }
+        else if (advSearchForm.style.display == 'block') {
+            advSearchForm.style.display = 'none';
+        }
+    }
+
+    var check_ready = 1;
+    var queue = 0;
+    var req_stack = new Array();
+
+searchFormJS.oninput = function () {
+    searchName(searchFormJS.value);
+}
+
+function searchName(searchStr) {
+    advSearchForm.style.display = 'none';
+    if (searchStr.length > 1) {
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("GetProductByNameOrCode", "Service")',
+                data: { search: searchStr },
+                success: function (data) {
+                    searchResult.html(data);
+                    check_ready = 1;
+                    if (req_stack.length != 0) {
+                        queue = 1;
+                        searchName(req_stack.shift());
+                    }
+                }
+            })
+    }
+    else {
+        searchResult.empty();
+    }
+}
+</script>
+}

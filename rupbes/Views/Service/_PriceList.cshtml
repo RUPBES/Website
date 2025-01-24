@@ -1,0 +1,28 @@
+﻿@model IEnumerable<rupbes.Models.DatabaseBes.Besi_price_list>
+
+<div class="table-block">
+    <div class="table-line">
+        <div class="table-item">Код</div>
+        <div class="table-item">Код ТН ВЭД</div>
+        <div class="table-item">Наименование</div>
+        <div class="table-item">Единица измерения</div>
+        <div class="table-item">Обьем</div>
+        <div class="table-item">Вес</div>
+        <div class="table-item">Цена</div>
+        <div class="table-item">Цена с НДС</div>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <div class="table-line">
+            <div class="table-item">@item.Number</div>
+            <div class="table-item">@item.codeTNVED</div>
+            <div class="table-item">@item.Name</div>
+            <div class="table-item">@item.Besi_unit.Name</div>
+            <div class="table-item">@item.Volume</div>
+            <div class="table-item">@item.Weight</div>
+            <div class="table-item">@item.Besi_Prices.Last().Price</div>
+            <div class="table-item">@item.Besi_Prices.Last().Price_w_nds</div>
+        </div>
+    }
+</div>

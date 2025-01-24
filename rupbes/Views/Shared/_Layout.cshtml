@@ -1,0 +1,599 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122534416-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-122534416-1');
+    </script>
+
+    <meta charset="utf-8" />
+    <meta name="viporewt" content="width=device-width, initial-scale=1" />
+    <meta name="MobileOptimized" content="width" />
+    <meta name='HandheldFriendly' content="true" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="robots" content="all" />
+    <meta name="description" content="РЕСПУБЛИКАНСКОЕ УНИТАРНОЕ ПРЕДПРИЯТИЕ БЕЛЭНЕРГОСТРОЙ' - УПРАВЛЯЮЩАЯ КОМПАНИЯ ХОЛДИНГА', ГОСУДАРСТВЕННОЕ ПРЕДПРИЯТИЕ 'БЕЛЭНЕРГОСТРОЙ'- УПРАВЛЯЮЩАЯ КОМПАНИЯ ХОЛДИНГА', 'БЕЛЭНЕРГОСТРОЙ' ХОЛДИНГ." />
+    <meta name="Keywords" content="БЕЛЭНЕРГОСТРОЙ, Холдинг, Аренда, работа, строительство, раствор, фундамент" />
+    <meta name="Author" content="ГОСУДАРСТВЕННОЕ ПРЕДПРИЯТИЕ 'БЕЛЭНЕРГОСТРОЙ'- УПРАВЛЯЮЩАЯ КОМПАНИЯ ХОЛДИНГА'" />
+    <meta name="Copyright" content="ГОСУДАРСТВЕННОЕ ПРЕДПРИЯТИЕ 'БЕЛЭНЕРГОСТРОЙ'- УПРАВЛЯЮЩАЯ КОМПАНИЯ ХОЛДИНГА'" />
+    <meta name="Address" content="г. Минск, ул. Чичерина, 19, 220029" />
+
+    <link rel="canonical" href="https://rupbes.by/" />
+    <link rel="stylesheet" href="~/js/cookieconsent-master/dist/cookieconsent.css" />
+    <link href="~/Content/favicon.ico" rel="shortcut icon" runat="server" type="image/x-icon">
+    <link href="~/Content/favicon.ico" rel="icon" runat="server" type="image/ico">
+    @*<title>@ViewBag.Title – Белэнергострой</title>*@
+    <title>'БЕЛЭНЕРГОСТРОЙ' ХОЛДИНГ</title>
+    <link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl"
+          rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/respond.js" type="text/javascript" />
+    @if (Request.Cookies["theme"] != null && Request.Cookies["theme"].Value == "poorEyesight")
+    {
+        <link href="~/Content/Styles/pemain.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/Content/Styles/main.css" rel="stylesheet" />
+    }
+    <script defer src="~/js/cookieconsent-master/dist/cookieconsent.js"></script>
+
+    <!-- Inline script -->
+    <script>
+        window.addEventListener('load', function () {
+
+            // obtain plugin
+            var cc = initCookieConsent();
+
+            // run plugin with your configuration
+            cc.run({
+                current_lang: 'en',
+                autoclear_cookies: true,                   // default: false
+                page_scripts: true,                        // default: false
+
+                mode: 'opt-in',                        // default: 'opt-in'; value: 'opt-in' or 'opt-out'
+                delay: 0,                               // default: 0
+                auto_language: '',                      // default: null; could also be 'browser' or 'document'
+                autorun: true,                          // default: true
+                force_consent: false,                   // default: false
+                hide_from_bots: true,                   // default: true
+                remove_cookie_tables: false,            // default: false
+                cookie_name: 'cc_cookie',               // default: 'cc_cookie'
+                cookie_expiration: 182,                    // default: 182 (days)
+                cookie_necessary_only_expiration: 182,     // default: disabled
+                cookie_domain: location.hostname,       // default: current domain
+                cookie_path: '/',                       // default: root
+                cookie_same_site: 'Lax',                // default: 'Lax'
+                use_rfc_cookie: false,                  // default: false
+                revision: 0,                            // default: 0
+
+                onFirstAction: function (user_preferences, cookie) {
+                    // callback triggered only once on the first accept/reject action
+                },
+
+                onAccept: function (cookie) {
+                    // callback triggered on the first accept/reject action, and after each page load
+                },
+
+                onChange: function (cookie, changed_categories) {
+                    // callback triggered when user changes preferences after consent has already been given
+                },
+
+                languages: {
+                    'en': {
+                        consent_modal: {
+                            title: 'Мы используем файлы cookie!',
+                            description: 'Этот веб-сайт использует файлы cookie для обеспечения его корректной работы и файлы для отслеживания действий, чтобы понять, как Вы с ним взаимодействуете. Последние будут установлены только в случае Вашего согласия. В случае блокировки файлов cookie Вы отказываетесь от полноценного использования веб-сайта <button type="button" data-cc="c-settings" class="cc-link">Настроить cookies 🍪</button>',
+                            primary_btn: {
+                                text: 'Принять',
+                                role: 'accept_all'              // 'accept_selected' or 'accept_all'
+                            },
+                            secondary_btn: {
+                                text: 'Отклонить',
+                                role: 'accept_necessary'        // 'settings' or 'accept_necessary'
+                            }
+                        },
+                        settings_modal: {
+                            title: 'Настройки cookies',
+                            save_settings_btn: 'Сохранить настройки',
+                            accept_all_btn: 'Принять',
+                            reject_all_btn: 'Отклонить',
+                            close_btn_label: 'Закрыть',
+                            // cookie_table_caption: 'Cookie list',
+                            cookie_table_headers: [
+                                { col1: 'Имя' },
+                                { col2: 'Домен' },
+                                { col3: 'Длительность' },
+                                { col4: 'Описание' }
+                            ],
+                            blocks: [
+                                {
+                                    title: 'Использование файлов cookie 🔏', /*📢*/
+                                    description: 'Мы используем файлы cookie для обеспечения работоспособности основных функций веб-сайта. Для каждой категории файлов cookie Вы можете выбрать возможность включения/отключения их в любое время в настройках Вашего браузера. Для получения более подробной информации о файлах cookie и других конфиденциальных данных ознакомьтесь с полной версией <a href="#" class="cc-link">политики конфиденциальности</a>'
+                                }, {
+                                    title: 'Технические/функциональные (обязательные) cookie-файлы',
+                                    description: 'Данный тип cookie-файлов требуется для обеспечения корректного функционирования веб-сайта и не подлежит отключению. Эти сookie-файлы не сохраняют какую-либо информацию о пользователе, которая может быть использована в маркетинговых целях или для учета посещаемых сайтов в сети Интернет',
+                                    toggle: {
+                                        value: 'necessary',
+                                        enabled: true,
+                                        readonly: true          // cookie categories with readonly=true are all treated as "necessary cookies"
+                                    }
+                                }, {
+                                    title: 'Аналитические cookie-файлы',
+                                    description: 'Собирают информацию о том, как часто Вы посещаете наш  веб-сайт, какие разделы сайта просматриваете, на какие ссылки нажимаете и как в целом перемещаетесь по веб-сайту',
+                                    toggle: {
+                                        value: 'analytics',     // your cookie category
+                                        enabled: false,
+                                        readonly: false
+                                    },
+                                    cookie_table: [             // list of all expected cookies
+                                        {
+                                            col1: '^_ga',       // match all cookies starting with "_ga"
+                                            col2: 'google.com',
+                                            col3: '6 месяцев',
+                                            col4: 'description ...',
+                                            is_regex: true
+                                        },
+                                        {
+                                            col1: '_gid',
+                                            col2: 'google.com',
+                                            col3: '1 день',
+                                            col4: 'description ...',
+                                        }
+                                    ]
+                                }, {
+                                    title: 'Целевые cookie-файлы', //Рекламные и таргентинговые файлы cookie
+                                    description: 'Запоминают выборы, которые вы ранее сделали на веб-сайте (язык, регион и т.д.) и обеспечивают получение Вами более персонализированного опыта при использовании нашего веб-сайта. Все данные анонимизированы и не могут быть использованы для Вашей идентификации',
+                                    toggle: {
+                                        value: 'targeting',
+                                        enabled: false,
+                                        readonly: false
+                                    }
+                                }, //{
+                                //    title: 'More information',
+                                //    description: 'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="#yourcontactpage">contact us</a>.',
+                                //}
+                            ]
+                        }
+                    }
+                    //, 'en': {
+                    //    consent_modal: {
+                    //        title: 'We use cookies!',
+                    //        description: 'Hi, this website uses essential cookies to ensure its proper operation and tracking cookies to understand how you interact with it. The latter will be set only after consent. <button type="button" data-cc="c-settings" class="cc-link">Let me choose</button>',
+                    //        primary_btn: {
+                    //            text: 'Accept all',
+                    //            role: 'accept_all'              // 'accept_selected' or 'accept_all'
+                    //        },
+                    //        secondary_btn: {
+                    //            text: 'Reject all',
+                    //            role: 'accept_necessary'        // 'settings' or 'accept_necessary'
+                    //        }
+                    //    },
+                    //    settings_modal: {
+                    //        title: 'Cookie preferences',
+                    //        save_settings_btn: 'Save settings',
+                    //        accept_all_btn: 'Accept all',
+                    //        reject_all_btn: 'Reject all',
+                    //        close_btn_label: 'Close',
+                    //        // cookie_table_caption: 'Cookie list',
+                    //        cookie_table_headers: [
+                    //            { col1: 'Name' },
+                    //            { col2: 'Domain' },
+                    //            { col3: 'Expiration' },
+                    //            { col4: 'Description' }
+                    //        ],
+                    //        blocks: [
+                    //            {
+                    //                title: 'Cookie usage 📢',
+                    //                description: 'I use cookies to ensure the basic functionalities of the website and to enhance your online experience. You can choose for each category to opt-in/out whenever you want. For more details relative to cookies and other sensitive data, please read the full <a href="#" class="cc-link">privacy policy</a>.'
+                    //            }, {
+                    //                title: 'Strictly necessary cookies',
+                    //                description: 'These cookies are essential for the proper functioning of my website. Without these cookies, the website would not work properly',
+                    //                toggle: {
+                    //                    value: 'necessary',
+                    //                    enabled: true,
+                    //                    readonly: true          // cookie categories with readonly=true are all treated as "necessary cookies"
+                    //                }
+                    //            }, {
+                    //                title: 'Performance and Analytics cookies',
+                    //                description: 'These cookies allow the website to remember the choices you have made in the past',
+                    //                toggle: {
+                    //                    value: 'analytics',     // your cookie category
+                    //                    enabled: false,
+                    //                    readonly: false
+                    //                },
+                    //                cookie_table: [             // list of all expected cookies
+                    //                    {
+                    //                        col1: '^_ga',       // match all cookies starting with "_ga"
+                    //                        col2: 'google.com',
+                    //                        col3: '2 years',
+                    //                        col4: 'description ...',
+                    //                        is_regex: true
+                    //                    },
+                    //                    {
+                    //                        col1: '_gid',
+                    //                        col2: 'google.com',
+                    //                        col3: '1 day',
+                    //                        col4: 'description ...',
+                    //                    }
+                    //                ]
+                    //            }, {
+                    //                title: 'Advertisement and Targeting cookies',
+                    //                description: 'These cookies collect information about how you use the website, which pages you visited and which links you clicked on. All of the data is anonymized and cannot be used to identify you',
+                    //                toggle: {
+                    //                    value: 'targeting',
+                    //                    enabled: false,
+                    //                    readonly: false
+                    //                }
+                    //            }, //{
+                    //            //    title: 'More information',
+                    //            //    description: 'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="#yourcontactpage">contact us</a>.',
+                    //            //}
+                    //        ]
+                    //    }
+                    //}
+                }
+            });
+        });
+    </script>
+    @*<button type="button" data-cc="c-settings">Manage cookie settings</button>*@
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES9MC194JQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-ES9MC194JQ');
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter49645366 = new Ya.Metrika2({
+                        id: 49645366,
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true
+                    });
+                } catch (e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks2");
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/49645366" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+
+<body class="theme_funky">
+    <div class="full-screen">
+        <div class="top-screen">
+            <header class="header">
+                <div class="main-menu-item">@Html.ActionLink(" ", "Index", "Home")</div>
+                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuCompany, "Company", "Home")</div>
+                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuServices, "Index", "Service")</div>
+                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuContacts, "Contacts", "Home")</div>
+                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuNews, "News", "Home")</div>
+                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuObj, "Objects", "Home")</div>
+                @*<div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuPurchases, "Purchases", "Purchases")</div>*@
+                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuVacancies, "Vacancies", "Home")</div>
+                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuSoftware, "Software", "Home")</div>
+                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuWindow, "Index", "OneWindow")</div>
+                <div class="main-menu-item adap-item"><a download href="~/Content/Files/Политика_в_области_персональных_данных.pdf">Политика в обл. ПД</a></div>
+                <div class="menu-btn open-menu" id="menu"></div>
+                <select name="lang" id="lang-select" class="lang-select">
+                    <option value="@Resources.Resource.ChoosedLang">@Resources.Resource.Lang</option>
+                    <option value="@Resources.Resource.ThreeLangVal">@Resources.Resource.ThreeLang</option>
+                    <option value="@Resources.Resource.SecLangVal">@Resources.Resource.SecLang</option>
+
+                </select>
+                <div class="eye" id="theme-switch"></div>
+            </header>
+        </div>
+        <div class="container">
+            @RenderBody()
+        </div>
+        <footer class="footer-1lvl">
+            <div class="contacts-link">
+                <div class="phone-link"><span><a href="tel:+375173654680">+375-(17)-365-46-80</a></span></div>
+                <div class="fax-link"><span>+375-(17)-365-44-90</span></div>
+                <div class="mail-link"><span><a href="mailto:rupbes@rupbes.by">rupbes@rupbes.by</a></span></div>
+            </div>
+        </footer>
+    </div>
+    <footer class="footer-2lvl">
+        <div class="adress-block">
+            <span class="adress-text">@Resources.Resource.Requisites</span>
+        </div>
+        <div class="outlink-block">
+            <a href="http://president.gov.by/" class="outlink-item">
+                <div class="outlink-icon gerb-icon"></div>
+                <span class="outlink-text">@Resources.Resource.LinkPresident</span>
+            </a>
+            <a href="http://minenergo.gov.by/" class="outlink-item">
+                <div class="outlink-icon minenergo-icon"></div>
+                <span class="outlink-text">@Resources.Resource.LinkMinenergo</span>
+            </a>
+            <a href="http://energo.by/" class="outlink-item">
+                <div class="outlink-icon belenergo-icon"></div>
+                <span class="outlink-text">@Resources.Resource.LinkBelenrgo</span>
+            </a>
+            <a href="https://pravo.by" class="outlink-item">
+                <img src="/Content/Styles/icons/pravo.jpg" style="height:100px; width:215px" />
+            </a>
+            <a href="https://president.gov.by/ru/documents/ukaz-no-1-ot-3-anvara-2025-g" class="outlink-item">
+                <img src="/Content/Styles/icons/Year2025.jpg" style="height:100px; width:260px" />
+            </a>
+            <a href="https://pravo.by/novosti/obshchestvenno-politicheskie-i-v-oblasti-prava/2024/october/79310/" class="outlink-item">
+                <img src="/Content/Styles/icons/Vibori 2025.png" style="height:100px; width:260px" />
+            </a>
+        </div>
+
+        <div class="copyright">
+            <span>
+                © @Resources.Resource.CompanyName - @System.DateTime.Now.Year
+            </span>
+            <div>
+                @Html.ActionLink("Для сотрудников", "Index", "Admin")
+            </div>
+        </div>
+    </footer>
+    <button id="btn-up"></button>
+    <div id="modal-block-for-content" class="modalBootsrap" tabindex="-1" style="display: none">
+        <div class="modal-dialog">
+            <div class="modal-content-text">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modal-title"></h2>
+                    <span class="closeContent" onclick="CloseModalContent()">&times;</span>
+                </div>
+                <div id="modal-body" class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-block" class="modal">
+        <span class="close" onclick="CloseModal()">&times;</span>
+        <div class="modal-content" id="modal-content"></div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/scripts/jquery-1.10.2.js")
+    @Scripts.Render("~/scripts/jquery.unobtrusive-ajax.js")
+    @RenderSection("scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        var btnUp = document.getElementById('btn-up');
+        btnUp.onclick = function () {
+            $('body').animate({ 'scrollTop': 0 }, 200);
+            $('html').animate({ 'scrollTop': 0 }, 200);
+        };
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 660) {
+                $('#btn-up').addClass('active');
+            }
+            else {
+                $('#btn-up').removeClass('active');
+            }
+        });
+    </script>
+    <script type="text/javascript">
+
+            @*///////Остановка сайта при несогласии сбора куки*@
+
+            //    function getCookie(name) {
+            //        let matches = document.cookie.match(new RegExp(
+            //            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            //        ));
+            //        return matches ? decodeURIComponent(matches[1]) : undefined;
+            //    }
+
+            //var freezeClic = false; // just modify that variable to disable all clics events
+            //var freezeChange = false;
+
+            //document.addEventListener("click", freezeClicFn, true);
+            //document.addEventListener("input", freezeChangeFn, true);
+
+            //function freezeClicFn(e) {
+            //    if (freezeClic) {
+            //        e.stopPropagation();
+            //        e.preventDefault();
+            //    }
+            //}
+
+            //function freezeChangeFn(e) {
+            //    if (freezeChange) {
+            //        e.stopPropagation();
+            //        e.preventDefault();
+            //    }
+            //}
+
+            //function disableClicksFor5s() {
+            //    freezeClic = true;
+            //    setTimeout(() => {
+            //        freezeClic = false;
+            //    }, 214748364);
+            //}
+
+            //function disableChangesFor5s() {
+            //    freezeChange = true;
+            //    setTimeout(() => {
+            //        freezeChange = false;
+            //    }, 214748364);
+            //}
+
+            //function hideHeader() {
+            //    let cons = getCookie("cc_cookie");
+            //    if (!cons.includes("analytics")) {
+            //        disableClicksFor5s();
+            //        disableChangesFor5s();
+            //    }
+            //}
+            //hideHeader();
+            @*///////Остановка сайта при несогласии сбора куки*@
+
+            var imgsBlocks = document.getElementsByClassName('news-imgs');
+            var imgsIndxs = [];
+            var plusSlideBlocks = document.getElementsByClassName('plus-slide');
+            var minusSlideBlocks = document.getElementsByClassName('minus-slide');
+            var fullScreenBlocks = document.getElementsByClassName('full-screen-btn');
+        function initMass() {
+                for (i = 0; i < imgsBlocks.length; i++) {
+                    imgsIndxs.push('0');
+                }
+            }
+            initMass();
+        function pageStart() {
+                for (i = 0; i < imgsBlocks.length; i++) {
+                    for (j = 0; j < imgsBlocks[i].children.length; j++) {
+                        imgsBlocks[i].children[j].style.opacity = '0.0';
+                        imgsBlocks[i].children[j].style.zIndex = "0";
+                    }
+                    if (imgsBlocks[i].children.length >= 1) {
+                        imgsBlocks[i].children[0].style.opacity = "1";
+                        imgsBlocks[i].children[0].style.zIndex = "1";
+                    }
+                }
+            for (m = 0; m < minusSlideBlocks.length; m++) {
+                    minusSlideBlocks[m].setAttribute("onclick", "minusSlide(" + m + ")");
+                    plusSlideBlocks[m].setAttribute("onclick", "plusSlide(" + m + ")");
+                    fullScreenBlocks[m].setAttribute("onclick", "openModal(" + m + ")");
+                    if (imgsBlocks[m].children.length == 1) {
+                        minusSlideBlocks[m].style.display = 'none';
+                        plusSlideBlocks[m].style.display = 'none';
+                    }
+                }
+            }
+            pageStart();
+        function minusSlide(m) {
+                if (imgsIndxs[m] <= 0) {
+                    imgsIndxs[m] = imgsBlocks[m].children.length - 1;
+                }
+                else {
+                    imgsIndxs[m]--;
+                }
+                for (i = 0; i < imgsBlocks[m].children.length; i++) {
+                    imgsBlocks[m].children[i].style.opacity = "0";
+                    imgsBlocks[m].children[i].style.zIndex = "0";
+                }
+                imgsBlocks[m].children[imgsIndxs[m]].style.opacity = "1";
+                imgsBlocks[m].children[imgsIndxs[m]].style.zIndex = "1";
+            }
+        function plusSlide(m) {
+                if (imgsIndxs[m] >= imgsBlocks[m].children.length - 1) {
+                    imgsIndxs[m] = 0;
+                }
+                else {
+                    imgsIndxs[m]++;
+                }
+                for (i = 0; i < imgsBlocks[m].children.length; i++) {
+                    imgsBlocks[m].children[i].style.opacity = "0";
+                    imgsBlocks[m].children[i].style.zIndex = "0";
+                }
+                imgsBlocks[m].children[imgsIndxs[m]].style.opacity = "1";
+                imgsBlocks[m].children[imgsIndxs[m]].style.zIndex = "1";
+            }
+    </script>
+    <script>
+        var modalBlock = document.getElementById('modal-block');
+        var imageBlock = document.getElementById('modal-content');
+        var closeBtn = document.getElementById('close-btn');
+        function openModal(i) {
+            var domElems = document.getElementsByClassName('news-imgs-block')[i].cloneNode(true);
+            imageBlock.appendChild(domElems);
+            initMass();
+            pageStart();
+            var imgsCount = document.getElementsByClassName('news-imgs').length;
+            modalBlock.style.display = 'block';
+            addEventListener("keydown", SwithHandler);
+        }
+        function CloseModal() {
+            imageBlock.innerHTML = '';
+            modalBlock.style.display = 'none';
+            removeEventListener("keydown", SwithHandler);
+        }
+        function CloseModalContent() {
+            $('.theme_funky').css("overflow", "");
+            $('#modal-block-for-content').css("display", "none");
+            $('#modal-block-for-content').removeClass('active');
+        }
+        function SwithHandler(e) {
+            let i = document.getElementsByClassName('news-imgs').length - 1;
+            switch (e.keyCode) {
+                case 37:
+                    minusSlide(i);
+                    break;
+                case 39:
+                    plusSlide(i);
+                    break;
+                case 27:
+                    CloseModal();
+                    break;
+            }
+        }
+    </script>
+    <script>
+        var adapItem = document.getElementsByClassName('adap-item');
+        var menuBtn = document.getElementById('menu');
+        menuBtn.onclick = function () {
+            if (menuBtn.className == 'menu-btn open-menu') {
+                for (i = 0; i < adapItem.length; i++) {
+                    adapItem[i].className = 'main-menu-item adap-item hidden';
+                }
+                menuBtn.className = 'menu-btn close-menu';
+            }
+            else if (menuBtn.className == 'menu-btn close-menu') {
+                for (i = 0; i < adapItem.length; i++) {
+                    adapItem[i].className = 'main-menu-item adap-item';
+                }
+                menuBtn.className = 'menu-btn open-menu';
+            }
+        };
+    </script>
+    <script>
+            $('#lang-select').change(function (e) {
+                e.preventDefault();
+                var lang = $('#lang-select').val();
+                var url = '@Url.Action("ChangeCulture", "Assist")';
+                $.post(url, { 'lang': lang }, function () { location.reload(); });
+            });
+            $('#theme-switch').click(function (e) {
+                e.preventDefault();
+                var url = '@Url.Action("ChangeTheme", "Assist")';
+                $.post(url, function () { location.reload(); });
+            });
+    </script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-102365763-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html> 

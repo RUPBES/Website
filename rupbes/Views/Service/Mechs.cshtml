@@ -1,0 +1,40 @@
+﻿@model List<rupbes.Models.Mechanisms>
+
+@{
+    ViewBag.Title = Resources.Resource.ServiceMech;
+}
+
+<h2 class="headline">@Resources.Resource.ServiceMech</h2>
+<section class="content">
+    @foreach (rupbes.Models.Mechanisms mech in Model)
+    {
+        <p class="service-link" id="@mech.id">@mech.title</p>
+        <div class="service-flag" id="flag_@mech.id"></div>
+    }
+</section>
+
+
+@section scripts {
+    <script type="text/javascript">
+        $(".service-link").bind("click", function () {
+            var flag = '#flag_' + this.id;
+            if ($(flag).contents().length > 0) {
+                $(flag).fadeToggle(300);
+            }
+            else {
+                $.ajax({
+                type: 'post',
+                url: '@Url.Action("GetMech")',
+                data: { 'id': this.id },
+                success: function (data) {
+                    $(flag).html(data);
+                    initMass();
+                    pageStart();
+                }
+            })
+            }
+
+
+        })
+    </script>
+}

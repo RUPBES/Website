@@ -1,0 +1,551 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ChoosedLang" xml:space="preserve">
+    <value>be</value>
+  </data>
+  <data name="MenuCompany" xml:space="preserve">
+    <value>Аб холдынгу</value>
+  </data>
+  <data name="MenuContacts" xml:space="preserve">
+    <value>Кантакты</value>
+  </data>
+  <data name="MenuNews" xml:space="preserve">
+    <value>Навiны</value>
+  </data>
+  <data name="MenuLifeSafetyNews" xml:space="preserve">
+    <value>Бяспека жыццядзейнасці</value>
+  </data>
+  <data name="MenuAntiCorruptionNews" xml:space="preserve">
+    <value>Антыкарупцыйная дзейнасць</value>
+  </data>
+  <data name="MenuRoadSafety" xml:space="preserve">
+    <value>Бяспека дарожнага руху</value>
+  </data>
+  <data name="MenuLegalEducation" xml:space="preserve">
+    <value>Прававое асвета</value>
+  </data>
+  <data name="MenuPurchases" xml:space="preserve">
+    <value>Закупкі</value>
+  </data>
+  <data name="MenuServices" xml:space="preserve">
+    <value>Паслугi</value>
+  </data>
+  <data name="MenuVacancies" xml:space="preserve">
+    <value>Вакансii</value>
+  </data>
+  <data name="MenuWindow" xml:space="preserve">
+    <value>Звароты</value>
+  </data>
+  <data name="Lang" xml:space="preserve">
+    <value>Бел</value>
+  </data>
+  <data name="SecLang" xml:space="preserve">
+    <value>Рус</value>
+  </data>
+  <data name="SecLangVal" xml:space="preserve">
+    <value>ru</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>БЕЛЭНЕРГАБУД - КІРУЮЧАЯ КАМПАНІЯ ХОЛДЫНГУ</value>
+  </data>
+  <data name="LinkBelenrgo" xml:space="preserve">
+    <value>ДВА «Белэнэрга»</value>
+  </data>
+  <data name="LinkMinenergo" xml:space="preserve">
+    <value>Міністэрства энергетыкі</value>
+  </data>
+  <data name="LinkPravoby" xml:space="preserve">
+    <value>Нацыянальны прававы Інтэрнэт-партал Рэспублікі Беларусь</value>
+  </data>
+  <data name="LinkPresident" xml:space="preserve">
+    <value>Афіцыйны інтэрнэт-партал Прэзідэнта Рэспублікі Беларусь</value>
+  </data>
+  <data name="Requisites" xml:space="preserve">
+    <value>вул. Чычэрына, 19, 220029, г. Мiнск, тэл. (017) 365 46 80 факс (017) 365 44 90, rupbes.by, e-mail: rupbes@rupbes.by, р/р BY81 AKBB 3012 6367 5000 2540 0000 у ЦБП № 527 ААТ «ААБ Беларусбанк», БІК AKBBBY2X, вул. Варанянскага, 7а, г. Мiнск, УНП 100056165, АКПА 001179725000</value>
+  </data>
+  <data name="CompanyBranches" xml:space="preserve">
+    <value>Структура холдынгу - «Белэнергабуд холдынг»</value>
+  </data>
+  <data name="CompanyMainText" xml:space="preserve">
+    <value>Нароўні з энергетычнымі будынкамі, пабудавана мноства аб'ектаў прамысловага прызначэння - заводы: аб'ёмнага домабудавання, жалезабетонных вырабаў і канструкцый, керамзітавага жвіру, электрамеханічны ў гарадах Беларусі, высакавольтнай апаратуры ў г. Вялікія Лукі (РФ), а таксама млынкамбіната, холадакамбінаты, газакампрэсарнай станцыі і інш . &lt;br&gt;
+Ўзводзіліся і складаныя па сваіх канструктыўных рашэннях будынка. Гэта аэравакзал, Дом мэблі і ДРЦ Нацыянальнага Банка РБ у г. Мінску, лядовыя палацы, спартзалы і спартыўныя збудаванні, музеі і інш.&lt;br&gt;
+Сіламі Белэнергостроя пабудаваныя цэлыя гарады - Белаазёрск і Новалукомль, гарадскі пасёлак - Дружны ў Мінскай вобл., А таксама мікрараёны і дамы ў гг. Мінску, Магілёве, Гомелі, Лідзе, Жодзіна і інш гарадах Беларусі, села для пера-селенцев з зоны Чарнобыльскай АЭС. Белэнергабуд аднаўляў г. Ленінакан, разбураны ў выніку землятрусу, які адбыўся ў Арменіі.&lt;br&gt;
+Пры непасрэдным удзеле нашых спецыялістаў ўзводзіліся і будуюцца ў цяперашні час ТЭС, АЭС і іншыя энергетычныя аб'екты, жылыя пасёлкі ў Іране, Іраку, Грэцыі, Манголіі, Германіі, Чэхіі і іншых краінах.&lt;br&gt;
+У апошнія гады ўведзеныя наступныя энергетычныя магутнасці:&lt;br&gt;
+У 1998 г. праведзена мадэрнізацыя Аршанскай ЦЭЦ устаноўкай парагазавага блока агульнай магутнасцю 69,4 МВт. у складзе: двух газавых турбін, адной папара-вой турбіны, двух катлоў - утылізатар. Пастаўка абсталявання ПДУ выраблялася за кошт крэдыту Еўрапейскага Банка Рэканструкцыі і Развіцця (ЕБРиР) французскай фірмай «GEC ALSTOM». У 1999г. уведзены ў эксплуатацыю першы энергаблок Мінскай ЦЭЦ-5, магутнасцю 330 МВт.&lt;br&gt;
+На ВА «Нафтан» (Наваполацк) акцыянернае таварыства выканала БМР, на ўмовах генпадрада, па кагенерацыйнай газатурбіннай ўсталёўцы (КГТУ), якая складаецца з двух энергетычных газатурбінных установак 55СТ-20, катлоў - утылізатар.&lt;br&gt;
+Выканана рэканструкцыя Бярозаўскай ГРЭС надбудовай газавымі турбінамі магутнасцю па 25 МВт кожная.&lt;br&gt;
+У 2005 годзе ўведзена ў эксплуатацыю парагазавая ўстаноўка на Калінінградскай ЦЭЦ-2 (РФ) магутнасцю 450 МВт.
+У 2004 г. на прадпрыемстве ўкаранёна і сертыфікавана сістэма менеджменту якасці, якая адпавядае міжнароднаму стандарту ІСО 9001-UA225891
+У 2008 годзе ўкаранёна і сертыфікавана сістэма менеджменту прафесійнага здароўя і бяспекі працы, адпаведная міжнароднаму стандарту OHSAS 18001 выпуску: 2007. У 2009 годзе выканана рэканструкцыя Мінскай ЦЭЦ-3 з уводам блока Пру-230мВт.
+У цяперашні час Рэспубліканскае ўнітарнае прадпрыемства «Белэнергабуд» - гэта 8 філіялаў, размешчаных ва ўсіх буйных гарадах Рэспублікі Беларусь. З іх 4 генпадрадных, 3 спецыялізаваных, 1 прадпрыемства строииндустриии.
+Мы маем магутным вытворчым патэнцыялам. Парк будаўніча-мантажнай тэхнікі ўключае грузапад'ёмныя машыны і механізмы, Аўтатранс-порт, сродкі малой механізацыі. Гэта экскаватары з ёмістасцю каўша ад 0,25 м3 да 1,25 м3, бульдозеры, коўзанкі, краны грузападымальнасцю ад 6 да 100 т (вежавыя, аўтамабільныя, гусенічныя), палябойная ўстаноўкі, дызель-молаты, гидромолоты, перасоўныя тынкавыя і малярныя станцыі, зварачнае абсталяванне, кампрэсары, автобетононасосы і г.д.
+У філіялах на пастаяннай аснове працуе каля 3000 чалавек.
+Аб'ём прапанаваных намі паслуг ўключае інжынірынг, пастаўку абсталявання, вытворчасць будаўнічых канструкцый, будаўніцтва і рамонт.</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>Памылка</value>
+  </data>
+  <data name="MessageAdress" xml:space="preserve">
+    <value>Ваш паштовы індэкс і адрас месца жыхарства (месца знаходжання) *</value>
+  </data>
+  <data name="MessageAttention" xml:space="preserve">
+    <value>* - Палі, абавязковыя для запаўнення</value>
+  </data>
+  <data name="MessageButton" xml:space="preserve">
+    <value>Адправіць</value>
+  </data>
+  <data name="MessageCaptcha" xml:space="preserve">
+    <value>Калі ласка, увядзіце сімвалы з малюнка *</value>
+  </data>
+  <data name="MessageEmail" xml:space="preserve">
+    <value>Адрас электроннай пошты для адказу Вам *</value>
+  </data>
+  <data name="MessageFile" xml:space="preserve">
+    <value>Прымацаваць файл (да 2Mb у форматe PDF, DOCX, DOC, RTF, TXT, ODT, ZIP, RAR, PNG, TIFF, JPEG, JPG)</value>
+  </data>
+  <data name="MessageLegalAdress" xml:space="preserve">
+    <value>Паштовы індэкс і адрас знаходжання юрыдычнай асобы *</value>
+  </data>
+  <data name="MessageLegalSender" xml:space="preserve">
+    <value>Поўнае найменне юрыдычнай асобы *</value>
+  </data>
+  <data name="MessageLegalSenderName" xml:space="preserve">
+    <value>Прозвішча, уласнае імя, імя па бацьку (калі такое маецца) або ініцыялы кіраўніка або асобы, упаўнаважанай ва ўстаноўленым парадку падпісваць звароты *</value>
+  </data>
+  <data name="MessagePersonSender" xml:space="preserve">
+    <value>Прозвішча, уласнае імя, імя па бацьку (калі такое маецца), або ініцыялы фіз. асобы *</value>
+  </data>
+  <data name="MessageReceiver" xml:space="preserve">
+    <value>Назва, адрас арганізацыі і пасада асобы, якім накіроўваецца зварот *</value>
+  </data>
+  <data name="MessageText" xml:space="preserve">
+    <value>Выкладанне сутнасці звароту (да 2500 знакаў) *</value>
+  </data>
+  <data name="MessageTheme" xml:space="preserve">
+    <value>Тэма звароту *</value>
+  </data>
+  <data name="OneWindowLegal" xml:space="preserve">
+    <value>Электронны зварот юрыдычных асоб</value>
+  </data>
+  <data name="OneWindowPerson" xml:space="preserve">
+    <value>Электронны зварот фізічных асоб</value>
+  </data>
+  <data name="VacanciesNoVacancy" xml:space="preserve">
+    <value>Пакуль вакансій няма</value>
+  </data>
+  <data name="ContactsMeetDay" xml:space="preserve">
+    <value>Дзень прыёму</value>
+  </data>
+  <data name="ContactsMeetTime" xml:space="preserve">
+    <value>Час прыёму</value>
+  </data>
+  <data name="ContactsName" xml:space="preserve">
+    <value>Ф.И.О.</value>
+  </data>
+  <data name="ContactsPhone" xml:space="preserve">
+    <value>Тэлефон</value>
+  </data>
+  <data name="ContactsPost" xml:space="preserve">
+    <value>Пасада</value>
+  </data>
+  <data name="ContactsPrivate" xml:space="preserve">
+    <value>Асабісты прыём</value>
+  </data>
+  <data name="ContactsPublic" xml:space="preserve">
+    <value>Праца з грамадскасцю</value>
+  </data>
+  <data name="MenuSocialNews" xml:space="preserve">
+    <value>Навіны грамадскага жыцця</value>
+  </data>
+  <data name="MenuCurrentYear" xml:space="preserve">
+    <value>Год якасці</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Адрас</value>
+  </data>
+  <data name="Bosses" xml:space="preserve">
+    <value>Кіраўніцтва</value>
+  </data>
+  <data name="Certificates" xml:space="preserve">
+    <value>Дазвольныя дакументы</value>
+  </data>
+  <data name="CompanyAbbr" xml:space="preserve">
+    <value>Республиканскае унітарнае прадпрыемства</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Электронны адрас</value>
+  </data>
+  <data name="Fax" xml:space="preserve">
+    <value>Факс</value>
+  </data>
+  <data name="MainPageCertificates" xml:space="preserve">
+    <value>Працуем па сусветным стандартам якасці</value>
+  </data>
+  <data name="MainPageFilials" xml:space="preserve">
+    <value>7 філіялаў па ўсёй Рэспубліцы</value>
+  </data>
+  <data name="MainPageObjects" xml:space="preserve">
+    <value>Сотні аб'ектаў па ўсёй краіне і за мяжой</value>
+  </data>
+  <data name="MainPageServices" xml:space="preserve">
+    <value>Шырокі спектр тавараў і паслуг</value>
+  </data>
+  <data name="MainPageVacancies" xml:space="preserve">
+    <value>Кар'ера ў кампаніі</value>
+  </data>
+  <data name="ObjectDeps" xml:space="preserve">
+    <value>У будаўніцтве задзейнічаны наступныя філіялы:</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Тэлефон</value>
+  </data>
+  <data name="PublicSpecialist" xml:space="preserve">
+    <value>Спецыяліст па працы з грамадскасцю</value>
+  </data>
+  <data name="ServiceMech" xml:space="preserve">
+    <value>Арэнда тэхнікі</value>
+  </data>
+  <data name="ServiceProduct" xml:space="preserve">
+    <value>Прадукцыя ўласнай вытворчасці</value>
+  </data>
+  <data name="ServiceRealty" xml:space="preserve">
+    <value>Арэнда нерухомасці</value>
+  </data>
+  <data name="ServiceService" xml:space="preserve">
+    <value>Будаўнічыя і мантажныя работы</value>
+  </data>
+  <data name="Career" xml:space="preserve">
+    <value>Кар'ера</value>
+  </data>
+  <data name="CareerFirstPart" xml:space="preserve">
+    <value>сучасная кампанiя, якая дынамічна развіваецца. Нам давяраюць, і для нас гэта вельмі важна. Нас рэкамендуюць сваім партнёрам, а таму мы зацікаўленыя ў тым, каб у нас працавалі ініцыятыўныя, мэтанакіраванныя, энергічныя, творчыя людзі, якія ўмеюць ісці да пастаўленай мэты ў камандзе, якія не баяцца браць на сябе адказнасць, якія заўсёды гатовыя вучыцца новаму Наш калектыў - каманда прафесіяналаў, гэта наша самая галоўная каштоўнасць. Разам мы здольныя ўвасобіць нашы амбіцыйныя задачы ў самыя кароткія тэрміны. Мы цэнім кожнага нашага супрацоўніка, таму ў працы прад'яўляем вельмі высокія патрабаванні ў сацыяльных і кадравых пытаннях. РУП «Белэнергабуд» для раскрыцця здольнасцей кожнага спецыяліста ўяўляе вельмі шмат магчымасцяў. Свае навыкі і прафесійны вопыт нашы супрацоўнікі ўжываюць ва ўсіх сферах дзейнасці прадпрыемства не толькі ў Рэспубліцы Беларусь, але і за мяжой. Мы будзем вельмі рады прыняць у сваю каманду ўсіх тых, хто разам з намі будзе далей рэалізоўваць нашы самыя смелыя планы.</value>
+  </data>
+  <data name="CareerFourthPart" xml:space="preserve">
+    <value>з указаннем вакансіі, на якую прэтэндуеце. Мы абавязкова разгледзім Вашу анкету!</value>
+  </data>
+  <data name="CareerImgText" xml:space="preserve">
+    <value>Запрашаем на працу</value>
+  </data>
+  <data name="CareerSecondPart" xml:space="preserve">
+    <value>Усю неабходную інфармацыю і кантакты Вы можаце атрымаць у раздзеле</value>
+  </data>
+  <data name="CareerThirdPart" xml:space="preserve">
+    <value>Калі раптам Вы не знайшлі цікавую для Вас вакансію, Вы таксама можаце адправіць сваё рэзюмэ на нашу электронную пошту</value>
+  </data>
+  <data name="DirAdvSearch" xml:space="preserve">
+    <value>Пашыраны пошук</value>
+  </data>
+  <data name="DirChooseDep" xml:space="preserve">
+    <value>Выбярыце аддзел</value>
+  </data>
+  <data name="DirChooseFil" xml:space="preserve">
+    <value>Выбярыце філіял</value>
+  </data>
+  <data name="DirSearchPlaceholder" xml:space="preserve">
+    <value>Увядзіце імя або скарыстайцеся пашыраным пошукам</value>
+  </data>
+  <data name="EmailDirectory" xml:space="preserve">
+    <value>Электронны даведнік</value>
+  </data>
+  <data name="Reception" xml:space="preserve">
+    <value>Прыёмная</value>
+  </data>
+  <data name="ResponseVacancyEmail" xml:space="preserve">
+    <value>Ваш адрас электроннай пошты</value>
+  </data>
+  <data name="ResponseVacancyFirstName" xml:space="preserve">
+    <value>Ваша iмя *</value>
+  </data>
+  <data name="ResponseVacancyLastName" xml:space="preserve">
+    <value>Ваша прозвiшча *</value>
+  </data>
+  <data name="ResponseVacancyPhone" xml:space="preserve">
+    <value>Ваш нумар тэлэфона для сувязi *</value>
+  </data>
+  <data name="ResponseVacancyResume" xml:space="preserve">
+    <value>Загрузіце Ваша рэзюмэ</value>
+  </data>
+  <data name="ResponseVacancySubmit" xml:space="preserve">
+    <value>Адгукнуцца</value>
+  </data>
+  <data name="ResponseVacancyText" xml:space="preserve">
+    <value>Суправаджальны лiст (да 2500 сiмвалаў)</value>
+  </data>
+  <data name="ResponseVacancyTextPlaceholder" xml:space="preserve">
+    <value>Тут Вы можаце паказаць кантактную i iншую iнфармацыю пра сябе: навыкi, дасягненнi, хобi.</value>
+  </data>
+  <data name="ResponseVacancyForm1" xml:space="preserve">
+    <value>Загрузіце сюды Вашае рэзюмэ</value>
+  </data>
+  <data name="ResponseVacancyForm2" xml:space="preserve">
+    <value>кароткую анкету</value>
+  </data>
+  <data name="PurchaseContent" xml:space="preserve">
+    <value>Прадмет закупкі</value>
+  </data>
+  <data name="PurchaseDate" xml:space="preserve">
+    <value>Дата закупкі</value>
+  </data>
+  <data name="PurchaseDownload" xml:space="preserve">
+    <value>Cкачаць</value>
+  </data>
+  <data name="PurchaseNot" xml:space="preserve">
+    <value>На дадзены момант закупак няма!</value>
+  </data>
+  <data name="PurchaseOrganizer" xml:space="preserve">
+    <value>Арганізатар</value>
+  </data>
+  <data name="PurchasePage" xml:space="preserve">
+    <value>Cтаронка:</value>
+  </data>
+  <data name="PurchaseTT" xml:space="preserve">
+    <value>Тэхнічнае заданне</value>
+  </data>
+  <data name="PurchaseType" xml:space="preserve">
+    <value>Выгляд працэдуры закупкі</value>
+  </data>
+  <data name="TenderContacts" xml:space="preserve">
+    <value>Кантактная інфармацыя</value>
+  </data>
+  <data name="TenderFinishDate" xml:space="preserve">
+    <value>Дата і час заканчэння таргоў</value>
+  </data>
+  <data name="TenderLink" xml:space="preserve">
+    <value>Апісанне</value>
+  </data>
+  <data name="TenderNumber" xml:space="preserve">
+    <value>Нумар закупкі</value>
+  </data>
+  <data name="Tenders" xml:space="preserve">
+    <value>Закупкі з Icetrade.by</value>
+  </data>
+  <data name="ServiceSoftware" xml:space="preserve">
+    <value>Праграмныя сродкі</value>
+  </data>
+  <data name="APGPBes" xml:space="preserve">
+    <value>(АП ДП "БЭС")</value>
+  </data>
+  <data name="ReviewButton" xml:space="preserve">
+    <value>Адправiць</value>
+  </data>
+  <data name="ReviewCompanyName" xml:space="preserve">
+    <value>Арганiзацыя</value>
+  </data>
+  <data name="ReviewDate" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="ReviewNoReview" xml:space="preserve">
+    <value>Яшчэ не дададзена нiводнага водгуку</value>
+  </data>
+  <data name="ReviewReviewText" xml:space="preserve">
+    <value>Тэкст водгука *</value>
+  </data>
+  <data name="ReviewText" xml:space="preserve">
+    <value>Водгук</value>
+  </data>
+  <data name="ReviewTitle" xml:space="preserve">
+    <value>Водгукi</value>
+  </data>
+  <data name="ReviewYourCompanyName" xml:space="preserve">
+    <value>Назва Вашай арганiзацii * </value>
+  </data>
+  <data name="ReviewYourEmail" xml:space="preserve">
+    <value>Ваш Email для обратнай сувязi *</value>
+  </data>
+  <data name="ReviewAdd" xml:space="preserve">
+    <value>Напiсаць водгук</value>
+  </data>
+  <data name="ReceptionFax" xml:space="preserve">
+    <value>Прыёмная факс</value>
+  </data>
+  <data name="MenuObj" xml:space="preserve">
+    <value>Аб'екты</value>
+  </data>
+  <data name="MenuSoftware" xml:space="preserve">
+    <value>Электронныя сэрвісы</value>
+  </data>
+  <data name="ARM_OTPB" xml:space="preserve">
+    <value>АРМ інжынера АП і ПБ</value>
+  </data>
+  <data name="Mechanic" xml:space="preserve">
+    <value>АРМ інжынера АГМ</value>
+  </data>
+  <data name="Belelectromontagnaladka" xml:space="preserve">
+    <value>ААТ «Белэлектрамантажналадка»</value>
+  </data>
+  <data name="Belenergosvyaz" xml:space="preserve">
+    <value>ААТ «Белэнергосвязь»</value>
+  </data>
+  <data name="Belenergozaschita" xml:space="preserve">
+    <value>ААТ «Белэнергозащита»</value>
+  </data>
+  <data name="Belselelectrosetstroi" xml:space="preserve">
+    <value>ААТ «Белсельэлектрасеткабуд»</value>
+  </data>
+  <data name="ChildCompanys" xml:space="preserve">
+    <value>Даччыныя прадпрыемствы</value>
+  </data>
+  <data name="Zapadelectrosetstroi" xml:space="preserve">
+    <value>ААТ «Захадэлектрасеткабуд»</value>
+  </data>
+  <data name="Platform" xml:space="preserve">
+    <value>Карпаратыўная платформа</value>
+  </data>
+  <data name="CompanyBranchesShort" xml:space="preserve">
+    <value>Структура холдынгу</value>
+  </data>
+  <data name="ServiceSale" xml:space="preserve">
+    <value>Продаж маёмасці</value>
+  </data>
+  <data name="Electrocentrmontaj" xml:space="preserve">
+    <value>ААТ «Электроцентрмонтаж»</value>
+  </data>
+  <data name="Energotehprom" xml:space="preserve">
+    <value>ААТ «Энерготехпром»</value>
+  </data>
+  <data name="ThreeLang" xml:space="preserve">
+    <value>Eng</value>
+  </data>
+  <data name="ThreeLangVal" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="ARMContractBuilding" xml:space="preserve">
+    <value>Аналіз і ўлік заключаных дагавораў у будаўніцтве</value>
+  </data>
+  <data name="MaterialSearchLine" xml:space="preserve">
+    <value>Увядзіце назву ці код ТНВЭД</value>
+  </data>
+  <data name="ChooseGroupProduct" xml:space="preserve">
+    <value>Выберыце катэгорыю тавару</value>
+  </data>
+  <data name="CodeTNVED" xml:space="preserve">
+    <value>Код ТН ЗЭД</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Найменне тавару</value>
+  </data>
+  <data name="ProductNote" xml:space="preserve">
+    <value>Заўвага</value>
+  </data>
+  <data name="ProductUnit" xml:space="preserve">
+    <value>Адзінка вымярэння</value>
+  </data>
+</root>

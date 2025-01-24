@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = Resources.Resource.OneWindowLegal;
+}
+@model rupbes.Models.LegalMessage
+@using BotDetect.Web.Mvc;
+
+@{ MvcCaptcha captcha = new MvcCaptcha("Captcha");}
+@{ Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+<h2 class="headline">@Resources.Resource.OneWindowLegal</h2>
+<section class="form-block">
+    @using (Html.BeginForm("Legal", "OneWindow", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="window-label">
+            <label for="Sender">@Resources.Resource.MessageLegalSender</label>
+            @Html.ValidationMessageFor(model => model.Sender, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Sender)
+
+        </div>
+
+        <div class="window-label">
+            <label for="SenderName">@Resources.Resource.MessageLegalSenderName</label>
+            @Html.ValidationMessageFor(model => model.SenderName, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.SenderName)
+
+        </div>
+
+        <div class="window-label">
+            <label for="Receiver">@Resources.Resource.MessageReceiver</label>
+            @Html.ValidationMessageFor(model => model.Receiver, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Receiver)
+
+        </div>
+
+        <div class="window-label">
+            <label for="Theme">@Resources.Resource.MessageTheme</label>
+            @Html.ValidationMessageFor(model => model.Theme, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Theme)
+
+        </div>
+
+        <div class="window-label">
+            <label for="Adress">@Resources.Resource.MessageLegalAdress</label>
+            @Html.ValidationMessageFor(model => model.Adress, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Adress)
+
+        </div>
+
+        <div class="window-label">
+            <label for="Email">@Resources.Resource.MessageEmail</label>
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Email)
+
+        </div>
+
+        <div class="window-label">
+            <label for="Text">@Resources.Resource.MessageText</label>
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Text)
+
+        </div>
+        <div class="window-label">
+            <label for="upload">@Resources.Resource.MessageFile</label>
+            <span class="field-validation-valid text-danger">@ViewBag.FileMessage</span>
+            <input id="upload" type="file" name="upload" />
+        </div>
+        <div class="window-label">
+            @Html.Label("CaptchaCode", Resources.Resource.MessageCaptcha)
+            <span class="field-validation-valid text-danger">@ViewBag.CaptchaMessage</span>
+            <div class="captcha-label">
+                @Html.Captcha(captcha)
+                @Html.TextBox("CaptchaCode")
+            </div>
+        </div>
+
+
+        <div class="window-label">
+            <span>@Resources.Resource.MessageAttention</span>
+            <input type="submit" value="@Resources.Resource.MessageButton" />
+        </div>
+
+    }
+</section>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

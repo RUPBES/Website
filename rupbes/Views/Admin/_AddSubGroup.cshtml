@@ -1,0 +1,26 @@
+﻿@using rupbes.Models.ViewModels
+@using rupbes.Models.Products
+
+@{
+    ViewBag.Title = "Добавить группу товаров";
+}
+
+
+<section class="form-block">
+    <h2>Добавить группу товаров</h2>
+
+    <form action="/Admin/CreateSubGroup" method="post">
+
+        <div class="window-label">
+            <input class="text-box single-line" readonly
+                  value="@ViewBag.ProductId" name="GroupProductId" />
+        </div>
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Название"
+                   name="name" />
+        </div>
+        <div class="window-label">
+            <input type="submit" value="Добавить" />
+        </div>
+    </form>
+</section>

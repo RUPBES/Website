@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Руководство";
+}
+
+<section class="admin-content">
+    @Html.ActionLink("Назад", "Index")
+    <h2>Руководители</h2>
+    <p>@Html.ActionLink("Добавить руководителя", "CreateBoss")</p>
+
+    <h2>Список руководителей</h2>
+    <table class="table">
+        <tr>
+
+            <th>
+                Имена руководителей
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (rupbes.Models.Bosses boss in ViewBag.Bosses)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => boss.name)
+                </td>
+                <td>
+                    <button class="btn btn-default" onclick="del('@Url.Action("DeleteBoss", "Admin", new { id = boss.id })')">Удалить</button>
+                    <button class="btn btn-default" onclick="edit('@Url.Action("EditDepBoss","Admin", new { id = boss.id })')">Изменить</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+</section>
+@section scripts {
+    <script type="text/javascript">
+        function del(path) {
+            if (confirm("Подтвердите удаление")) {
+                location.href = path;
+            }
+            else {
+            }
+        };
+        function edit(path) {
+            location.href = path;
+        }
+    </script>
+}

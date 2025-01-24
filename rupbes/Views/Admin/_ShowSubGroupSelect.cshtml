@@ -1,0 +1,14 @@
+﻿@using rupbes.Models.Products
+@model List<SubGroupProduct>
+<select id="SubGroupProduct" name="subGroupProduct">
+    @foreach (var subGroup in Model)
+    {
+        <option>@subGroup.name</option>
+    }
+</select>   
+<script>
+    $('#SubGroupProduct').select2({
+        placeholder: 'Подгруппа товара',
+        tags: true
+    });
+</script>

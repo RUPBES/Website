@@ -1,0 +1,23 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="big-link">
+<a href="https://rupbes.by/Review/Index/9//">@Resources.Resource.ReviewAdd</a>
+</div>
+<section class="content">
+    @if (Model.Count != 0)
+    {
+        foreach (rupbes.Models.ViewModels.Review.ReviewsModel item in Model)
+        {
+            <a href="@item.LinkToFilialSite">@item.Filial.Abbreviation</a><br /><br />
+            <span class="news-date">@item.DateReview</span>
+            <span class="news-body">@item.ReviewText</span>
+            <hr class="hrreview" />
+        }
+    }
+    else
+    {
+        <h2>@Resources.Resource.ReviewNoReview</h2>
+    }
+</section>

@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Админка";
+}
+<section class="admin-content">
+    <h2>Управление сайтом</h2>
+
+    <div class="admin-content-div">
+        @if (ViewBag.provider.IsUserInRole(User.Identity.Name, "admin"))
+        {
+            @Html.ActionLink("Вакансии", "Vacancies", "Admin")
+            @Html.ActionLink("Новости", "News", "Admin")
+            @Html.ActionLink("Объекты", "Objects", "Admin")
+            @Html.ActionLink("Сертификаты", "Certificates", "Admin");
+            @Html.ActionLink("Руководство", "Bosses", "Admin");
+            @Html.ActionLink("Аренда", "Realty", "Admin")
+            @Html.ActionLink("Продажа имущества", "Sale", "Admin")
+            @Html.ActionLink("Техника", "Mechs", "Admin")
+            @Html.ActionLink("Услуги", "Services", "Admin")
+            @Html.ActionLink("Предприятия", "Departments", "Admin")
+            @Html.ActionLink("Продукция собственного производства", "Products", "Admin")
+            @Html.ActionLink("Отчет", "UsageReport", "Admin")
+            @Html.ActionLink("HashGeneration", "HashGenPage", "Admin")
+
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "news"))
+        {
+            @Html.ActionLink("Новости", "News", "Admin")
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "ok_master"))
+        {
+            @Html.ActionLink("Вакансии", "Vacancies", "Admin")
+            @Html.ActionLink("Руководство", "Bosses", "Admin");
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "obj"))
+        {
+            @Html.ActionLink("Объекты", "Objects", "Admin")
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "ok"))
+        {
+            @Html.ActionLink("Вакансии", "AllVacancies", "Admin")
+            @Html.ActionLink("Руководство", "AllBosses", "Admin");
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "realty_master"))
+        {
+            @Html.ActionLink("Аренда", "Realty", "Admin")
+            @Html.ActionLink("Продажа имущества", "Sale", "Admin")
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "realty"))
+        {
+            @Html.ActionLink("Аренда", "AllRealty", "Admin")
+            @Html.ActionLink("Продажа имущества", "AllSale", "Admin")
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "mech_master"))
+        {
+            @Html.ActionLink("Техника", "Mechs", "Admin")
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "mech"))
+        {
+            @Html.ActionLink("Техника", "AllMechs", "Admin")
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "service_master"))
+        {
+            @Html.ActionLink("Услуги", "Services", "Admin")
+        }
+        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "service"))
+        {
+            @Html.ActionLink("Услуги", "AllServices", "Admin")
+        }
+        @if (ViewBag.provider.IsUserInRole(User.Identity.Name, "product"))
+        {
+            @Html.ActionLink("Продукция собственного производства", "Products", "Admin")
+        }
+    </div>
+    @Html.ActionLink("Выйти", "Logoff", "Admin")
+</section>

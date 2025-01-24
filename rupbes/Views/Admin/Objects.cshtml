@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Objects";
+}
+
+@{
+    ViewBag.Title = "Новости";
+}
+
+
+<section class="admin-content">
+    @Html.ActionLink("Назад", "Index")
+    <h2>Объекты</h2>
+    <p>@Html.ActionLink("Добавить объект", "CreateObject")</p>
+    <p>@Html.ActionLink("Удалить изображения с сервера", "DeleteImgs")</p>
+
+    <h2>Список объектов</h2>
+    <table class="table">
+        <tr>
+
+            <th>
+                Название объектов
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (rupbes.Models.Objects item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.title_ru)
+                </td>
+                <td>
+                    <button class="btn btn-default" onclick="del('@Url.Action("DeleteObject", "Admin", new { id = item.id })')">Удалить</button>
+                    <button class="btn btn-default" onclick="edit('@Url.Action("EditObject","Admin", new { id = item.id })')">Изменить</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+</section>
+@section scripts {
+    <script type="text/javascript">
+        function del(path) {
+            if (confirm("Подтвердите удаление")) {
+                location.href = path;
+            }
+            else {
+            }
+        };
+        function edit(path) {
+            location.href = path;
+        }
+    </script>
+}
+

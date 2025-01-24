@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = Resources.Resource.MenuObj;
+}
+
+<h2 class="headline">@Resources.Resource.MenuObj</h2>
+<section class="content">
+    @foreach (rupbes.Models.Objects obj in ViewBag.Objects)
+    {
+        <p class="news-title">@obj.title_ru</p>
+        if (obj.Imgs.Count > 0)
+        {
+            <div class="news-imgs-block">
+                <div class="news-imgs">
+                    @foreach (rupbes.Models.Imgs img in obj.Imgs)
+                    {
+                        <img src="@img.src" />
+                    }
+                </div>
+                <div class="minus-slide"></div>
+                <div class="plus-slide"></div>
+                <div class="full-screen-btn"></div>
+            </div>
+        }
+
+        <span class="news-body">@Html.Raw(obj.desc_ru)</span>
+        if (obj.Departments.Count > 0)
+        {
+            <span class="news-body">
+                <b>@Resources.Resource.ObjectDeps</b>
+                @foreach (rupbes.Models.Departments department in obj.Departments)
+                {
+                    <a href="@Url.Action("Company","Home")/#@department.id" class="dep-link">
+                        @department.short_name_ru
+                    </a>
+                }
+            </span>
+        }
+        <hr />
+    }
+</section>

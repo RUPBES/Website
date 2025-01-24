@@ -1,0 +1,84 @@
+﻿@using rupbes.Models.Products
+@model List<GroupProduct>
+@{
+    ViewBag.Title = "Материалы собственного приготовления";
+}
+
+<section class="admin-content">
+    <div class="flex-block1">
+        <div id="divGroup" class="big-link active">
+            <a href="ShowGroup">Категории товаров</a>
+        </div>
+        <div id="divProduct" class="big-link">
+            <a href="Products">Товары</a>
+        </div>
+    </div>
+    <div id="searchResult">
+        <div class="product-info">
+            <div>
+                <h2>Группа товаров</h2>
+                <button onclick="AddGroup()">Добавить группу товаров</button>
+                <table class="dir-table">
+                    <tr class="dir-table-row">
+                        <th class="dir-table-cell">@Resources.Resource.ProductName</th>
+                        <th class="dir-table-cell">@Resources.Resource.Actions</th>
+                    </tr>
+
+                    @foreach (var group in Model)
+                    {
+                        <tr class="dir-table-row">
+                            <td onclick="ShowSubGroup(@group.id)" class="dir-table-cell">
+                                @group.name
+                            </td>
+                            <td class="dir-table-cell">
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div>
+                <div id="jquerySubGroup">
+                    <h2>Подгруппа товаров</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.ActionLink("В меню", "Index")
+</section>
+@section scripts {
+    <script>
+    function AddGroup() {
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("CreateGroup", "Admin")',
+            success: function (data) {
+                $('#searchResult').html(data);
+            }
+        })
+    }
+
+    function AddSubGroup(id) {
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("CreateSubGroup", "Admin")',
+            data: {id:id},
+            success: function (data) {
+                $('#searchResult').html(data);
+            }
+        })
+    }
+
+    ShowSubGroup(@Model.FirstOrDefault().id);
+
+    function ShowSubGroup(id) {
+         $.ajax({
+             type: "get",
+             url: '@Url.Action("ShowSubGroup", "Admin")',
+             data: { id: id },
+             success: function (data) {
+                 $('#jquerySubGroup').html(data);
+             }
+         })
+        }
+    </script>
+}

@@ -1,0 +1,41 @@
+﻿@model List<rupbes.Models.Realty>
+
+@{
+    ViewBag.Title = Resources.Resource.ServiceRealty;
+}
+
+<h2 class="headline">@Resources.Resource.ServiceRealty</h2>
+<section class="content">
+    @foreach (rupbes.Models.Realty realty in Model)
+    {
+        <p class="service-link" id="@realty.id">@realty.title</p>
+        <div class="service-flag" id="flag_@realty.id"></div>
+    }
+</section>
+
+
+@section scripts {
+    <script type="text/javascript">
+        
+        $(".service-link").bind("click", function () {
+            var flag = '#flag_' + this.id;
+            if ($(flag).contents().length > 0) {
+                $(flag).fadeToggle(300);
+            }
+            else {
+                $.ajax({
+                type: 'post',
+                url: '@Url.Action("GetRealty")',
+                data: { 'id': this.id },
+                success: function (data) {
+                    $(flag).html(data);
+                    initMass();
+                    pageStart();
+                }
+            })
+            }
+
+
+        })
+    </script>
+}

@@ -1,0 +1,67 @@
+﻿@using rupbes.Models.ViewModels
+@using rupbes.Models.Products
+@model List<VersionProductViewModel>
+
+<h2>Версии товара</h2>
+<div class="product-info-grid">
+    <div>
+        <img src="/Content/Styles/icons/find.png" style="height:100px; width:215px" />
+    </div>
+    <div class="product-info">
+        <span>Код ТН ВЭД : @ViewData["codeTNVED"]</span>
+        <span>Единица измерения : @ViewData["unitName"]</span>
+        <span>Организация : @ViewData["departmentName"]</span>
+        @foreach (PropertyViewModel property in ViewBag.properties)
+        {
+            <span>@property.name : @(property.count)</span>
+        }
+    </div>
+</div>
+<div id="placeForJquery">
+    <button onclick="AddVersionProduct()">Добавить версию</button>
+    <table class="dir-table">
+        <tr class="dir-table-row">
+            <th class="dir-table-cell">@Resources.Resource.ProductName</th>
+            <th class="dir-table-cell">Характеристики</th>
+            <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
+            <th class="dir-table-cell">Продается ли?</th>
+            <th class="dir-table-cell">@Resources.Resource.Actions</th>
+        </tr>
+
+        @foreach (var version in Model)
+        {
+            <tr class="dir-table-row">
+                <td class="dir-table-cell">
+                    @version.name
+                </td>
+                <td class="dir-table-cell">
+                    @foreach (var property in version.properties)
+                    {
+                        <span>@property.name : @(property.count). </span>
+                    }
+                </td>
+                <td class="dir-table-cell">
+                    @version.note
+                </td>
+                <td class="dir-table-cell">
+                    @version.isSale
+                </td>
+                <td class="dir-table-cell">
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+@Html.ActionLink("В меню", "Index")
+<script>
+    function AddVersionProduct() {
+     $.ajax({
+        type: "get",
+         url: '@Url.Action("CreateVersionProduct", "Admin")',
+         data: { productId: @ViewBag.productId},
+        success: function (data) {
+            $('#placeForJquery').html(data);
+        }
+     })
+    }
+</script>

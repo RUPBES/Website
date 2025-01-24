@@ -1,0 +1,41 @@
+﻿@model List<rupbes.Models.Sale>
+
+@{
+    ViewBag.Title = Resources.Resource.ServiceSale;
+}
+
+<h2 class="headline">@ViewBag.Title</h2>
+<section class="content">
+    @foreach (rupbes.Models.Sale sale in Model)
+    {
+        <p class="service-link" id="@sale.id">@sale.title</p>
+        <div class="service-flag" id="flag_@sale.id"></div>
+    }
+</section>
+
+
+@section scripts {
+    <script type="text/javascript">
+
+        $(".service-link").bind("click", function () {
+            var flag = '#flag_' + this.id;
+            if ($(flag).contents().length > 0) {
+                $(flag).fadeToggle(300);
+            }
+            else {
+                $.ajax({
+                type: 'post',
+                url: '@Url.Action("GetSale")',
+                data: { 'id': this.id },
+                success: function (data) {
+                    $(flag).html(data);
+                    initMass();
+                    pageStart();
+                }
+            })
+            }
+
+
+        })
+    </script>
+}

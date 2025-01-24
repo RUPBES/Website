@@ -1,0 +1,48 @@
+﻿<table class="dir-table">
+    <tr class="dir-table-row">
+        <th class="dir-table-cell">@Resources.Resource.ContactsName</th>
+        <th class="dir-table-cell">@Resources.Resource.ContactsPost</th>
+        <th class="dir-table-cell">@Resources.Resource.ContactsPhone</th>
+        <th class="dir-table-cell">Email</th>
+        <th class="dir-table-cell">Организация</th>
+        <th class="dir-table-cell">Отдел</th>
+    </tr>
+    @foreach (rupbes.Models.DatabaseBes.Employee employee in Model)
+    {
+    <tr class="dir-table-row">
+        <td class="dir-table-cell">
+            @employee.Person.LastName @employee.Person.FirstName @employee.Person.FatherName
+        </td>
+        <td class="dir-table-cell">
+            @employee.Post.Name
+        </td>
+        <td class="dir-table-cell">
+            @{
+                if (employee.Contacts.Any(x => x.ContactsTypeId == 2))
+                {
+                    foreach (rupbes.Models.DatabaseBes.Contact contact in employee.Contacts.Where(x => x.ContactsTypeId == 2))
+                    {
+                        <a href="tel:@contact.ContactName"> @contact.ContactName</a>
+                    }
+                }
+                else
+                {
+                    <span>-</span>
+                }
+            }
+        </td>
+        <td class="dir-table-cell">
+            @foreach (rupbes.Models.DatabaseBes.Contact contact in employee.Contacts.Where(x => x.ContactsTypeId == 1))
+            {
+                <a href="mailto:@contact.ContactName"> @Html.Raw(contact.ContactName.Replace("@", "<wbr>@"))</a>
+            }
+        </td>
+        <td class="dir-table-cell">            
+            @employee.Department.Company.Abbreviation            
+        </td>
+        <td class="dir-table-cell">            
+            @employee.Department.Name            
+        </td>
+    </tr>
+    }
+</table>

@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Авторизация";
+}
+@using BotDetect.Web.Mvc;
+<section class="admin-content">
+    <h2>Авторизация</h2>
+    @{ MvcCaptcha captcha = new MvcCaptcha("Captcha");}
+    @using (Html.BeginForm("Login", "Authorization"))
+    {
+        @Html.AntiForgeryToken()
+        <label>Логин</label>
+        <p><input type="text" name="login" value="" /></p>
+        <label>Пароль</label>
+        <p><input type="password" name="pass" value="" /></p>
+        @Html.Label("CaptchaCode", "Retype the code from the picture:")
+        @Html.Captcha(captcha)
+        @Html.TextBox("CaptchaCode")
+        <p><input type="submit" value="Войти" /></p>
+    }
+</section>

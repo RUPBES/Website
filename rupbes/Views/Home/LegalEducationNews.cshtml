@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = Resources.Resource.MenuLegalEducation;
+    var count = 0;
+    var id = 0;
+}
+<h2 class="headline">@Resources.Resource.MenuLegalEducation</h2>
+
+
+
+<section class="content">
+    <div class="news-guide">
+        <div class="flex-block1">
+            <div class="big-link">
+                @Html.ActionLink(Resources.Resource.MenuNews, "News", "Home")
+            </div>
+            <div class="big-link">
+                @Html.ActionLink(Resources.Resource.MenuSocialNews, "SocialNews", "Home")
+            </div>
+            <div class="big-link">
+                @Html.ActionLink(Resources.Resource.MenuLifeSafetyNews, "LifeSafetyNews", "Home")
+            </div>
+            <div class="big-link">
+                @Html.ActionLink(Resources.Resource.MenuRoadSafety, "RoadSafetyNews", "Home")
+            </div>
+            <div class="big-link">
+                @Html.ActionLink(Resources.Resource.MenuAntiCorruptionNews, "AntiCorruptionNews", "Home")
+            </div>
+            <div class="big-link">
+                @Html.ActionLink(Resources.Resource.MenuCurrentYear, "CurrentYearNews", "Home")
+            </div>
+        </div>
+        @foreach (rupbes.Models.News news in ViewBag.News)
+        {
+            <a href="#@news.id">@news.title_ru... @news.date.ToShortDateString()</a>
+        }
+    </div>
+
+    @foreach (rupbes.Models.News news in ViewBag.News)
+    {
+        id = id + 1;
+        <p class="news-title" id="@news.id">@news.title_ru</p>
+        <p class="news-date">@news.date.ToShortDateString()</p>
+
+        if (news.Imgs.Count > 0)
+        {
+            <div class="news-imgs-block">
+                <div class="news-imgs">
+                    @foreach (rupbes.Models.Imgs img in news.Imgs)
+                    {
+                        if (img.src_min != "document")
+                        {
+                            <img src="@img.src" />
+                            count = count + 1;
+                        }
+                    }
+                </div>
+
+                <div class="minus-slide"></div>
+                <div class="plus-slide"></div>
+                <div class="full-screen-btn"></div>
+                <p></p>
+            </div>
+            if (count < news.Imgs.Count)
+            {
+                if (count == 0)
+                { }
+                foreach (rupbes.Models.Imgs img in news.Imgs)
+                {
+
+                    if (img.src_min == "document")
+                    {
+                        <span>|</span>
+                        <a href="@img.src" download> @img.src.Substring(img.src.LastIndexOf("/") + 1) </a>
+                        <span>|</span>
+                    }
+                }
+            }
+        }
+        <hr />
+        <span class="news-body">@Html.Raw(news.body_ru)</span>
+        <hr />
+    }
+</section>
+<script>
+    window.onload = function () {
+        var img = document.querySelectorAll('.news-imgs-block')
+
+        img.forEach(e => {
+            var img_news = e.querySelector('.news-imgs')
+            if (img_news.childNodes.length === 1) {
+                e.style.display = 'none'
+            }
+
+        })
+    }
+</script>
+

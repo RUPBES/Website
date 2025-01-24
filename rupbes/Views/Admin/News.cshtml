@@ -1,0 +1,70 @@
+﻿@model IEnumerable<rupbes.Models.News_type>
+
+@{
+    ViewBag.Title = "Новости";
+}
+
+<section class="admin-content">
+    @Html.ActionLink("Назад", "Index")
+    <h2>Новости</h2>
+    <p>@Html.ActionLink("Добавить новость", "CreateNews")</p>
+    <p>@Html.ActionLink("Удалить изображения с сервера", "DeleteImgs")</p>
+
+    <h2>Список новостей</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Заголовки новостей
+            </th>
+            <th>
+                <select id="newsType" class="form-select" aria-label="Default select example"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Вид новостей">
+                    @{
+                        foreach (var iterator in Model)
+                        {
+                            <option value="@iterator.id">@iterator.type</option>
+                        }
+                    }
+                </select>
+            </th>
+        </tr>
+    </table>
+    <table class="table" id="newsP">
+        @Html.Partial("_News", Model.First().News.OrderByDescending(n => n.date).Take(20).ToList())
+    </table>
+</section>
+
+@section scripts {
+    <script type="text/javascript">
+        function del(path) {
+            if (confirm("Подтвердите удаление")) {
+                location.href = path;
+            }
+            else {
+            }
+        };
+        function edit(path) {
+            location.href = path;
+        }
+
+ let newsTypeObj = document.getElementById('newsType')
+        let nextNews = document.getElementById('NextNews')
+    const getNews = () => {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetNews", "Admin")',
+                    dataType: "html",
+                    data: { id: $("#newsType").val(), page : 1 },
+                    success: function (data) {
+                        $('#newsP').html(data)
+                    },
+                    error: function (ex) {
+                        alert('Ошибка обновления');
+                    }
+                })
+    }
+    newsTypeObj.addEventListener("change", getNews)
+
+    </script>
+
+}

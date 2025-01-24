@@ -1,0 +1,2799 @@
+﻿--BEGIN OF RECORD--
+Added 1 tenders at 19.03.2019 12:21:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.04.2019 15:50:31
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.04.2019 17:33:45
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 8:44:39
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 10:15:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 10:25:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 10:35:43
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 10:46:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 10:49:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 10:52:19
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 11:46:33
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 11:49:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 11:54:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 11:56:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 11:57:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 12:02:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 12:06:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 12:07:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 12:08:25
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 12:13:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 12:39:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 14:08:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:11:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:11:43
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:11:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:11:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:11:58
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:12:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:12:08
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:12:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:12:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:12:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:12:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:13:45
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.04.2019 16:33:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 08.04.2019 9:43:56
+--END--
+--BEGIN OF RECORD--
+No tenders added at 08.04.2019 10:06:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 08.04.2019 10:07:01
+--END--
+--BEGIN OF RECORD--
+No tenders added at 08.04.2019 10:07:42
+--END--
+--BEGIN OF RECORD--
+No tenders added at 08.04.2019 10:07:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.04.2019 13:04:21
+--END--
+--BEGIN OF RECORD--
+No tenders added at 19.11.2019 9:01:12
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.12.2019 16:58:11
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 13.03.2020 16:08:27
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 24.03.2021 14:07:03
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 24.03.2021 14:18:46
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 24.03.2021 14:20:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 24.03.2021 14:21:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 10:03:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 10:07:22
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 11:01:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 11:28:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 11:38:00
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 11:44:25
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 12:18:05
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 12:21:02
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 12:23:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 12:27:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 12:32:49
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 12:36:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 12:49:33
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 12:53:52
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 13:01:39
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 13:23:00
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 13:25:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 13:49:52
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 13:51:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 13:57:11
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 14:38:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:17:33
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:23:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:26:46
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:31:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:32:09
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:32:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:33:46
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:34:37
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:35:29
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:37:57
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:39:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:40:39
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:44:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:57:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 16:59:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:02:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:02:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:13:25
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:13:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:14:22
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:16:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:17:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:17:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:18:19
+--END--
+--BEGIN OF RECORD--
+No tenders added at 18.08.2022 17:20:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 19.08.2022 8:38:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.08.2022 8:33:37
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.08.2022 8:36:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.08.2022 8:37:37
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.08.2022 8:38:15
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.08.2022 8:47:54
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.08.2022 8:48:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 12.09.2022 17:07:42
+--END--
+--BEGIN OF RECORD--
+No tenders added at 12.09.2022 17:08:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 12.09.2022 17:09:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 12.09.2022 17:20:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 12.09.2022 17:23:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 12.09.2022 17:23:58
+--END--
+--BEGIN OF RECORD--
+No tenders added at 12.09.2022 17:29:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 8:29:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 8:36:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 8:45:01
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 8:47:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 8:49:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 8:51:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 9:04:22
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 9:06:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 9:10:05
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 9:17:50
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 9:35:56
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 9:38:27
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.09.2022 9:38:58
+--END--
+--BEGIN OF RECORD--
+No tenders added at 11.10.2022 12:11:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 17.10.2022 16:36:01
+--END--
+--BEGIN OF RECORD--
+No tenders added at 17.10.2022 17:03:58
+--END--
+--BEGIN OF RECORD--
+No tenders added at 17.10.2022 17:08:09
+--END--
+--BEGIN OF RECORD--
+No tenders added at 17.10.2022 17:11:56
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 9:43:38
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 9:45:16
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 9:50:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 9:53:11
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 9:58:41
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:17:37
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:23:55
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:30:45
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:32:05
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:36:37
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:38:24
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:41:53
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:46:10
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 10:56:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:22:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:23:52
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:25:45
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:28:11
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:39:16
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:40:52
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:43:34
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:44:17
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:45:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 11:49:42
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 12:05:11
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 10.11.2022 12:12:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 10:06:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 10:27:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 10:33:04
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 10:34:07
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 10:48:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 11:12:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 11:20:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 11:33:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.11.2022 11:34:34
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.12.2022 16:57:21
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 14:33:07
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 14:41:01
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:42:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:44:27
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:45:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:46:45
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:47:05
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:47:33
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:48:09
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:49:57
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:50:56
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.12.2022 15:52:27
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.12.2022 16:00:24
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.12.2022 16:20:20
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 26.12.2022 8:56:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 29.12.2022 13:58:56
+--END--
+--BEGIN OF RECORD--
+No tenders added at 29.12.2022 14:18:11
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.01.2023 12:24:58
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.01.2023 12:26:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.01.2023 12:32:10
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.01.2023 12:36:11
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.01.2023 12:37:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 16.01.2023 14:30:27
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 10:28:44
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 10:32:39
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 10:37:04
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 10:40:19
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 10:42:56
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 10:48:05
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 10:55:52
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 11:00:36
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.01.2023 11:07:30
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 25.01.2023 11:14:26
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 31.01.2023 9:47:25
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 31.01.2023 10:01:32
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 31.01.2023 11:50:29
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 31.01.2023 11:54:21
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 31.01.2023 11:55:41
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 31.01.2023 12:26:10
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 08.02.2023 14:19:14
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 08.02.2023 16:42:47
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 20.02.2023 10:56:32
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 20.02.2023 11:00:20
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:05:50
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:06:44
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:14:48
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:16:21
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:20:12
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:21:50
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:40:23
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:45:41
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 10:46:41
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 11:15:59
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.02.2023 11:17:50
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 01.03.2023 16:00:45
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 01.03.2023 16:09:41
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 01.03.2023 16:23:05
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 01.03.2023 16:24:49
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 03.03.2023 12:04:16
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 03.03.2023 12:14:01
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 03.03.2023 12:14:47
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 21.04.2023 9:21:37
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 21.04.2023 9:27:39
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 21.04.2023 9:29:54
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 21.04.2023 9:32:52
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 21.04.2023 9:35:22
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 21.04.2023 9:41:45
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 27.04.2023 11:33:05
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 27.04.2023 11:39:56
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 27.04.2023 11:42:06
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 29.04.2023 10:27:53
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 29.04.2023 10:34:29
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 29.04.2023 10:37:39
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.05.2023 14:29:32
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.05.2023 14:32:01
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.05.2023 17:15:09
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.05.2023 17:16:54
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.07.2023 10:18:00
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.07.2023 10:19:57
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.07.2023 10:21:42
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.07.2023 10:22:58
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.07.2023 10:24:26
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.07.2023 10:48:58
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.07.2023 10:49:35
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.07.2023 10:50:06
+--END--
+--BEGIN OF RECORD--
+Added 10 tenders at 25.07.2023 12:39:33
+--END--
+--BEGIN OF RECORD--
+Added 10 tenders at 25.07.2023 12:50:14
+--END--
+--BEGIN OF RECORD--
+Added 10 tenders at 25.07.2023 12:52:39
+--END--
+--BEGIN OF RECORD--
+Added 10 tenders at 25.07.2023 13:02:21
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.08.2023 8:16:58
+--END--
+--BEGIN OF RECORD--
+No tenders added at 31.08.2023 11:30:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 31.08.2023 12:02:04
+--END--
+--BEGIN OF RECORD--
+No tenders added at 31.08.2023 12:24:22
+--END--
+--BEGIN OF RECORD--
+No tenders added at 31.08.2023 12:33:22
+--END--
+--BEGIN OF RECORD--
+No tenders added at 31.08.2023 16:16:49
+--END--
+--BEGIN OF RECORD--
+No tenders added at 31.08.2023 16:25:15
+--END--
+--BEGIN OF RECORD--
+No tenders added at 31.08.2023 17:16:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.09.2023 11:58:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.09.2023 14:08:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.09.2023 14:52:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.09.2023 16:20:09
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.09.2023 11:25:21
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.09.2023 12:20:38
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.09.2023 13:50:20
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.09.2023 14:06:18
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.09.2023 14:07:11
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.09.2023 14:08:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 04.09.2023 14:09:45
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 10:21:02
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 10:25:22
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 10:27:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 10:30:36
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 10:38:05
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 10:51:52
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 10:56:56
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 10:59:34
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 11:02:47
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 11:09:14
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 11:15:58
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 11:18:22
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 11:19:42
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 11:21:21
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 11:28:47
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 13:54:33
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 13:56:45
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 13:58:10
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 13:59:50
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 14:02:49
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 14:03:27
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 14:09:15
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 14:09:41
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.09.2023 14:11:42
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 05.09.2023 17:00:35
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 05.09.2023 17:02:16
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 05.09.2023 17:03:19
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 05.09.2023 17:04:27
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 05.09.2023 17:07:31
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 05.09.2023 17:08:13
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 05.09.2023 17:10:04
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 05.09.2023 17:14:49
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 12.09.2023 9:19:36
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 12.09.2023 9:21:32
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 12.09.2023 9:22:23
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 13.09.2023 10:15:20
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 13.09.2023 10:19:19
+--END--
+--BEGIN OF RECORD--
+No tenders added at 19.09.2023 10:29:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 19.09.2023 10:31:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.09.2023 8:44:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.09.2023 9:01:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.09.2023 9:16:52
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.09.2023 9:41:36
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.09.2023 9:45:15
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.09.2023 9:59:42
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.09.2023 10:02:37
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.09.2023 10:09:15
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.09.2023 9:12:20
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.09.2023 9:19:26
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.09.2023 9:20:31
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.09.2023 9:26:56
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.09.2023 9:27:33
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 12:30:43
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 12:32:52
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 15:37:12
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 15:42:46
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 15:50:25
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 15:51:45
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 16:09:21
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 16:37:06
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 27.09.2023 17:21:39
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 02.10.2023 9:58:34
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 02.10.2023 10:10:59
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 02.10.2023 10:13:09
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 02.10.2023 10:13:52
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 02.10.2023 10:14:58
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 15:13:49
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 15:19:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 15:39:51
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 15:43:38
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 15:44:10
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 15:49:27
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 15:51:13
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 15:57:51
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 16:04:08
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 02.10.2023 16:06:46
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.10.2023 15:13:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.10.2023 15:18:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.10.2023 15:21:49
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 8:49:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 8:55:39
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 8:55:58
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 8:57:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 9:40:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 9:43:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 9:59:10
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:02:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:03:37
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:05:46
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:06:29
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:07:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:09:27
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:13:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:14:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:20:24
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:27:27
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:28:29
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:46:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:49:34
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:51:57
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:53:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:55:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 10:57:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:03:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:04:31
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:06:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:14:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:15:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:15:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:19:15
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:21:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:46:43
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:47:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:52:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:54:33
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:55:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:56:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:57:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 11:57:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 12:15:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 12:17:31
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 12:27:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 12:34:24
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 12:35:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 12:36:08
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 12:55:19
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:00:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:01:39
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:03:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:04:33
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:10:34
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:10:50
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:14:42
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:15:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 13:45:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:06:02
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:08:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:09:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:12:15
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:13:11
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:17:37
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:23:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:25:53
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:27:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:28:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:28:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:30:11
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:32:01
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:35:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:35:54
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:39:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:41:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:43:07
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.10.2023 14:44:02
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 05.10.2023 16:14:20
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 8:42:37
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 8:57:52
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 8:58:15
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 9:04:22
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 9:10:37
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 9:55:16
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 9:57:18
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 10:00:46
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 10:01:16
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 10:29:00
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 10:40:14
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 10:43:13
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 10:48:18
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 10:51:46
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 10:58:40
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 13:34:41
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:06:14
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:17:00
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:18:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:18:46
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:19:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:20:47
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:26:16
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:29:43
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:30:42
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:40:48
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:41:58
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:43:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 14:46:08
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.10.2023 16:14:24
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 8:53:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 9:22:42
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 9:24:47
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 9:25:24
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 9:36:22
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 9:58:37
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 9:59:02
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 10:02:22
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 10:05:49
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 10:09:13
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.10.2023 10:18:50
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 10:30:36
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 10:32:27
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 10:33:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 10:36:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 10:37:29
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 10:38:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 10:38:43
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 11:51:04
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 12:07:09
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 12:11:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 12:12:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 12:38:08
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 14:27:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 14:46:21
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 14:46:43
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 14:48:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 15:11:50
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 15:16:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 15:24:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 15:33:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 16:16:50
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 16:25:29
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 16:38:36
+--END--
+--BEGIN OF RECORD--
+No tenders added at 09.10.2023 16:55:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 9:00:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 9:06:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 9:07:07
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 9:27:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 9:44:54
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 10:00:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 10:13:54
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 10:15:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 10:16:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 10:18:29
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 12:21:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 15:31:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 16:25:22
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.10.2023 16:27:21
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 12.10.2023 15:11:27
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.10.2023 10:00:10
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.10.2023 12:45:17
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.10.2023 8:38:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.10.2023 8:40:11
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.10.2023 8:44:06
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.10.2023 8:50:49
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.10.2023 8:56:35
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.10.2023 16:49:33
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 19.10.2023 15:55:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 19.10.2023 15:58:20
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 19.10.2023 16:02:36
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 19.10.2023 16:07:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 19.10.2023 16:15:48
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 19.10.2023 16:18:47
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 12:27:46
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 12:33:19
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 12:36:15
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 12:49:41
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 12:50:50
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 13:14:59
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 13:36:24
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 13:40:46
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 14:33:02
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.10.2023 14:35:28
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 27.10.2023 8:33:36
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 27.10.2023 8:41:27
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 09.11.2023 10:57:31
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 09.11.2023 11:24:23
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 09.11.2023 15:19:49
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 09.11.2023 15:24:25
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 09.11.2023 15:31:11
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 09.11.2023 15:32:07
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 09.11.2023 16:57:07
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 09.11.2023 17:11:49
+--END--
+--BEGIN OF RECORD--
+No tenders added at 11.11.2023 14:37:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 15.11.2023 10:31:37
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 15.11.2023 10:38:21
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.11.2023 9:26:35
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.11.2023 9:32:55
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.11.2023 9:36:03
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.11.2023 9:37:38
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.11.2023 10:12:02
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.11.2023 10:14:50
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.11.2023 10:24:41
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 15.12.2023 14:12:02
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 20.12.2023 16:49:58
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 20.12.2023 16:50:49
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 20.12.2023 16:51:31
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 20.12.2023 16:53:27
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 20.12.2023 16:54:03
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 20.12.2023 16:58:51
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 26.12.2023 8:42:43
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 26.12.2023 8:51:57
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 03.01.2024 15:29:16
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 10.01.2024 11:24:51
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 10.01.2024 11:28:47
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 10.01.2024 11:30:02
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 10.01.2024 11:31:05
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 10.01.2024 11:32:19
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:04:02
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:10:09
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:12:26
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:15:19
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:20:28
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:20:57
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:23:54
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:24:46
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:28:52
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:33:29
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 22.01.2024 11:34:55
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 29.01.2024 11:12:56
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 29.01.2024 11:17:01
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 29.01.2024 11:29:46
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 10:54:30
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 11:22:17
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 11:25:16
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 11:32:59
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 11:34:38
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 11:43:13
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 11:54:34
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 12:58:32
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 13:05:51
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 15:28:52
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 15:37:05
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 15:41:20
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 16:06:36
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 16:11:05
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 16:12:54
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 08.02.2024 16:13:46
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.02.2024 9:41:32
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.02.2024 9:55:36
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.02.2024 10:00:13
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.02.2024 10:01:00
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.02.2024 10:05:52
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.02.2024 9:28:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.02.2024 9:34:19
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.02.2024 9:36:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.02.2024 9:42:16
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 27.02.2024 11:22:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 28.02.2024 16:28:57
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 28.02.2024 16:29:50
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 8:47:09
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 8:48:13
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 8:51:56
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 8:53:00
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 12:34:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 12:39:28
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 12:41:48
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 12:44:49
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 15:28:25
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 15:31:15
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 15:40:54
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 15:41:53
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 15:42:15
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 15:48:47
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.03.2024 15:49:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 9:45:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 9:47:50
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 9:49:04
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 9:51:14
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 10:01:23
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 10:01:48
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 10:03:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 10:18:23
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 10:19:32
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.03.2024 11:07:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 8:41:43
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 8:45:57
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 10:57:25
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 11:28:01
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 11:30:08
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 11:31:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 12:03:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 16:20:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 17:09:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.03.2024 17:14:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.04.2024 13:42:43
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.04.2024 13:45:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.04.2024 13:50:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.04.2024 13:54:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.04.2024 14:12:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.04.2024 14:16:25
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.04.2024 14:21:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 01.04.2024 14:38:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 10:29:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 10:31:45
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 10:44:51
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 10:46:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:01:44
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:17:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:22:39
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:34:51
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:42:50
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:43:21
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:45:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:50:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:51:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 11:56:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 12:01:45
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 12:04:15
+--END--
+--BEGIN OF RECORD--
+No tenders added at 03.04.2024 12:11:12
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 21.05.2024 10:33:09
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 05.06.2024 14:54:39
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 05.06.2024 15:01:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2024 9:32:04
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2024 9:33:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.11.2024 9:21:52
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.11.2024 9:23:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.11.2024 9:31:19
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.11.2024 9:55:09
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 16.12.2024 16:38:43
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.12.2024 10:02:36
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.12.2024 10:37:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.12.2024 10:58:26
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.12.2024 10:59:42
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.12.2024 11:16:32
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.12.2024 11:18:04
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.12.2024 11:21:00
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 17.12.2024 12:30:27
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 17.12.2024 16:13:37
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 17.12.2024 16:17:09
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 17.12.2024 16:19:26
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 17.12.2024 16:20:09
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 17.12.2024 16:21:20
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 17.12.2024 17:15:42
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 17.12.2024 17:16:59
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 17.12.2024 17:18:00
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 18.12.2024 8:38:20
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 18.12.2024 15:00:30
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.12.2024 13:00:54
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 19.12.2024 15:31:30
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 20.12.2024 9:01:31
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.12.2024 12:20:28
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.12.2024 10:00:10
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.12.2024 10:41:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.12.2024 11:44:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.12.2024 13:25:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.12.2024 14:11:56
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.12.2024 14:18:52
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.12.2024 14:44:05
+--END--
+--BEGIN OF RECORD--
+No tenders added at 26.12.2024 15:29:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.12.2024 15:22:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.12.2024 15:33:12
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.12.2024 15:35:50
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.12.2024 15:42:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 27.12.2024 15:48:25
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 03.01.2025 10:20:45
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 03.01.2025 10:33:18
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:06:39
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:23:44
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:25:23
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:35:28
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:53:09
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:53:40
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:56:46
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:58:25
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 14:59:05
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 15:03:05
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 03.01.2025 15:04:17
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 08.01.2025 11:10:14
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 08.01.2025 11:37:39
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 12:37:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 12:38:55
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 12:44:11
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 12:45:03
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 12:46:16
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 13:12:09
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 14:07:07
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 14:18:56
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 14:41:38
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 09.01.2025 14:43:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.01.2025 15:23:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.01.2025 15:25:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 10.01.2025 15:27:09
+--END--
+--BEGIN OF RECORD--
+No tenders added at 11.01.2025 13:35:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 11.01.2025 13:37:57
+--END--
+--BEGIN OF RECORD--
+No tenders added at 11.01.2025 13:45:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 11.01.2025 13:48:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 11.01.2025 13:48:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 11.01.2025 13:52:28
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 9:00:36
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 10:42:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 11:06:54
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 11:08:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 11:37:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:26:00
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:28:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:32:56
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:33:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:34:52
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:43:08
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:45:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:47:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 12:51:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 13:02:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 13:04:46
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 13:20:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 13:22:34
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 13:23:33
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 13:26:35
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 14:08:09
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 14:09:11
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 14:11:24
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 14:36:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 15:07:00
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 15:15:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 15:24:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 13.01.2025 15:26:24
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 9:03:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 11:33:49
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 11:43:45
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 11:47:11
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 12:54:24
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 12:58:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 12:59:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 13:00:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 16:44:19
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 16:46:05
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 16:50:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 14.01.2025 17:21:37
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 8:44:10
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 8:45:09
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 9:09:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 9:12:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 9:22:05
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 9:26:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 10:00:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 10:04:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 10:04:19
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 10:06:57
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 10:08:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 10:23:56
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 10:56:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 15:33:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 15:35:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 15:38:43
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 15:54:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 16:26:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.01.2025 16:37:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 16.01.2025 10:13:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 11:01:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 11:03:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 11:04:39
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 11:05:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 11:07:46
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 11:12:32
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 11:14:24
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 11:26:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 12:03:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 12:05:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 12:06:50
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 12:12:13
+--END--
+--BEGIN OF RECORD--
+No tenders added at 20.01.2025 12:14:05
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 9:47:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 12:34:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 12:40:49
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 12:41:47
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 12:42:52
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 14:12:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 14:14:15
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 14:34:30
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 14:35:27
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 14:36:42
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 14:41:10
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 14:50:21
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 14:55:11
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 15:08:08
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 15:08:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 15:12:49
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 16:54:56
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 17:01:55
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 17:11:36
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 17:12:48
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 17:15:07
+--END--
+--BEGIN OF RECORD--
+No tenders added at 21.01.2025 17:24:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.01.2025 9:13:29
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.01.2025 9:23:20
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.01.2025 9:24:31
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.01.2025 9:30:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.01.2025 9:43:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.01.2025 9:47:25
+--END--
+--BEGIN OF RECORD--
+No tenders added at 22.01.2025 9:50:48
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 11:28:39
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 11:29:56
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 12:56:53
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 13:59:28
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 14:15:14
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 14:16:59
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 14:18:10
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 14:22:09
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:26:06
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:27:09
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:35:24
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:36:23
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:37:27
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:38:54
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:39:55
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:40:44
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:47:15
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:48:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:49:36
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:50:40
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:56:40
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 15:59:49
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 16:04:42
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 16:05:47
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 16:06:47
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 22.01.2025 16:07:48
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 8:57:09
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 9:29:51
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 9:41:30
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 9:47:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 9:49:00
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 12:37:06
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 12:43:12
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 12:43:55
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 12:44:45
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 13:24:58
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 13:29:38
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 13:30:25
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 13:51:06
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 14:00:17
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 14:05:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 14:06:29
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 14:18:43
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 14:25:21
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 14:26:40
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 14:59:31
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 15:02:28
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 15:24:04
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 23.01.2025 15:27:28
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.01.2025 15:41:02
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.01.2025 16:47:50
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.01.2025 16:54:23
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.01.2025 17:09:26
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.01.2025 17:17:28
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.01.2025 17:18:51
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.01.2025 17:20:12
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 23.01.2025 17:21:03
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.01.2025 8:39:26
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 9:21:15
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 10:30:52
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 10:53:45
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 11:53:34
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 11:56:52
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 11:59:12
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 12:18:33
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 12:19:16
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 12:21:07
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 12:23:21
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 12:24:11
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 12:31:09
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 12:33:32
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 12:35:07
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 14:28:17
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 14:37:48
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 14:41:56
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 14:42:52
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 14:47:36
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 14:53:25
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 14:59:36
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 15:05:49
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 15:14:14
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 15:15:28
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 15:20:12
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 15:25:26
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 15:27:48
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 24.01.2025 15:39:42
+--END--

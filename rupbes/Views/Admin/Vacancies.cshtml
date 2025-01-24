@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Вакансии";
+}
+<section class="admin-content">
+    @Html.ActionLink("Назад", "Index")
+    <h2>@Html.ActionLink("Добавить новую вакансию", "AddVacancy")</h2>
+    <h2>Все вакансии по филиалам:</h2>
+    @foreach (rupbes.Models.Departments department in ViewBag.Departments)
+    {
+        <p>@Html.ActionLink(department.name_ru, "DepVacancy", "Admin", new { id = department.id }, null)</p>
+    }
+</section>

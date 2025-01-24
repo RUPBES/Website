@@ -1,0 +1,126 @@
+﻿@model rupbes.Models.Objects
+@{
+    ViewBag.Title = "Изменить объект";
+}
+
+
+<section class="form-block">
+    <h2>Изменить объект</h2>
+    <div class="window-label">@Html.ActionLink("Назад в меню", "Objects", "Admin")</div>
+    @using (Html.BeginForm("EditObject", "Admin"))
+    {
+        
+        <div class="window-label">
+            @Html.EditorFor(model => model.title_ru, new { htmlAttributes = new { @placeholder = "Название объекта на русском языке" } })
+            @Html.ValidationMessageFor(model => model.title_ru, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.title_bel, new { htmlAttributes = new { @placeholder = "Название объекта на беларусском языке" } })
+            @Html.ValidationMessageFor(model => model.title_bel, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.title_eng, new { htmlAttributes = new { @placeholder = "Название объекта на английском языке" } })
+            @Html.ValidationMessageFor(model => model.title_eng, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.desc_ru, new { htmlAttributes = new { @placeholder = "Описание объекта на русском языке" } })
+            @Html.ValidationMessageFor(model => model.desc_ru, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.desc_bel, new { htmlAttributes = new { @placeholder = "Описание объекта на беларусском языке" } })
+            @Html.ValidationMessageFor(model => model.desc_bel, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.desc_eng, new { htmlAttributes = new { @placeholder = "Описание объекта на английском языке" } })
+            @Html.ValidationMessageFor(model => model.desc_eng, "", new { @class = "text-danger" })
+        </div>
+        <hr />
+        <div class="window-label">
+            <label>
+                Филиалы, работающие на объекте:
+            </label>
+        </div>
+        <div class="window-label dep-list">
+            @foreach (rupbes.Models.Departments department in ViewBag.Departments)
+            {
+                <label><input type="checkbox" name="dep_ids" value="@department.id" @(Model.Departments.Contains(department) ? "checked=\"checked\"":"")/><span>@department.short_name_ru</span></label>
+            }
+        </div>
+        <hr />
+        <hr />
+        <div class="window-label">
+            <label>
+                Прикрепить картинки к новости
+            </label>
+        </div>
+        <div class="admin-upfile">
+            <input type="file" name="upload" id="uploadFile">
+            <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
+        </div>
+
+        <div class="admin-imgs">
+            @foreach (rupbes.Models.Imgs img in ViewBag.Imgs)
+            {
+                <div class="admin-img-min">
+                    <label><img src="@img.src_min" /><input type="checkbox" name="img_ids" value="@img.id" @(Model.Imgs.Contains(img) ? "checked=\"checked\"":"")/></label>
+
+                </div>
+
+            }
+            <span id="img-flag"></span>
+        </div>
+        <div class="window-label">
+            <input type="submit" value="Изменить" />
+        </div>
+
+
+    }
+</section>
+
+
+@section scripts {
+@Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+    $('#clickbutton').on('click', function (event) {
+        event.preventDefault();
+        var files = document.getElementById('uploadFile').files;
+        if (files.length > 0) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UploadAjax","Admin")',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        $('#img-flag').replaceWith(result);
+                    },
+                    error: function (xhr, status, p3) {
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Ваш браузер не поддерживает Html5!");
+            }
+        }
+    });
+
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+

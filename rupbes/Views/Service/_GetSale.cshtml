@@ -1,0 +1,24 @@
+﻿@model rupbes.Models.Sale
+
+@if (Model.Imgs.Count > 0)
+{
+    <div class="news-imgs-block">
+        <div class="news-imgs">
+            @foreach (rupbes.Models.Imgs img in Model.Imgs)
+            {
+                <img src="@img.src" />
+            }
+        </div>
+        <div class="minus-slide"></div>
+        <div class="plus-slide"></div>
+        <div class="full-screen-btn"></div>
+    </div>
+}
+
+<span class="news-body">@Model.adress</span>
+<span class="news-body">@Html.Raw(Model.desc)</span>
+@if (Model.Departments.Deps_to_groups.FirstOrDefault(x => x.id_group == 4) != null && Model.Departments.Deps_to_groups.FirstOrDefault(x => x.id_group == 4).Contacts != null)
+{
+    <span class="news-body">@Resources.Resource.Phone: <a href="tel:@Model.Departments.Deps_to_groups.FirstOrDefault(x => x.id_group == 4).Contacts.phone">@Model.Departments.Deps_to_groups.FirstOrDefault(x => x.id_group == 4).Contacts.phone</a></span>
+    <span class="news-body">@Resources.Resource.Email: <a href="mailto:@Model.Departments.Deps_to_groups.FirstOrDefault(x => x.id_group == 4).Contacts.email">@Model.Departments.Deps_to_groups.FirstOrDefault(x => x.id_group == 4).Contacts.email</a></span>
+}

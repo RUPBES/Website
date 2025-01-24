@@ -1,0 +1,64 @@
+﻿@model rupbes.Models.DatabaseBes.PurchasesViewModel
+
+@{
+    ViewBag.Title = Resources.Resource.MenuPurchases;
+}
+<h2 class="headline">@Resources.Resource.MenuPurchases</h2>
+
+<section class="purchases-content">
+    <h2 id="bidsPages" class="h3">Импортозамещение</h2>
+    <h3><a href="~/Content/Files/iz9purchases.xlsx">РУП"БЕЛЭНЕРГОСТРОЙ" - управляющая компания холдинга"</a></h3>    
+    <h3><a href="http://bemn.by/about/zakupki/" target="_blank">@Resources.Resource.Belelectromontagnaladka</a></h3>    
+</section>
+@{
+    if (Model.TendersList.Count > 0)
+    {
+        <section class="purchases-content">
+
+            <h2 class="h3" id="tendersPages">@Resources.Resource.Tenders</h2>
+
+            <div class="meet-block">
+                <div class="meet-line">
+                    <div class="meet-item">@Resources.Resource.TenderNumber</div>
+                    <div class="meet-item">@Resources.Resource.TenderFinishDate</div>
+                    <div class="meet-item">@Resources.Resource.TenderLink</div>
+                    <div class="meet-item">@Resources.Resource.TenderContacts</div>
+                </div>
+                @foreach (var tender in Model.TendersList)
+                {
+                    <div class="meet-line">
+                        <div class="meet-item">@tender.icetrade_id</div>
+                        <div class="meet-item">@tender.date</div>
+                        <div class="meet-item"><a href="@tender.icetrade_link" class="dep-link">@tender.description</a></div>
+                        <div class="meet-item">@tender.contacts</div>
+                    </div>
+                }
+            </div>
+            <div class="pages">
+                <div class="npPage page-items">
+                    @if (Model.TendersList.HasPreviousPage)
+                    {
+                        <a href="@Url.Action("Purchases", "Purchases", new { page2 = Model.TendersList.PageIndex - 1})#tendersPages">@Html.Raw("<")</a>
+                    }
+                    else
+                    {
+                        <a class="disabled" href="@Url.Action("Purchases", "Purchases", new { page2 = Model.TendersList.PageIndex - 1})#tendersPages">@Html.Raw("<")</a>
+                    }
+                </div>
+                <div class="page-items">
+                    @Resources.Resource.PurchasePage @Model.TendersList.PageIndex / @Model.TendersList.TotalPages
+                </div>
+                <div class="npPage page-items">
+                    @if (Model.TendersList.HasNextPage)
+                    {
+                        <a href="@Url.Action("Purchases", "Purchases", new {page2 = Model.TendersList.PageIndex + 1})#tendersPages">@Html.Raw(">")</a>
+                    }
+                    else
+                    {
+                        <a class="disabled" href="@Url.Action("Purchases", "Purchases", new {page2 = Model.TendersList.PageIndex + 1})#tendersPages">@Html.Raw(">")</a>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+}

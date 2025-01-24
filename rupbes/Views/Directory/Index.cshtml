@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = Resources.Resource.EmailDirectory;
+}
+
+<h2 class="headline">@Resources.Resource.EmailDirectory</h2>
+<div>
+    <section class="form-block">
+        <form>
+            <div class="dir-label">
+                <input id="searchForm" type="text" placeholder="@Resources.Resource.DirSearchPlaceholder" />
+            </div>
+        </form>
+        <div class="one-window-link centered">
+            <button id="advSearchBtn">@Resources.Resource.DirAdvSearch</button>
+        </div>
+    </section>
+    <section class="content">
+        <div id="advSearchForm" class="dir-adv-search-form" style="display:none;">
+            <div class="dir-label">
+                <select id="selCompany" class="select dir-select">
+                    <option>@Resources.Resource.DirChooseFil</option>
+                    @foreach (rupbes.Models.DatabaseBes.Company company in ViewBag.Companies)
+                    {
+                        if (company.Id != 17)
+                        {
+                            <option value="@company.Id">@company.Abbreviation</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div id="selDepBlock" class="dir-label"></div>
+        </div>
+        <div id="searchResult"></div>
+    </section>
+</div>
+@section scripts {
+    <script>
+        var searchResult = $("#searchResult");
+        var advSearchBtn = document.getElementById('advSearchBtn');
+        var searchForm = $("#searchForm");
+        var searchFormJS = document.getElementById('searchForm');
+        var advSearchForm = document.getElementById('advSearchForm');
+        var selCompany = $("#selCompany");
+        var selDepBlock = $("#selDepBlock");
+        var selDepartment = $('#selDepartment');
+
+        var check_ready = 1;
+        var queue = 0;
+        var req_stack = new Array();
+
+        searchFormJS.oninput = function () {
+            searchName(searchFormJS.value);
+        }
+
+        function searchName(str) {
+            advSearchForm.style.display = 'none';
+            if (str.length > 2) {
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Action("SearchName", "Directory")',
+                        data: { 'searchStr': str },
+                        success: function (data) {
+                            searchResult.html(data);
+                            check_ready = 1;
+                            if (req_stack.length != 0) {
+                                queue = 1;
+                                searchName(req_stack.shift());
+                            }
+                        }
+                    })
+            }
+            else {
+                searchResult.empty();
+            }
+        }
+
+        selCompany.bind("change", function () {
+            searchResult.empty();
+            $.ajax({
+                    type: "post",
+                    url: '@Url.Action("SelectCompany","Directory")',
+                    data: { 'companyId': this.value },
+                        success: function (data) {
+                            selDepBlock.html(data);
+                        }
+            })
+
+        });
+        advSearchBtn.onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('searchForm').value = '';
+            searchResult.empty();
+            if (advSearchForm.style.display == 'none') {
+                advSearchForm.style.display = 'block';
+            }
+            else if (advSearchForm.style.display == 'block') {
+                advSearchForm.style.display = 'none';
+            }
+
+        }
+    </script>
+
+}

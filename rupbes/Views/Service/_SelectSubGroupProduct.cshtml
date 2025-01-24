@@ -1,0 +1,65 @@
+﻿@using rupbes.Models.Products
+@using rupbes.Models.ViewModels
+@model List<ProductViewModel>
+
+@if (Model.Count() > 0)
+{
+   <table class="dir-table">
+       <tr class="dir-table-row">
+           <th class="dir-table-cell">@Resources.Resource.CodeTNVED</th>
+           <th class="dir-table-cell">@Resources.Resource.ProductName</th>
+           <th class="dir-table-cell">@Resources.Resource.ProductUnit</th>
+           <th class="dir-table-cell">Характеристики</th>
+           <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
+           <th class="dir-table-cell">Организация</th>
+       </tr>
+       @foreach (var product in Model)
+       {
+           <tr class="dir-table-row">
+               <td class="dir-table-cell">
+                   @product.codeTNVD
+               </td>
+               <td class="dir-table-cell">
+                   <span onclick="ShowVersionProduct(@product.id)" class="span-link text-bold"> @product.name</span>
+               </td>
+               <td class="dir-table-cell">
+                   @product.unitName
+               </td>
+               <td class="dir-table-cell">
+                   @foreach (var property in product.properties)
+                   {
+                       <span>@property.name : @(property.count). </span>
+                   }
+               </td>
+               <td class="dir-table-cell">
+                   @product.note
+               </td>
+               <td class="dir-table-cell">
+                   @product.departmentName
+               </td>
+           </tr>
+       }
+   </table>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        К сожалению товар не дообавлен.
+    </div>
+}
+
+<script>
+    function ShowVersionProduct(id) {
+        $.ajax({
+        type: "get",
+        url: '@Url.Action("ShowVersionProduct", "Service")',
+            data: { id: id },
+            success: function (data) {
+                $('#modal-block-for-content').html(data);
+                $('.theme_funky').css("overflow", "hidden");
+                $('#modal-block-for-content').css("display", "block");
+                $('#modal-block-for-content').addClass('active');
+            }
+      })
+    }
+</script>

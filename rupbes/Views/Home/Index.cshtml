@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = Resources.Resource.CompanyName;
+}
+<style>
+ 
+</style>
+
+<section class="main-page-content">
+    <a class="platform-link" href="https://corp.rupbes.by:5000/">@Resources.Resource.Platform</a>
+    <div class="logo"><div class="logo-text"><span>@Resources.Resource.CompanyAbbr</span><span>@Resources.Resource.CompanyName</span></div></div>
+    <div class="main-page-content-block">
+        <a href="@Url.Action("Objects","Home")" class="main-page-content-item">
+            <div class="item-logo"></div>
+            <div class="item-text">@Resources.Resource.MainPageObjects</div>
+        </a>
+        <a href="@Url.Action("Company","Home")/#certificates" class="main-page-content-item">
+            <div class="item-logo"></div>
+            <div class="item-text">@Resources.Resource.MainPageCertificates</div>
+        </a>
+        <a href="@Url.Action("Career","Home")" class="main-page-content-item">
+            <div class="item-logo"></div>
+            <div class="item-text">@Resources.Resource.MainPageVacancies</div>
+        </a>
+        <a href="@Url.Action("Index","Service")" class="main-page-content-item">
+            <div class="item-logo"></div>
+            <div class="item-text">@Resources.Resource.MainPageServices</div>
+        </a>
+        <a href="@Url.Action("Company","Home")/#branches" class="main-page-content-item">
+            <div class="item-logo"></div>
+            <div class="item-text">@Resources.Resource.MainPageFilials</div>
+        </a>
+    </div>
+</section>

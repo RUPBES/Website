@@ -1,0 +1,140 @@
+﻿@using rupbes.Models.ViewModels
+@using rupbes.Models.Products
+@model ProductViewModel
+
+@{
+    ViewBag.Title = "Добавить продукцию собственногго производства";
+}
+
+
+<section class="form-block">
+    <h2>Добавить товар</h2>
+
+    <form action="/Admin/CreateProduct" method="post">
+        <input name="DepartmentId" value="@Model.DepartmentId" readonly />
+        <div class="window-label">
+            <select id="GroupProduct" name="groupProduct">
+                @foreach (GroupProduct group in ViewBag.groups)
+                {
+                    <option>@group.name</option>
+                }
+            </select>
+        </div>
+        <div id="divSubGroupProduct" class="window-label">
+
+        </div>
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Название"
+                   value="@Model.name" name="name" />
+        </div>
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Код ТН ВЭД"
+                   value="@Model.codeTNVD" name="codeTNVD" />
+        </div>
+        <select name="UnitId">
+            @foreach (Unit item in ViewBag.units)
+            {
+                <option value="@item.Id">@item.name</option>
+            }
+        </select>
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Примечание"
+                   value="@Model.note" name="note" />
+        </div>
+
+        <div class="window-label">
+            <select id="Property" name="properties[0].name">
+                @foreach (Property propertyName in ViewBag.property)
+                {
+                    <option>@propertyName.name</option>
+                }
+            </select>           
+        </div>
+
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Количество"
+                    name="properties[0].count" />
+        </div>
+
+        <div class="window-label">
+            <label>
+                Прикрепить картинки к новости
+            </label>
+        </div>
+        <div class="admin-upfile">
+            <input type="file" name="upload" id="uploadFile">
+            <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
+        </div>
+
+        <div class="window-label">
+            <input type="submit" value="Добавить" />
+        </div>
+        <div class="admin-imgs">
+        </div>
+    </form>
+</section>
+<script>
+
+    $('#GroupProduct').select2({
+        placeholder: 'Группа товара',
+        tags: true
+    });
+
+    $('#Property').select2({
+        placeholder: 'Характеристика',
+        tags: true
+    });
+    $('#GroupProduct').on('select2:select', function (e) {
+        var name = e.params.data.text;
+         $.ajax({
+             type: "get",
+             url: '@Url.Action("ShowSubGroupSelect", "Admin")',
+             data: { name: name },
+             success: function (data) {
+                 $('#divSubGroupProduct').html(data);
+             }
+         })
+    });
+
+    function showSubGroupSelect(name) {
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("ShowSubGroupSelect", "Admin")',
+            data: { name: name },
+            success: function (data) {
+                $('#divSubGroupProduct').html(data);
+            }
+        })
+    }
+
+    showSubGroupSelect($('#GroupProduct').select2('data')[0].text);
+
+     $('#clickbutton').on('click', function (event) {
+     event.preventDefault();
+     var files = document.getElementById('uploadFile').files;
+     if (files.length > 0) {
+         if (window.FormData !== undefined) {
+             var data = new FormData();
+             for (var i = 0; i < files.length; i++) {
+                 data.append("file" + i, files[i]);
+             }
+
+             $.ajax({
+                 type: "POST",
+                 url: '@Url.Action("UploadAjax","Admin")',
+                 contentType: false,
+                 processData: false,
+                 data: data,
+                 success: function (result) {
+                     $('.admin-imgs').replaceWith(result);
+                 },
+                 error: function (xhr, status, p3) {
+                     alert(xhr.responseText);
+                 }
+             });
+         } else {
+             alert("Ваш браузер не поддерживает Html5!");
+         }
+     }
+ });
+</script>

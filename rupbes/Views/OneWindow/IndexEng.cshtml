@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = Resources.Resource.MenuWindow;
+}
+
+<h2 class="headline">@Resources.Resource.MenuWindow</h2>
+<section class="one-window-main">
+
+    <h3 class="h3">TO APPLY TO RUE “BELENERGOSTROY” - HOLDING MANAGEMENT COMPANY" IT IS POSSIBLE IN FOLLOWING CONVENIENT TO YOU WAYS: </h3>
+
+    @*<h4>You can use one of the forms of electronic appeals</h4>
+        <div class="flex-block">
+            <div class="one-window-link">@Html.ActionLink(Resources.Resource.OneWindowPerson, "Person", "OneWindow")</div>
+            <div class="one-window-link">@Html.ActionLink(Resources.Resource.OneWindowLegal, "Legal", "OneWindow")</div>
+        </div>*@
+
+    <h4>In electronic form</h4>
+    <p class="simple-p"><b>Electronic appeals from citizens, including individual entrepreneurs (hereinafter referred to as citizens), and legal entities are considered by the addressee in accordance with the requirements of the Law of the Republic of Belarus dated July 18, 2011 No. 300-Z “On appeals of citizens and legal entities" through the system for recording and processing appeals on the website <a href="https://обращения.бел/">appeals.bel</a>. In accordance with the Law of the Republic of Belarus of July 18, 2011 “On Appeals of Citizens and Legal Entities,” electronic appeals are presented in Belarusian or Russian.</b></p>
+    <p class="simple-p">Submitting appeals in the Appeals System is available only to registered users.</p>
+    <p class="simple-p">Access to user registration is organized from the main page of the Appeal System. To go to the registration form, the user must select the “Login” item in the main menu of the site or select the “Register” item <a href="https://обращения.бел/">on the main page of the site</a>.</p>
+    <p class="simple-p">In the Appeals System, both individual and collective appeals can be submitted.</p>
+    <p class="simple-p">Registration of such types of users as “Legal entity”, “Individual entrepreneur” and “Representative office of a foreign organization” can only be carried out using an electronic digital signature. Public key certificates can be purchased at GosSUOK Registration Centers. More details on the procedure for purchasing these public keys can be found <a href="https://nces.by/">on the website of the Republican Unitary Enterprise "NCEU"</a>.</p>
+    <p class="simple-p">The person submitting the appeal may be an individual or a legal entity. In this case, from an account with the user type “Citizen of the Republic of Belarus”, “Foreign Citizen” or “Stateless Person” an application can only be submitted from an individual, and from an account with the user type “Legal Entity”, “Individual Entrepreneur” or “Representative office of a foreign organization” can be submitted by both an individual and a legal entity.</p>
+    @*<p class="simple-p">Responses (notifications) to electronic requests are sent to the system for recording and processing requests.</p>*@
+    <p class="simple-p">Written responses are given to electronic appeals (written notifications are sent) if the applicant in his electronic appeal requests a written response (when filling out a form on the website <a href="https://обращения.бел/">appeals.bel</a> puts a tick in the column “Response required by postal address”).</p>
+    <p class="simple-p">More details about the rules of working in the Request System can be found in <a href="https://rupbes.by/content/files/Руководство пользователя обращения.бел.docx">User Guide</a>.</p>
+    
+    <h4>Verbally</h4>
+    <p class="simple-p">
+        If you decide to contact orally, then you should contact the management of RUE "Belenergostroy" - the holding management company" at <a href="@Url.Action("Contacts","Home")/#private">established days and hours of personal reception</a>, having previously signed up <a href="@Url.Action("Contacts","Home")">by calling the reception</a>, or fill out registration form for a personal appointment <a href="@Url.Action("Person", "OneWindow")">for individuals</a> or <a href="@Url.Action("Legal", "OneWindow")">for legal entities.</a>
+    </p>
+
+    <h4>In writing</h4>
+    <p class="simple-p">If you decide to apply in writing, then you should send a written request, indicating all the necessary details, to <a href="@Url.Action("Contacts","Home") ">our address.</a> Only written responses (notifications) are given to written requests.</p>
+    <p class="simple-p">Since 01/02/2023, the book of comments and suggestions has not been maintained at RUE "Belenergostroy" - the holding's management company (according to paragraph 1 of Article 24 of the Law of the Republic of Belarus "On Appeals of Citizens and Legal Entities" in as amended by the Law of the Republic of Belarus dated June 28, 2022 No. 176-З).</p>
+
+
+    <h4> All appeals will be considered in accordance with the current legislation of the Republic of Belarus.  </h4>
+
+    <ul class="simple-ul">
+        <li><a href="http://etalonline.by/?type=text&regnum=H11100300"> Law of the Republic of Belarus from July 18, 2011 № 300-Z «On Appeals of Citizens and Legal Entities» </a> </li>
+        <li><a href="http://etalonline.by/?type=text&regnum=p30700498">Decree of the President of the Republic of Belarus from October 15, 2007 №. 498 «On additional measures to work with appeals of citizens and legal entities» </a></li>
+        <li><a href="http://etalonline.by/?type=text&regnum=p00600002">Directive of the President of the Republic of Belarus from December 27, 2006 № 2 «On de-bureaucratization of the state apparatus and improving the quality of life support»</a></li>
+        <li><a href="http://pravo.by/document/?guid=3871&p0=C21200667">Resolution of the Council of Ministers of the Republic of Belarus from July 23, 2012 № 667 «On some issues of work with appeals of citizens and legal entities»</a></li>
+        <li><a href="https://rupbes.by/content/files/Политика_в_области_персональных_данных.pdf">Personal Data Policy</a></li>
+    </ul>
+    <p class="simple-p">If you do not agree with the decision, the quality of consideration or the completeness of the response to the appeal, then you can contact<a href="http://www.energo.by/content/odno-okno/"> a parent company. </a> </p>
+
+    @*<p class="simple-p"> Starting from January 2, 2023, the submission of electronic applications to the State Production Association "Belenergo" will be carried out through the state unified (integrated) republican information system for recording and processing applications from citizens and legal entities <a href="https://обращения.бел/">обращения.бел.</a> </p>*@
+
+    <a href="~/Content/Files/LIST of administrative procedures of the BES management apparatus.docx" download="">LIST OF ADMINISTRATIVE PROCEDURES IMPLEMENTED BY THE MANAGEMENT APPARATUS OF THE REPUBLICAN UNITARY ENTERPRISE "BELENERGASTROI" – THE MANAGEMENT COMPANY OF THE HOLDING</a>
+    <p></p>
+
+    <p class="parent-organization"><b>The parent organization is the state production association "Belenergo"</b> </p>
+    <p class="parent-organization">Address: 220004, Minsk, st. Shornaya, 17. </p>
+    <p class="parent-organization"><b>Opening hours of the State Production Association "Belenergo":</b> </p>
+    <p class="parent-organization">Working days: from 8:30 to 17:30, lunch from 12:30 to 13:30. </p>
+    <p class="parent-organization">Days off: Saturday, Sunday. </p>
+    <p class="parent-organization"><b>Reference Information:</b> </p>
+    <p class="parent-organization">website of State Production Association "Belenergo" <a href="http://www.energo.by">www.energo.by</a> </p>
+    <p class="parent-organization">Email <a href="mailto:belenergo@belenergo.by">belenergo@belenergo.by</a> </p>
+</section>

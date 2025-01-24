@@ -1,0 +1,30 @@
+﻿<p>
+    @Model.Abbreviation -
+    @foreach (rupbes.Models.DatabaseBes.Contact contact in Model.Contacts)
+    {
+    <span><a href="mailto:@contact.ContactName">@contact.ContactName</a> </span>
+    }
+</p>
+<select id="selDepartment" class="select dir-select">
+    <option>@Resources.Resource.DirChooseDep</option>
+    @foreach (rupbes.Models.DatabaseBes.Department dep in ViewBag.Departments)
+    {
+        <option value="@dep.Id">@dep.Name</option>
+    }
+</select>
+<script>
+        var searchResult = $("#searchResult");
+        var selDepartment = $('#selDepartment');
+
+        selDepartment.bind("change", function () {
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("SelectDepartment","Directory")',
+                data: { 'depId': this.value },
+                success: function (data) {
+                    searchResult.html(data);
+                }
+            })
+        });
+</script>
+

@@ -1,0 +1,37 @@
+﻿@using rupbes.Models.Products
+@model List<Product>
+
+<h2>Товары</h2>
+<button onclick="AddProduct()">Добавить объект</button>
+<div id="placeForJquery">
+    <table class="dir-table">
+        <tr class="dir-table-row">
+            <th class="dir-table-cell">@Resources.Resource.CodeTNVED</th>
+            <th class="dir-table-cell">@Resources.Resource.ProductName</th>
+            <th class="dir-table-cell">@Resources.Resource.ProductUnit</th>
+            <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
+            <th class="dir-table-cell">@Resources.Resource.Actions</th>
+        </tr>
+
+        @foreach (Product product in Model)
+        {
+            <tr class="dir-table-row">
+                <td class="dir-table-cell">
+                    @product.codeTNVD
+                </td>
+                <td class="dir-table-cell">
+                    <span onclick="ShowVersionProduct(@product.id)">@product.name</span>
+                </td>
+                <td class="dir-table-cell">
+                    @product.Unit.name
+                </td>
+                <td class="dir-table-cell">
+                    @product.note
+                </td>
+                <td class="dir-table-cell">
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+@Html.ActionLink("В меню", "Index")

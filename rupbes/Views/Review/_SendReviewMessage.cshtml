@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "MessageSent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    alert('Спасибо за Ваш отзыв!');
+    location.href = '@Url.Action("RedirectToURL", "Review")';
+
+</script>

@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = Resources.Resource.MenuVacancies;
+}
+<h2 class="headline">@Resources.Resource.MenuVacancies</h2>
+<section class="vacancy-content">
+    @foreach (rupbes.Models.Departments department in Model)
+    {
+        <div class="dep-vacancy">
+            <div class="dep-desc">
+                <span>@department.short_name_ru</span>
+                <span>@Resources.Resource.Address: @department.adress_ru</span>
+                <span>@Resources.Resource.Phone: <a href="tel:@department.Deps_to_groups.FirstOrDefault(x => x.id_group == 2).Contacts.phone">@department.Deps_to_groups.FirstOrDefault(x => x.id_group == 2).Contacts.phone</a></span>
+                <span>@Resources.Resource.Email: <a href="mailto:@department.Deps_to_groups.FirstOrDefault(x => x.id_group == 2).Contacts.email">@department.Deps_to_groups.FirstOrDefault(x => x.id_group == 2).Contacts.email</a></span>
+            </div>
+            @if (department.Vacancies.Count > 0)
+            {
+                foreach (rupbes.Models.Vacancies vacancy in department.Vacancies)
+                {
+                    <div class="vacancy-item">
+                        <div class="vacancy-name"><a href="@Url.Action("Index", "ResponseVacancy", new { id = vacancy.id})">@vacancy.vacancy_ru</a><span>@vacancy.payment</span></div>
+                        <div class="vacancy-desc">@vacancy.requirement_ru</div>
+                    </div>
+                }
+            }
+        </div>
+    }
+
+</section>

@@ -1,0 +1,146 @@
+﻿@model rupbes.Models.Bosses
+
+@{
+    ViewBag.Title = "Добавить руководителя";
+}
+
+
+<section class="form-block">
+    <h2>Изменить руководителя</h2>
+    <div class="window-label">@Html.ActionLink("Назад в меню", "Bosses", "Admin")</div>
+    @using (Html.BeginForm("EditBoss", "Admin"))
+    {
+        
+        <input type="hidden" name="id" value="@Model.id" />
+        <input type="hidden" name="id_dep" value="@Model.id_dep" />
+
+        <div class="window-label">
+            @Html.EditorFor(model => model.name, new { htmlAttributes = new { @placeholder = "Имя на русском языке" } })
+            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.name_bel, new { htmlAttributes = new { @placeholder = "Имя на беларусском языке" } })
+            @Html.ValidationMessageFor(model => model.name_bel, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.name_eng, new { htmlAttributes = new { @placeholder = "Имя на английском языке" } })
+            @Html.ValidationMessageFor(model => model.name_eng, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.post, new { htmlAttributes = new { @placeholder = "Должность на русском языке" } })
+            @Html.ValidationMessageFor(model => model.post, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.post_bel, new { htmlAttributes = new { @placeholder = "Должность на беларусском языке" } })
+            @Html.ValidationMessageFor(model => model.post_bel, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.post_eng, new { htmlAttributes = new { @placeholder = "Должность на английском языке" } })
+            @Html.ValidationMessageFor(model => model.post_eng, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.desc, new { htmlAttributes = new { @placeholder = "Описание на русском языке" } })
+            @Html.ValidationMessageFor(model => model.desc, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.desc_bel, new { htmlAttributes = new { @placeholder = "Описание на беларусском языке" } })
+            @Html.ValidationMessageFor(model => model.desc_bel, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.desc_eng, new { htmlAttributes = new { @placeholder = "Описание на английском языке" } })
+            @Html.ValidationMessageFor(model => model.desc_eng, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.meet_day, new { htmlAttributes = new { @placeholder = "День личного приема" } })
+            @Html.ValidationMessageFor(model => model.meet_day, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.meet_day_bel, new { htmlAttributes = new { @placeholder = "День личного приема на беларууском языке" } })
+            @Html.ValidationMessageFor(model => model.meet_day_bel, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.meet_day_eng, new { htmlAttributes = new { @placeholder = "День личного приема на английском языке" } })
+            @Html.ValidationMessageFor(model => model.meet_day_eng, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.meet_time, new { htmlAttributes = new { @placeholder = "Время линого приема" } })
+            @Html.ValidationMessageFor(model => model.meet_time, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @placeholder = "Телефон" } })
+            @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="window-label">
+            <label>
+                Прикрепить картинку к руководителю
+            </label>
+        </div>
+        <div class="admin-upfile">
+            <input type="file" name="upload" id="uploadFile">
+            <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
+        </div>
+
+        <div class="admin-imgs">
+            @foreach (rupbes.Models.Imgs img in ViewBag.Imgs)
+            {
+                <div class="admin-img-min">
+                    <label><img src="@img.src_min" /><input type="radio" name="id_img" value="@img.id" @(Model.id_img == img.id ? "checked=\"checked\"" : "") /></label>
+
+                </div>
+
+            }
+            <span id="img-flag"></span>
+        </div>
+        <div class="window-label">
+            <input type="submit" value="Изменить" />
+        </div>
+
+
+    }
+</section>
+
+@section scripts {
+@Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+    $('#clickbutton').on('click', function (event) {
+        event.preventDefault();
+        var files = document.getElementById('uploadFile').files;
+        if (files.length > 0) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UploadAjax","Admin")',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        $('#img-flag').replaceWith(result);
+                    },
+                    error: function (xhr, status, p3) {
+                        alert("Слишком большой файл");
+                    }
+                });
+            } else {
+                alert("Ваш браузер не поддерживает Html5!");
+            }
+        }
+    });
+
+    </script>
+}
+
+
+
+
+
+
+
+

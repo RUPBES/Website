@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Аренда";
+}
+
+<section class="admin-content">
+    @Html.ActionLink("Назад", "Realty")
+    <h2>Аренда @ViewBag.Dep.short_name_ru</h2>
+    <p>@Html.ActionLink("Добавить аренду", "AddRealty", new { id = ViewBag.Dep.id }, null)</p>
+    <p>@Html.ActionLink("Удалить изображения с сервера", "DeleteImgs")</p>
+
+    <h2>Список аренд</h2>
+    <table class="table">
+
+        @foreach (rupbes.Models.Realty realty in ViewBag.Realty)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => realty.title)
+                </td>
+                <td>
+                    <button class="btn btn-default" onclick="del('@Url.Action("DeleteRealty", "Admin", new { id = realty.id })')">Удалить</button>
+                    <button class="btn btn-default" onclick="edit('@Url.Action("EditRealty","Admin", new { id = realty.id })')">Изменить</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+</section>
+@section scripts {
+    <script type="text/javascript">
+        function del(path) {
+            if (confirm("Подтвердите удаление")) {
+                location.href = path;
+            }
+            else {
+            }
+        };
+        function edit(path) {
+            location.href = path;
+        }
+    </script>
+}

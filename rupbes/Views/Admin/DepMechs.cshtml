@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Техника";
+}
+
+<section class="admin-content">
+    @Html.ActionLink("Назад", "Mechs")
+    <h2>Техника @ViewBag.Dep.short_name_ru</h2>
+    <p>@Html.ActionLink("Добавить технику", "AddMech", new { id = ViewBag.Dep.id }, null)</p>
+    <p>@Html.ActionLink("Удалить изображения с сервера", "DeleteImgs")</p>
+
+    <h2>Список техники</h2>
+    <table class="table">
+        @foreach (rupbes.Models.Mechanisms mech in ViewBag.Mechs)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => mech.title)
+                </td>
+                <td>
+                    <button class="btn btn-default" onclick="del('@Url.Action("DeleteMech", "Admin", new { id = mech.id })')">Удалить</button>
+                    <button class="btn btn-default" onclick="edit('@Url.Action("EditMech","Admin", new { id = mech.id })')">Изменить</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+</section>
+@section scripts {
+    <script type="text/javascript">
+        function del(path) {
+            if (confirm("Подтвердите удаление")) {
+                location.href = path;
+            }
+            else {
+            }
+        };
+        function edit(path) {
+            location.href = path;
+        }
+    </script>
+}

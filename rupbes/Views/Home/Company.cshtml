@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = Resources.Resource.MenuCompany;
+
+}
+
+<h2 class="headline">@Resources.Resource.MenuCompany</h2>
+<section class="content">
+    <div class="flex-block">
+        <div class="big-link-main">@Html.ActionLink(Resources.Resource.Bosses, "Bosses", "Home")</div>
+        <div class="big-link-main"><a href="@Url.Action("Company","Home")/#certificates">@Resources.Resource.Certificates</a></div>
+        <div class="big-link-main"><a href="@Url.Action("Company","Home")/#branches">@Resources.Resource.CompanyBranchesShort</a></div>
+        <div class="big-link-main">@Html.ActionLink(Resources.Resource.ReviewTitle, "Reviews", "Review")</div>
+    </div>
+
+    <div class="main-company-text">
+        <p>
+            @Html.Raw(ViewBag.MainCompany.main_text_ru)
+        </p>
+    </div>
+    @*<video src="~/Content/Files/film.mp4" controls preload="metadata" poster="~/Content/Files/film.jpg"></video>*@
+</section>
+<h2 class="headline" id="certificates">@Resources.Resource.Certificates</h2>
+<section class="content">
+    <div class="certificates-block">
+        @foreach (rupbes.Models.Certificates certificate in ViewBag.Certificates)
+        {
+            <div class="certificates-item">
+                <h3 class="h3">@certificate.name</h3>
+                @if (certificate.Imgs.Count > 0)
+                {
+                    <div class="certificate-imgs-block news-imgs-block">
+                        <div class="news-imgs certificate-imgs">
+                            @foreach (rupbes.Models.Imgs img in certificate.Imgs)
+                            {
+                                <img src="@img.src" />
+                            }
+                        </div>
+                        <div class="plus-slide"></div>
+                        <div class="minus-slide"></div>
+                        <div class="full-screen-btn"></div>
+                    </div>
+                }
+
+            </div>
+        }
+    </div>
+</section>
+
+<h2 class="headline" id="branches">@Resources.Resource.CompanyBranches</h2>
+<section class="content">
+    <div class="dep-types">
+        @foreach (rupbes.Models.Dep_types depTypes in ViewBag.DepTypes)
+        {
+            <div class="dep-type">
+                <span>@depTypes.type</span>
+                @foreach (rupbes.Models.Departments dep in depTypes.Departments)
+                {
+                    if (dep.id != 7) // не отображать УС БелАЭС
+                    {
+                    <a href="#@dep.id">@dep.short_name_ru</a>
+                    }
+                }
+            </div>
+        }
+        <div class="dep-type">
+            <span>@Resources.Resource.ChildCompanys</span>
+            <a href="http://besv.by/">@Resources.Resource.Belenergosvyaz</a>
+            <a href="http://www.bez.by/">@Resources.Resource.Belenergozaschita</a>
+            <a href="http://www.zess.by/">@Resources.Resource.Zapadelectrosetstroi</a>
+            <a href="https://bsess.by/">@Resources.Resource.Belselelectrosetstroi</a>
+            <a href="http://bemn.by/">@Resources.Resource.Belelectromontagnaladka</a>
+            <a href="https://energotexprom.by/">@Resources.Resource.Energotehprom</a>
+            <a href="http://www.ecm.by/">@Resources.Resource.Electrocentrmontaj</a>
+
+        </div>
+    </div>
+    @foreach (rupbes.Models.Departments company in ViewBag.BranchCompanies)
+    {
+        <div class="main-company-block branch-company">
+            @if (company.id != 7) // не отображать УС БелАЭС
+            { 
+            <h3 class="h3" id="@company.id">@company.name_ru</h3>
+            <div class="photo-block">
+                <img src="@company.Imgs.src" alt="Генеральный директор" class="boss-photo">
+                <div class="boss-photo-desc">
+                    <p>@Resources.Resource.Phone: <a href="tel:@company.Deps_to_groups.FirstOrDefault(x => x.id_group == 1).Contacts.phone">@company.Deps_to_groups.FirstOrDefault(x => x.id_group == 1).Contacts.phone</a></p>
+                    <p>@Resources.Resource.Fax: @company.Deps_to_groups.FirstOrDefault(x => x.id_group == 1).Contacts.fax</p>
+                    <p>@Resources.Resource.Email: <a href="mailto:@company.Deps_to_groups.FirstOrDefault(x => x.id_group == 1).Contacts.email">@company.Deps_to_groups.FirstOrDefault(x => x.id_group == 1).Contacts.email</a></p>
+                    @if (company.link != "")
+                    {
+                        <p>Сайт: <a href="@company.link">@company.link</a></p>
+                    }
+                    <p>@Resources.Resource.Address: @company.adress_ru</p>
+                </div>
+            </div>
+            <div class="company-desc">
+                <p>@Html.Raw(company.desc_ru)</p>
+            </div>
+            }
+        </div>
+        <hr />
+    }
+</section>
+

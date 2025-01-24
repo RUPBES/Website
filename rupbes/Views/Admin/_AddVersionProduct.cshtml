@@ -1,0 +1,92 @@
+﻿@using rupbes.Models.ViewModels
+@using rupbes.Models.Products
+@model VersionProductViewModel
+
+@{
+    ViewBag.Title = "Добавить Версию товара";
+}
+
+
+<section class="form-block">
+    <h2>Добавить версию товар</h2>
+
+    <form action="/Admin/CreateVersionProduct" method="post">
+        <input name="productId" value="@Model.ProductId" readonly />
+        <input name="isSale" value="true" readonly />
+        <div id="divSubGroupProduct" class="window-label">
+
+        </div>
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Название"
+                   value="@Model.name" name="name" />
+        </div>
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Примечание"
+                   name="note" />
+        </div>
+        <div class="window-label">
+            <select id="Property" name="properties[0].name">
+                @foreach (Property propertyName in ViewBag.property)
+                {
+                    <option>@propertyName.name</option>
+                }
+            </select>
+        </div>
+
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Количество"
+                   name="properties[0].count" />
+        </div>
+
+        <div class="window-label">
+            <label>
+                Прикрепить картинки для версии
+            </label>
+        </div>
+        <div class="admin-upfile">
+            <input type="file" name="upload" id="uploadFile">
+            <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
+        </div>
+
+        <div class="window-label">
+            <input type="submit" value="Добавить" />
+        </div>
+        <div class="admin-imgs">
+        </div>
+    </form>
+</section>
+<script>    
+    //$('#Property').select2({
+    //    placeholder: 'Характеристика',
+    //    tags: true
+    //});
+
+     $('#clickbutton').on('click', function (event) {
+         event.preventDefault();
+         var files = document.getElementById('uploadFile').files;
+         if (files.length > 0) {
+             if (window.FormData !== undefined) {
+                 var data = new FormData();
+                 for (var i = 0; i < files.length; i++) {
+                     data.append("file" + i, files[i]);
+                 }
+
+                 $.ajax({
+                     type: "POST",
+                     url: '@Url.Action("UploadAjax","Admin")',
+                     contentType: false,
+                     processData: false,
+                     data: data,
+                     success: function (result) {
+                         $('.admin-imgs').replaceWith(result);
+                     },
+                     error: function (xhr, status, p3) {
+                         alert(xhr.responseText);
+                     }
+                 });
+             } else {
+                 alert("Ваш браузер не поддерживает Html5!");
+             }
+         }
+     });
+</script>

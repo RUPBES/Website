@@ -1,0 +1,87 @@
+﻿﻿ @model  rupbes.Models.ResponseVacancy
+
+@{
+    ViewBag.Title = "Отклик на вакансию";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using BotDetect.Web.Mvc;
+
+@{ MvcCaptcha captcha = new MvcCaptcha("Captcha");}
+@{ Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}
+
+<h2 class="headline">Отклик на ваканcию</h2>
+<section class="form-block">
+
+    @using (Html.BeginForm("Index", "ResponseVacancy", FormMethod.Post,  new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="vacancy-name-response">
+            @Model.VacancyName
+        </div>
+        <br><br>
+        <input type="hidden" name="VacancyId" value="@Model.VacancyId">
+        <input type="hidden" name="VacancyName" value="@Model.VacancyName">
+
+        <div class="window-label">
+            <label for="FirstName">@Resources.Resource.ResponseVacancyFirstName</label>
+            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="window-label">
+
+            <label for="LastName">@Resources.Resource.ResponseVacancyLastName</label>
+            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="window-label">
+            <label for="Email">@Resources.Resource.ResponseVacancyEmail</label>
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="window-label">
+            <label for="upload">@Resources.Resource.ResponseVacancyResume</label>
+            <input id="upload" type="file" name="upload" value="" />
+            <span class="field-validation-valid text-danger">@ViewBag.ValidFileFail</span>
+            <label for="upload" style="font-size:0.71em">@Resources.Resource.MessageFile</label>
+            @*<label for="upload">@Resources.Resource.ResponseVacancyForm1 <a href="~/Content/Files/Анкета соискателя.docx">@Resources.Resource.ResponseVacancyForm2</a>.</label>*@
+        </div>
+        <br>
+        <div class="window-label">
+            <label for="Text">@Resources.Resource.ResponseVacancyText</label>
+            @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control", placeholder = @Resources.Resource.ResponseVacancyTextPlaceholder } })
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="window-label">
+            @Html.Label("CaptchaCode", Resources.Resource.MessageCaptcha)
+            <span class="field-validation-valid text-danger">@ViewBag.CaptchaMessage</span>
+            <div class="captcha-label">
+                @Html.Captcha(captcha)
+                @Html.TextBox("CaptchaCode")
+            </div>
+        </div>
+
+        <div class="window-label">
+            <span>@Resources.Resource.MessageAttention</span>
+            <input type="submit" value="@Resources.Resource.ResponseVacancySubmit" class="btn btn-default" />
+
+        </div>
+        
+    }
+
+</section>
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

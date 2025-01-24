@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = Resources.Resource.Bosses;
+}
+
+<h2 class="headline">@Resources.Resource.Bosses</h2>
+<section class="content">
+    @foreach (rupbes.Models.Bosses boss in Model)
+    {
+        <div class="main-company-block branch-company">
+            <h3 id="@boss.id" class="h3">@boss.name</h3>
+            <div class="photo-block">
+                <img src="@boss.Imgs.src" alt="@boss.name" class="boss-photo">
+                <div class="boss-photo-desc">
+                    <h3 class="h3">@boss.post</h3>
+                </div>
+            </div>
+            <div class="company-desc">
+                <p>@Html.Raw(boss.desc)</p>
+            </div>
+        </div>
+        <hr />
+    }
+</section>

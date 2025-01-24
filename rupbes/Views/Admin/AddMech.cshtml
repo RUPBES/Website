@@ -1,0 +1,98 @@
+﻿@model rupbes.Models.Mechanisms
+
+@{
+    ViewBag.Title = "Добавить технику";
+}
+
+
+<section class="form-block">
+    <h2>Добавить технику</h2>
+    <div class="window-label">@Html.ActionLink("Назад в меню", "Mechs", "Admin")</div>
+    @using (Html.BeginForm("AddMech", "Admin"))
+    {
+
+        <input type="hidden" name="id_dep" value="@ViewBag.Id_dep" />
+
+        <div class="window-label">
+            @Html.EditorFor(model => model.title, new { htmlAttributes = new { @placeholder = "Название на русском языке" } })
+            @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.title_bel, new { htmlAttributes = new { @placeholder = "Название на беларусском языке" } })
+            @Html.ValidationMessageFor(model => model.title_bel, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.desc, new { htmlAttributes = new { @placeholder = "Описание на русском языке" } })
+            @Html.ValidationMessageFor(model => model.desc, "", new { @class = "text-danger" })
+        </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.desc_bel, new { htmlAttributes = new { @placeholder = "Описание на беларусском языке" } })
+            @Html.ValidationMessageFor(model => model.desc_bel, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class="window-label">
+            <label>
+                Прикрепить картинки к технике
+            </label>
+        </div>
+        <div class="admin-upfile">
+            <input type="file" name="upload" id="uploadFile">
+            <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
+        </div>
+
+        <div class="admin-imgs">
+            @foreach (rupbes.Models.Imgs img in ViewBag.Imgs)
+            {
+                <div class="admin-img-min">
+                    <label><img src="@img.src_min" /><input type="checkbox" name="img_ids" value="@img.id" /></label>
+
+                </div>
+
+            }
+            <span id="img-flag"></span>
+        </div>
+        <div class="window-label">
+            <input type="submit" value="Добавить" />
+        </div>
+
+
+    }
+</section>
+
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+    $('#clickbutton').on('click', function (event) {
+        event.preventDefault();
+        var files = document.getElementById('uploadFile').files;
+        if (files.length > 0) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UploadAjax","Admin")',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        $('#img-flag').replaceWith(result);
+                    },
+                    error: function (xhr, status, p3) {
+                        alert("Слишком большой файл");
+                    }
+                });
+            } else {
+                alert("Ваш браузер не поддерживает Html5!");
+            }
+        }
+    });
+
+    </script>
+}

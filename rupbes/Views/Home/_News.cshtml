@@ -1,0 +1,42 @@
+﻿@model rupbes.Models.News
+@{
+    var count = 0;
+    <p class="news-title">@Model.title_ru</p>
+    <p class="news-date">@Model.date.ToShortDateString()</p>
+
+    if (Model.Imgs.Any(x => x.src_min != "document"))
+    {
+        <div class="news-imgs-block">
+            <div class="news-imgs">
+                @foreach (rupbes.Models.Imgs img in Model.Imgs)
+                {
+                    if (img.src_min != "document")
+                    {
+                        <img src="@img.src" />
+                        count = count + 1;
+                    }
+                }
+            </div>
+
+            <div class="minus-slide"></div>
+            <div class="plus-slide"></div>
+            <div class="full-screen-btn"></div>
+            <p></p>
+        </div>
+    }
+    if (count < Model.Imgs.Count)
+    {
+        foreach (rupbes.Models.Imgs img in Model.Imgs)
+        {
+            if (img.src_min == "document")
+            {
+                <span>|</span>
+                <a href="@img.src" download> @img.src.Substring(img.src.LastIndexOf("/") + 1) </a>
+                <span>|</span>
+            }
+        }
+    }
+}
+<hr />
+<span class="news-body">@Html.Raw(Model.body_ru)</span>
+<hr />
