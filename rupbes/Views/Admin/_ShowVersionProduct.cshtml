@@ -1,67 +1,119 @@
 ﻿@using rupbes.Models.ViewModels
 @using rupbes.Models.Products
+@using rupbes.Models
 @model List<VersionProductViewModel>
+@{
+    var imgs = ViewBag.imgs as List<Imgs>;
+    var imgExample = new Imgs();
+    imgExample.src = "https://rupbes.by/Content/Images/Product/1737710730.jpg";
+    imgExample.src_min = "https://rupbes.by/Content/Images/Product/min/1737710730.jpg";
+    imgExample.type_id = 11;
+    imgExample.id = 7073;
+}
 
 <h2>Версии товара</h2>
 <div class="product-info-grid">
-    <div>
-        <img src="/Content/Styles/icons/find.png" style="height:100px; width:215px" />
+    <div class="news-imgs-block">
+        <div class="news-imgs">
+            @if (imgs.Count() > 0)
+            {
+
+                foreach (var img in imgs)
+                {
+                    <img src="@img.src" />
+                }
+            }
+            else
+            {
+                <img src="@imgExample.src" />
+            }
+        </div>
+
+        <div class="minus-slide"></div>
+        <div class="plus-slide"></div>
+        <div class="full-screen-btn"></div>
+        <p></p>
     </div>
-    <div class="product-info">
-        <span>Код ТН ВЭД : @ViewData["codeTNVED"]</span>
-        <span>Единица измерения : @ViewData["unitName"]</span>
-        <span>Организация : @ViewData["departmentName"]</span>
-        @foreach (PropertyViewModel property in ViewBag.properties)
-        {
-            <span>@property.name : @(property.count)</span>
-        }
+    <div class="product-info card">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><span class="text-bold">Наименование товара :</span> @ViewData["productName"]</li>
+            <li class="list-group-item"><span class="text-bold">Код ТН ВЭД :</span> @ViewData["codeTNVED"]</li>
+            <li class="list-group-item"><span class="text-bold">Единица измерения :</span> @ViewData["unitName"]</li>
+            <li class="list-group-item"><span class="text-bold">Организация :</span> @ViewData["departmentName"]</li>
+            @foreach (PropertyViewModel property in ViewBag.properties)
+            {
+                <li class="list-group-item"><span class="text-bold">@property.name :</span> @(property.count)</li>
+            }
+        </ul>
     </div>
 </div>
 <div id="placeForJquery">
     <button onclick="AddVersionProduct()">Добавить версию</button>
-    <table class="dir-table">
-        <tr class="dir-table-row">
-            <th class="dir-table-cell">@Resources.Resource.ProductName</th>
-            <th class="dir-table-cell">Характеристики</th>
-            <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
-            <th class="dir-table-cell">Продается ли?</th>
-            <th class="dir-table-cell">@Resources.Resource.Actions</th>
-        </tr>
-
-        @foreach (var version in Model)
-        {
+    @if (Model.Count() > 0)
+    {
+        <table class="dir-table">
             <tr class="dir-table-row">
-                <td class="dir-table-cell">
-                    @version.name
-                </td>
-                <td class="dir-table-cell">
-                    @foreach (var property in version.properties)
-                    {
-                        <span>@property.name : @(property.count). </span>
-                    }
-                </td>
-                <td class="dir-table-cell">
-                    @version.note
-                </td>
-                <td class="dir-table-cell">
-                    @version.isSale
-                </td>
-                <td class="dir-table-cell">
-                </td>
+                <th class="dir-table-cell">@Resources.Resource.ProductName</th>
+                <th class="dir-table-cell">Характеристики</th>
+                <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
+                <th class="dir-table-cell">Продается ли?</th>
+                <th class="dir-table-cell">@Resources.Resource.Actions</th>
             </tr>
-        }
-    </table>
+
+            @foreach (var version in Model)
+            {
+                <tr class="dir-table-row">
+                    <td class="dir-table-cell">
+                        @version.name
+                    </td>
+                    <td class="dir-table-cell">
+                        @foreach (var property in version.properties)
+                        {
+                            <span>@property.name : @(property.count). </span>
+                        }
+                    </td>
+                    <td class="dir-table-cell">
+                        @version.note
+                    </td>
+                    <td class="dir-table-cell">
+                        @version.isSale
+                    </td>
+                    <td class="dir-table-cell">
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            К сожалению вариации товара не дообавлены.
+        </div>
+    }
+
 </div>
 @Html.ActionLink("В меню", "Index")
 <script>
     function AddVersionProduct() {
-     $.ajax({
-        type: "get",
-         url: '@Url.Action("CreateVersionProduct", "Admin")',
-         data: { productId: @ViewBag.productId},
-        success: function (data) {
-            $('#placeForJquery').html(data);
-        }
-     })
+         $.ajax({
+            type: "get",
+             url: '@Url.Action("CreateVersionProduct", "Admin")',
+             data: { productId: @ViewBag.productId},
+            success: function (data) {
+                $('#placeForJquery').html(data);
+            }
+         })
     }
+
+    var img = document.querySelectorAll('.news-imgs-block')
+    $(document).ready(function () {
+        initMass();
+        pageStart();
+    });
+    img.forEach(e => {
+        var img_news = e.querySelector('.news-imgs')
+        if (img_news.childNodes.length === 1) {
+            e.style.display = 'none'
+        }
+    })
 </script>

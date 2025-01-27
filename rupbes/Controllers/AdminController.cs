@@ -2518,6 +2518,13 @@ namespace rupbes.Controllers
                 modelView.Add(itemView);
             }
             var product = db.Products.Where(x => x.id == productId).FirstOrDefault();
+            var imgs = new List<Imgs>();
+            foreach (var imgsToProduct in db.ImgsProduct.Where(x => x.ProductId == product.id))
+            {
+                var img = db.Imgs.Where(x => x.id == imgsToProduct.ImgsId).FirstOrDefault();
+                imgs.Add(img);
+            }
+            ViewBag.imgs = imgs;
             ViewData["productName"] = product.name;
             ViewData["codeTNVED"] = product.codeTNVD;
             ViewData["unitName"] = product.Unit.name;

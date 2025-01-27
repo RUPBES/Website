@@ -2797,3 +2797,99 @@ Added 3 tenders at 24.01.2025 15:27:48
 --BEGIN OF RECORD--
 Added 3 tenders at 24.01.2025 15:39:42
 --END--
+--BEGIN OF RECORD--
+Error message: При установлении соединения с SQL Server произошла ошибка, связанная с сетью или с определенным экземпляром. Сервер не найден или недоступен. Убедитесь, что имя экземпляра указано правильно и что на SQL Server разрешены удаленные соединения. (provider: Named Pipes Provider, error: 40 - Не удалось открыть подключение к SQL Server) Source: .Net SqlClient Data Provider Method:    в System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling, SqlAuthenticationProviderManager sqlAuthProviderManager)
+   в System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   в System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   в System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   в System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   в System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   в System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   в System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   в System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   в System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   в System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   в System.Data.SqlClient.SqlConnection.Open()
+   в System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext](TTarget target, Action`2 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   в System.Data.Entity.Infrastructure.Interception.DbConnectionDispatcher.Open(DbConnection connection, DbInterceptionContext interceptionContext)
+   в System.Data.Entity.SqlServer.SqlProviderServices.<>c__DisplayClass33.<UsingConnection>b__32()
+   в System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.<>c__DisplayClass1.<Execute>b__0()
+   в System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   в System.Data.Entity.SqlServer.SqlProviderServices.UsingMasterConnection(DbConnection sqlConnection, Action`1 act)
+   в System.Data.Entity.SqlServer.SqlProviderServices.CreateDatabaseFromScript(Nullable`1 commandTimeout, DbConnection sqlConnection, String createDatabaseScript)
+   в System.Data.Entity.SqlServer.SqlProviderServices.DbCreateDatabase(DbConnection connection, Nullable`1 commandTimeout, StoreItemCollection storeItemCollection)
+   в System.Data.Entity.Migrations.Utilities.DatabaseCreator.Create(DbConnection connection)
+   в System.Data.Entity.Migrations.DbMigrator.EnsureDatabaseExists(Action mustSucceedToKeepDatabase)
+   в System.Data.Entity.Migrations.DbMigrator.Update(String targetMigration)
+   в System.Data.Entity.Internal.DatabaseCreator.CreateDatabase(InternalContext internalContext, Func`3 createMigrator, ObjectContext objectContext)
+   в System.Data.Entity.Database.Create(DatabaseExistenceState existenceState)
+   в System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   в System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   в System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   в System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   в System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   в System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   в System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   в System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   в System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   в System.Linq.Queryable.Any[TSource](IQueryable`1 source)
+   в rupbes.Jobs.TendersLoader.DbSaver.TrendsToDb(List`1 tenders) в C:\Users\Buntarik\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 63
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\Buntarik\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 38 Date: 26.01.2025 19:17:43
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 17:23:38
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 19:27:46
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 19:45:50
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 19:46:56
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 20:00:34
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 20:03:19
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 20:24:32
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 20:34:59
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 20:44:35
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 21:15:36
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 21:34:04
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 21:57:12
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 21:58:06
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 22:09:05
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 23:23:16
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 23:27:21
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 23:41:49
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 23:43:01
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 27.01.2025 23:44:29
+--END--

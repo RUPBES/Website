@@ -15,7 +15,7 @@
     </div>
     <div id="searchResult">
         <h2>Товары</h2>
-        <button onclick="AddProduct()">Добавить объект</button>
+        <button class="button button-color-back-forestgreen button-color-white text-big" onclick="AddProduct()">Добавить объект</button>
         <div id="placeForJquery">
             <table class="dir-table">
                 <tr class="dir-table-row">
@@ -47,7 +47,9 @@
                 }
             </table>
         </div>
-        @Html.ActionLink("В меню", "Index")
+        <div class="button button-color-back-red">
+            @Html.ActionLink("В меню", "Index")
+        </div>
     </div>
 </section>
 @section scripts {
@@ -58,7 +60,7 @@
                 type: "get",
                 url: '@Url.Action("CreateProduct", "Admin")',
                 success: function (data) {
-                    $('#placeForJquery').html(data);
+                    $('#searchResult').html(data);
              }
              })
         }
