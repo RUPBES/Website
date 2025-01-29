@@ -2893,3 +2893,12 @@ Added 2 tenders at 27.01.2025 23:43:01
 --BEGIN OF RECORD--
 Added 2 tenders at 27.01.2025 23:44:29
 --END--
+--BEGIN OF RECORD--
+Added 2 tenders at 29.01.2025 0:21:07
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 29.01.2025 23:40:36
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 30.01.2025 0:19:22
+--END--

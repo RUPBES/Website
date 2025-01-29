@@ -1,6 +1,6 @@
 ﻿@using rupbes.Models.Products
 @model List<SubGroupProduct>
-<select id="SubGroupProduct" name="subGroupProduct">
+<select id="SubGroupProduct" name="subGroupProduct" style="width: 50%">
     @foreach (var subGroup in Model)
     {
         <option>@subGroup.name</option>

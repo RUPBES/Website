@@ -2547,3 +2547,9 @@ h2#bidsPages {
     display: grid;
     margin: 0 0 20px 0;
 }
+
+.window-label > input {
+    width: 50%;
+    border-radius: 0.25rem;
+    font-size: 18px;
+}

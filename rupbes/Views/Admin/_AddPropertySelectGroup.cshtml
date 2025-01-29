@@ -1,0 +1,16 @@
+@using rupbes.Models.Products
+@model List<Property>
+
+<div class="window-label">
+    <select id="Property" name="properties[@ViewBag.iterator].name" style="width: 50%">
+        @foreach (var propertyName in Model)
+        {
+            <option>@propertyName.name</option>
+        }
+    </select>
+</div>
+
+<div class="window-label">
+    <input class="text-box single-line" placeholder="Количество"
+           name="properties[@ViewBag.iterator].count" />
+</div>

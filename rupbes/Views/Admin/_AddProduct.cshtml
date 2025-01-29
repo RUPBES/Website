@@ -11,9 +11,9 @@
     <h2>Добавить товар</h2>
     <div class="AddProductWindow">
         <form action="/Admin/CreateProduct" method="post">
-            <input name="DepartmentId" value="@Model.DepartmentId" readonly />
+            <input name="DepartmentId" value="@Model.DepartmentId" readonly style="display: none" />
             <div class="window-label">
-                <select id="GroupProduct" name="groupProduct">
+                <select id="GroupProduct" name="groupProduct" style="width: 50%">
                     @foreach (GroupProduct group in ViewBag.groups)
                     {
                         <option>@group.name</option>
@@ -31,7 +31,7 @@
                 <input class="text-box single-line" placeholder="Код ТН ВЭД"
                        value="@Model.codeTNVD" name="codeTNVD" />
             </div>
-            <select name="UnitId">
+            <select id="Unit" name="UnitId" style="width: 50%">
                 @foreach (Unit item in ViewBag.units)
                 {
                     <option value="@item.Id">@item.name</option>
@@ -42,18 +42,8 @@
                        value="@Model.note" name="note" />
             </div>
 
-            <div class="window-label">
-                <select id="Property" name="properties[0].name">
-                    @foreach (Property propertyName in ViewBag.property)
-                    {
-                        <option>@propertyName.name</option>
-                    }
-                </select>
-            </div>
-
-            <div class="window-label">
-                <input class="text-box single-line" placeholder="Количество"
-                       name="properties[0].count" />
+            <div id="prop0">
+              <button onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
             </div>
 
             <div class="window-label">
@@ -79,6 +69,10 @@
     $('#GroupProduct').select2({
         placeholder: 'Группа товара',
         tags: true
+    });
+
+    $('#Unit').select2({
+        placeholder: 'Единица измерения'        
     });
 
     $('#Property').select2({
