@@ -72,7 +72,7 @@
     });
 
     $('#Unit').select2({
-        placeholder: 'Единица измерения'        
+        placeholder: 'Единица измерения'
     });
 
     $('#Property').select2({
@@ -101,6 +101,17 @@
             }
         })
     }
+
+    function AddPropertySelectGroup(name) {
+    $.ajax({
+        type: "get",
+        url: '@Url.Action("ShowSubGroupSelect", "Admin")',
+        data: { name: name },
+        success: function (data) {
+            $('#divSubGroupProduct').html(data);
+        }
+    })
+}
 
     showSubGroupSelect($('#GroupProduct').select2('data')[0].text);
 
