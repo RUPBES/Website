@@ -1,16 +1,34 @@
 @using rupbes.Models.Products
 @model List<Property>
 
-<div class="window-label">
-    <select id="Property" name="properties[@ViewBag.iterator].name" style="width: 50%">
-        @foreach (var propertyName in Model)
-        {
-            <option>@propertyName.name</option>
-        }
-    </select>
-</div>
+<style>
+    .window-label:last-of-type {
+        margin-bottom: 10px;
+    }
+</style>
 
-<div class="window-label">
-    <input class="text-box single-line" placeholder="Количество"
-           name="properties[@ViewBag.iterator].count" />
+@{
+    var uniqueId = "Property" + ViewBag.iterator; // Генерируем уникальный ID
+}
+
+<div class="product-info-grid">
+    <div class="window-label">
+        <select id="@uniqueId" name="properties[@ViewBag.iterator].name" style="width: 50%">
+            @foreach (var propertyName in Model)
+            {
+                <option>@propertyName.name</option>
+            }
+        </select>
+    </div>
+
+    <div class="window-label">
+        <input class="text-box single-line" placeholder="Количество"
+               name="properties[@ViewBag.iterator].count" />
+    </div>
 </div>
+<script>   
+    $('[id^="Property"]').select2({
+            placeholder: 'Характеристика',
+            tags: true
+    });
+</script>

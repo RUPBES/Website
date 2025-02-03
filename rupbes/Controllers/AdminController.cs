@@ -2467,21 +2467,24 @@ namespace rupbes.Controllers
             {
                 foreach (var property in model.properties)
                 {
-                    var PP = new PropertyProduct();
-                    PP.ProductId = product.id;
-
-                    var prop = db.Properties?.Where(x => x.name == property.name)?.FirstOrDefault();
-                    if (prop == null)
+                    if (property.count != 0)
                     {
-                        var props = new Property();
-                        props.name = property.name;
-                        db.Properties.Add(props);
-                        PP.Property = props;
-                    }
-                    else PP.Property = prop;
+                        var PP = new PropertyProduct();
+                        PP.ProductId = product.id;
 
-                    PP.count = property.count;
-                    db.PropertyProducts.Add(PP);
+                        var prop = db.Properties?.Where(x => x.name == property.name)?.FirstOrDefault();
+                        if (prop == null)
+                        {
+                            var props = new Property();
+                            props.name = property.name;
+                            db.Properties.Add(props);
+                            PP.Property = props;
+                        }
+                        else PP.Property = prop;
+
+                        PP.count = property.count;
+                        db.PropertyProducts.Add(PP);
+                    }
                 }
             }
             Usage_report rep = new Usage_report { title = product.name, action = "Add", table = "Product", date = DateTime.Now, id_user = user.id };
@@ -2693,6 +2696,14 @@ namespace rupbes.Controllers
             {
                 return RedirectToAction("Error", new { message = e.Message });
             }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult AddPropertySelectGroup(int count)
+        {
+            ViewBag.iterator = count;
+            return PartialView("_AddPropertySelectGroup", db.Properties.ToList());
         }
     }
 }

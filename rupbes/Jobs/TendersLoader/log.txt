@@ -2902,3 +2902,30 @@ Added 6 tenders at 29.01.2025 23:40:36
 --BEGIN OF RECORD--
 Added 6 tenders at 30.01.2025 0:19:22
 --END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 9:10:24
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 9:12:39
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 9:44:09
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 10:00:15
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 10:01:45
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 10:03:44
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 10:09:09
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 10:25:25
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 10:50:58
+--END--

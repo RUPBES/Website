@@ -34,16 +34,24 @@
             <select id="Unit" name="UnitId" style="width: 50%">
                 @foreach (Unit item in ViewBag.units)
                 {
-                    <option value="@item.Id">@item.name</option>
+                    if (item.name == "Штука")
+                    {
+                        <option selected value="@item.Id">@item.name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.name</option>
+                    }
                 }
             </select>
             <div class="window-label">
                 <input class="text-box single-line" placeholder="Примечание"
                        value="@Model.note" name="note" />
             </div>
-
-            <div id="prop0">
-              <button onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
+            <div class="section-property">
+                <div id="prop">
+                    <button onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
+                </div>
             </div>
 
             <div class="window-label">
@@ -52,7 +60,7 @@
                 </label>
             </div>
             <div class="admin-upfile">
-                <input type="file" name="upload" id="uploadFile">
+                <input class="upload-img" type="file" name="upload" id="uploadFile">
                 <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
             </div>
 
@@ -65,16 +73,14 @@
     </div>
 </section>
 <script>
-
+    let count = 0;
     $('#GroupProduct').select2({
         placeholder: 'Группа товара',
         tags: true
     });
-
     $('#Unit').select2({
         placeholder: 'Единица измерения'
     });
-
     $('#Property').select2({
         placeholder: 'Характеристика',
         tags: true
@@ -102,20 +108,21 @@
         })
     }
 
-    function AddPropertySelectGroup(name) {
-    $.ajax({
-        type: "get",
-        url: '@Url.Action("ShowSubGroupSelect", "Admin")',
-        data: { name: name },
-        success: function (data) {
-            $('#divSubGroupProduct').html(data);
-        }
-    })
-}
+    function AddPropertySelectGroup() {
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("AddPropertySelectGroup", "Admin")',
+            data: { count: count },
+            success: function (data) {
+                $('#prop').before(data);
+                count = count + 1;
+            }
+        })
+    }
 
     showSubGroupSelect($('#GroupProduct').select2('data')[0].text);
 
-     $('#clickbutton').on('click', function (event) {
+    $('#clickbutton').on('click', function (event) {
      event.preventDefault();
      var files = document.getElementById('uploadFile').files;
      if (files.length > 0) {
