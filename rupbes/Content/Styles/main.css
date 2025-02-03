@@ -2266,6 +2266,9 @@ h2#bidsPages {
         margin: 2px 5px;
         border-radius: 0.25rem;
     }
+    .admin-content-div a:hover {
+        background-color: lightblue;
+    }
 
 .admin-content > a {
     padding: 10px;
@@ -2333,6 +2336,13 @@ h2#bidsPages {
 
     .span-link:hover {
         cursor: pointer;
+        color: lightblue;
+        border-color: lightblue;
+    }
+
+    .span-link.active {
+        color: dodgerblue;
+        border-color: dodgerblue;
     }
 
 .modalBootsrap {
@@ -2414,6 +2424,7 @@ h2#bidsPages {
 .product-info {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
 }
 
 .product-info-grid {

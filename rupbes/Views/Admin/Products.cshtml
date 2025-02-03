@@ -33,7 +33,9 @@
                             @product.codeTNVD
                         </td>
                         <td class="dir-table-cell">
-                            <span onclick="ShowVersionProduct(@product.id)">@product.name</span>
+                            <span class="span-link text-bold" 
+                                  onclick="location.href='@Url.Action("ShowVersionProduct", "Admin", 
+                                                         new { productId = product.id })'">@product.name</span>
                         </td>
                         <td class="dir-table-cell">
                             @product.Unit.name
@@ -63,18 +65,7 @@
                     $('#searchResult').html(data);
              }
              })
-        }
-
-        function ShowVersionProduct(id) {
-            $.ajax({
-                type: "get",
-                url: '@Url.Action("ShowVersionProduct", "Admin")',
-                data: {productId:id},
-                success: function (data) {
-                    $('#searchResult').html(data);
-                }
-            })
-        }
+        }      
 
         function showProduct() {
         $.ajax({

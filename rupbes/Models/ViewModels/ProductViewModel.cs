@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using rupbes.Models.Products;
 using rupbes.Models;
+using rupbes.Models.DatabaseBes;
+using System.Xml.Linq;
 
 namespace rupbes.Models.ViewModels
 {
     public class ProductViewModel
-    {   
+    {
         public int id { get; set; }
         public string name { get; set; }
         public string codeTNVD { get; set; }
@@ -24,5 +26,19 @@ namespace rupbes.Models.ViewModels
         public string departmentName { get; set; }
         public List<PropertyViewModel> properties { get; set; }
         public List<Imgs> Imgs { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ProductViewModel product)
+            {
+                return name == product.name && departmentName == product.departmentName;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return (name, departmentName).GetHashCode();
+        }
     }
 }

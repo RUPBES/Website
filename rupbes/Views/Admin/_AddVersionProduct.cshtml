@@ -9,59 +9,46 @@
 
 <section class="form-block">
     <h2>Добавить версию товар</h2>
+    <div class="AddProductWindow">
+        <form action="/Admin/CreateVersionProduct" method="post">
+            <input name="productId" value="@Model.ProductId" readonly style="display: none" />
+            <input name="isSale" value="true" readonly style="display: none" />
+            <div class="window-label">
+                <input class="text-box single-line" placeholder="Название"
+                       value="@Model.name" name="name" />
+            </div>
+            <div class="window-label">
+                <input class="text-box single-line" placeholder="Примечание"
+                       name="note" />
+            </div>
+            <div class="section-property">
+                <div id="prop">
+                    <button onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
+                </div>
+            </div>
+          
 
-    <form action="/Admin/CreateVersionProduct" method="post">
-        <input name="productId" value="@Model.ProductId" readonly />
-        <input name="isSale" value="true" readonly />
-        <div id="divSubGroupProduct" class="window-label">
+            <div class="window-label">
+                <label>
+                    Прикрепить картинки для версии
+                </label>
+            </div>
+            <div class="admin-upfile">
+                <input class="upload-img" type="file" name="upload" id="uploadFile">
+                <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
+            </div>
 
-        </div>
-        <div class="window-label">
-            <input class="text-box single-line" placeholder="Название"
-                   value="@Model.name" name="name" />
-        </div>
-        <div class="window-label">
-            <input class="text-box single-line" placeholder="Примечание"
-                   name="note" />
-        </div>
-        <div class="window-label">
-            <select id="Property" name="properties[0].name">
-                @foreach (Property propertyName in ViewBag.property)
-                {
-                    <option>@propertyName.name</option>
-                }
-            </select>
-        </div>
-
-        <div class="window-label">
-            <input class="text-box single-line" placeholder="Количество"
-                   name="properties[0].count" />
-        </div>
-
-        <div class="window-label">
-            <label>
-                Прикрепить картинки для версии
-            </label>
-        </div>
-        <div class="admin-upfile">
-            <input type="file" name="upload" id="uploadFile">
-            <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
-        </div>
-
-        <div class="window-label">
-            <input type="submit" value="Добавить" />
-        </div>
-        <div class="admin-imgs">
-        </div>
-    </form>
+            <div class="window-label">
+                <input type="submit" value="Добавить" />
+            </div>
+            <div class="admin-imgs">
+            </div>
+        </form>
+    </div>
 </section>
-<script>    
-    //$('#Property').select2({
-    //    placeholder: 'Характеристика',
-    //    tags: true
-    //});
-
-     $('#clickbutton').on('click', function (event) {
+<script>
+    var count = 0;
+    $('#clickbutton').on('click', function (event) {
          event.preventDefault();
          var files = document.getElementById('uploadFile').files;
          if (files.length > 0) {
@@ -88,5 +75,16 @@
                  alert("Ваш браузер не поддерживает Html5!");
              }
          }
-     });
+     });    
+    function AddPropertySelectGroup() {
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("AddPropertySelectGroup", "Admin")',
+            data: { count: count },
+            success: function (data) {
+                $('#prop').before(data);
+                count = count + 1;
+            }
+        })
+    }
 </script>

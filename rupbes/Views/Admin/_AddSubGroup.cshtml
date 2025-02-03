@@ -7,13 +7,17 @@
 
 
 <section class="form-block">
-    <h2>Добавить группу товаров</h2>
+    <h2>Добавить подгруппу товаров</h2>
 
     <form action="/Admin/CreateSubGroup" method="post">
 
         <div class="window-label">
+            <input style="display:none;" class="text-box single-line" readonly
+                   value="@ViewBag.GroupId" name="GroupProductId" />
+        </div>
+        <div class="window-label">
             <input class="text-box single-line" readonly
-                  value="@ViewBag.ProductId" name="GroupProductId" />
+                   value="@ViewBag.GroupName" />
         </div>
         <div class="window-label">
             <input class="text-box single-line" placeholder="Название"

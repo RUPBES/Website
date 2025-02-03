@@ -350,6 +350,9 @@
       <HintPath>..\packages\System.Threading.Thread.4.0.0\lib\net46\System.Threading.Thread.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -758,7 +761,7 @@
     <Content Include="Views\Service\_SelectSubGroupProduct.cshtml" />
     <Content Include="Views\Admin\Products.cshtml" />
     <Content Include="Views\Admin\_AddProduct.cshtml" />
-    <Content Include="Views\Admin\_ShowVersionProduct.cshtml" />
+    <Content Include="Views\Admin\ShowVersionProduct.cshtml" />
     <Content Include="Views\Service\_ShowVersionProduct.cshtml" />
     <Content Include="Views\Admin\ShowGroup.cshtml" />
     <Content Include="Views\Admin\_ShowSubGroup.cshtml" />
@@ -768,6 +771,7 @@
     <Content Include="Views\Admin\_AddGroup.cshtml" />
     <Content Include="Views\Admin\_AddSubGroup.cshtml" />
     <Content Include="Views\Admin\_AddPropertySelectGroup.cshtml" />
+    <Content Include="Views\Admin\_GetVersionProductTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

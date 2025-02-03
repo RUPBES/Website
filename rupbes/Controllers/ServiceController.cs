@@ -52,7 +52,7 @@ namespace rupbes.Controllers
                 service.title = service.title_bel;
                 service.desc = service.desc_bel;
             }
-            return PartialView("_GetService",service);
+            return PartialView("_GetService", service);
         }
 
         //Аренда
@@ -156,7 +156,7 @@ namespace rupbes.Controllers
         //Товары
         [HttpGet]
         public ActionResult Products()
-        {            
+        {
             return View(db.GroupProducts.ToList());
         }
 
@@ -171,7 +171,7 @@ namespace rupbes.Controllers
         {
             var productsView = new List<ProductViewModel>();
             var products = db.Products.Where(x => x.SubGroupProductId == id).ToList();
-            foreach(var item in products)
+            foreach (var item in products)
             {
                 var itemView = new ProductViewModel();
                 itemView.id = item.id;
@@ -187,7 +187,7 @@ namespace rupbes.Controllers
                     itemView.properties.Add(new PropertyViewModel { name = property.name, count = prop.count });
                 }
                 itemView.Imgs = new List<Imgs>();
-                foreach(var imgToProduct in db.ImgsProduct.Where(x => x.ProductId == item.id))
+                foreach (var imgToProduct in db.ImgsProduct.Where(x => x.ProductId == item.id))
                 {
                     var img = db.Imgs.Where(x => x.id == imgToProduct.ImgsId).FirstOrDefault();
                     itemView.Imgs.Add(img);
@@ -197,12 +197,12 @@ namespace rupbes.Controllers
             return PartialView("_SelectSubGroupProduct", productsView);
         }
 
-        [HttpGet]    
+        [HttpGet]
         public ActionResult ShowVersionProduct(int id)
         {
             var modelView = new List<VersionProductViewModel>();
             var model = db.VersionProducts.Where(x => x.ProductId == id && x.isSale).ToList();
-            foreach (var item in model) 
+            foreach (var item in model)
             {
                 var itemView = new VersionProductViewModel();
                 itemView.name = item.name;
@@ -222,13 +222,13 @@ namespace rupbes.Controllers
                 modelView.Add(itemView);
             }
             var product = db.Products.Where(x => x.id == id).FirstOrDefault();
-            var imgs = new List<Imgs>();            
+            var imgs = new List<Imgs>();
             foreach (var imgsToProduct in db.ImgsProduct.Where(x => x.ProductId == id))
             {
                 var img = db.Imgs.Where(x => x.id == imgsToProduct.ImgsId).FirstOrDefault();
-                imgs.Add(img);                
+                imgs.Add(img);
             }
-            ViewBag.imgs = imgs;            
+            ViewBag.imgs = imgs;
             ViewData["productName"] = product.name;
             ViewData["codeTNVED"] = product.codeTNVD;
             ViewData["unitName"] = product.Unit.name;
@@ -262,7 +262,7 @@ namespace rupbes.Controllers
                 else { break; }
             }
             //делит по спец знаками строку
-           List<string> masWord = sRegex.Split(' ', '-', '+', '.', '/', '(', ')').ToList();
+            List<string> masWord = sRegex.Split(' ', '-', '+', '.', '/', '(', ')').ToList();
 
             for (int i = 0; i < masWord.Count(); i++)
             {
@@ -290,15 +290,13 @@ namespace rupbes.Controllers
             }
 
             // Ищет совпадения между 1/2 подстроками и остальными
-            for (int i = 0; i < Math.Min(2, masWord.Count()); i++)
+            for (int i = 1; i < masWord.Count(); i++)
             {
-                for (int j = i + 1; j < masWord.Count(); j++)
-                {
-                    var a = list[0].Intersect(list[j]).ToList();
-                    answer.AddRange(a);
-                }
-            }            
+                answer = list[0];
+                answer = answer.Intersect(list[i]).ToList();   
+            }
             #endregion
+
             #region Код ТН ВЕД
             var listCodeTNVED = db.Products.Where(p => p.codeTNVD.Contains(sRegex)).ToList();
             productsView = new List<ProductViewModel>();
@@ -321,6 +319,7 @@ namespace rupbes.Controllers
             }
             list.Add(productsView);
             #endregion
+
             //Добавляет остальные возможные варианты
             for (int i = 0; i < list.Count(); i++)
             {

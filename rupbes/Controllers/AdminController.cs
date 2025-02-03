@@ -2512,6 +2512,49 @@ namespace rupbes.Controllers
                 var itemView = new VersionProductViewModel();
                 itemView.name = item.name;
                 itemView.note = item.note;
+                itemView.isSale = item.isSale;
+                itemView.properties = new List<PropertyViewModel>();
+                foreach (var prop in db.PropertyVersions.Where(x => x.VersionId == item.id))
+                {
+                    var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
+                    itemView.properties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+                }
+                modelView.Add(itemView);
+            }
+            var product = db.Products.Where(x => x.id == productId).FirstOrDefault();
+            var imgs = new List<Imgs>();
+            foreach (var imgsToProduct in db.ImgsProduct.Where(x => x.ProductId == product.id))
+            {
+                var img = db.Imgs.Where(x => x.id == imgsToProduct.ImgsId).FirstOrDefault();
+                imgs.Add(img);
+            }
+            ViewBag.imgs = imgs;            
+            ViewData["productName"] = product.name;
+            ViewData["codeTNVED"] = product.codeTNVD;
+            ViewData["unitName"] = product.Unit.name;
+            ViewData["departmentName"] = product.Departments.short_name_ru;
+            ViewData["productId"] = product.id;
+            var productProperties = new List<PropertyViewModel>();
+            foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == product.id))
+            {
+                var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
+                productProperties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+            }
+            ViewBag.properties = productProperties;
+            return View("ShowVersionProduct", modelView);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult GetVersionProductTable(int productId)
+        {
+            var modelView = new List<VersionProductViewModel>();
+            var model = db.VersionProducts.Where(x => x.ProductId == productId).ToList();
+            foreach (var item in model)
+            {
+                var itemView = new VersionProductViewModel();
+                itemView.name = item.name;
+                itemView.note = item.note;
                 itemView.properties = new List<PropertyViewModel>();
                 foreach (var prop in db.PropertyVersions.Where(x => x.VersionId == item.id))
                 {
@@ -2540,7 +2583,7 @@ namespace rupbes.Controllers
                 productProperties.Add(new PropertyViewModel { name = property.name, count = prop.count });
             }
             ViewBag.properties = productProperties;
-            return PartialView("_ShowVersionProduct", modelView);
+            return PartialView("_GetVersionProductTable", modelView);
         }
 
         [HttpGet]
@@ -2587,7 +2630,7 @@ namespace rupbes.Controllers
             model.ProductId = productId;
             var nameProduct = db.Products.Where(x => x.id == productId).Select(x => x.name).FirstOrDefault();
             model.name = nameProduct;
-            ViewBag.property = db.Properties.ToList();
+            ViewBag.groups = db.GroupProducts.ToList();            
             return PartialView("_AddVersionProduct", model);
         }
 
@@ -2620,18 +2663,21 @@ namespace rupbes.Controllers
             {
                 foreach (var property in model.properties)
                 {
-                    var PV = new PropertyVersion();
-                    PV.VersionProduct = versionProduct;
-                    var prop = db.Properties.Where(x => x.name == property.name).FirstOrDefault();
-                    if (prop == null)
+                    if (property.count != 0)
                     {
-                        prop = new Property();
-                        prop.name = property.name;
-                        db.Properties.Add(prop);
+                        var PV = new PropertyVersion();
+                        PV.VersionProduct = versionProduct;
+                        var prop = db.Properties.Where(x => x.name == property.name).FirstOrDefault();
+                        if (prop == null)
+                        {
+                            prop = new Property();
+                            prop.name = property.name;
+                            db.Properties.Add(prop);
+                        }
+                        PV.Property = prop;
+                        PV.count = property.count;
+                        db.PropertyVersions.Add(PV);
                     }
-                    PV.Property = prop;
-                    PV.count = property.count;
-                    db.PropertyVersions.Add(PV);
                 }
             }
             try
@@ -2675,7 +2721,8 @@ namespace rupbes.Controllers
         [Authorize(Roles = "product, admin")]
         public ActionResult CreateSubGroup(int id)
         {
-            ViewBag.ProductId = id;
+            ViewBag.GroupName = db.GroupProducts.Where(x => x.id == id).Select(x => x.name).FirstOrDefault();
+            ViewBag.GroupId = id;
             return PartialView("_AddSubGroup");
         }
 

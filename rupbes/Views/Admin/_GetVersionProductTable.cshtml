@@ -1,5 +1,4 @@
 ﻿@using rupbes.Models.ViewModels
-@using rupbes.Models.Products
 @using rupbes.Models
 @model List<VersionProductViewModel>
 @{
@@ -11,7 +10,6 @@
     imgExample.id = 7073;
 }
 
-<h2>Версии товара</h2>
 <div class="product-info-grid">
     <div class="news-imgs-block">
         <div class="news-imgs">
@@ -48,7 +46,7 @@
     </div>
 </div>
 <div id="placeForJquery">
-    <button onclick="AddVersionProduct()">Добавить версию</button>
+    <button class="button button-color-back-forestgreen button-color-white text-big" onclick="AddVersionProduct()">Добавить версию</button>
     @if (Model.Count() > 0)
     {
         <table class="dir-table">
@@ -76,7 +74,14 @@
                         @version.note
                     </td>
                     <td class="dir-table-cell">
-                        @version.isSale
+                        @if (version.isSale)
+                        {
+                            <span style="color:green">Да</span>
+                        }
+                        else
+                        {
+                            <span style="color:red">Нет</span>
+                        }
                     </td>
                     <td class="dir-table-cell">
                     </td>
@@ -90,21 +95,8 @@
             К сожалению вариации товара не дообавлены.
         </div>
     }
-
 </div>
-@Html.ActionLink("В меню", "Index")
 <script>
-    function AddVersionProduct() {
-         $.ajax({
-            type: "get",
-             url: '@Url.Action("CreateVersionProduct", "Admin")',
-             data: { productId: @ViewBag.productId},
-            success: function (data) {
-                $('#placeForJquery').html(data);
-            }
-         })
-    }
-
     var img = document.querySelectorAll('.news-imgs-block')
     $(document).ready(function () {
         initMass();
