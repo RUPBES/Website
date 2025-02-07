@@ -1,4 +1,4 @@
-@using rupbes.Models.Products
+﻿@using rupbes.Models.Products
 @model List<Property>
 
 <style>
@@ -8,27 +8,40 @@
 </style>
 
 @{
-    var uniqueId = "Property" + ViewBag.iterator; // ���������� ���������� ID
+    var uniqueId = "Property" + ViewBag.iterator; // Генерируем уникальный ID
 }
+<div class="flex">
+    <div class="product-info-grid">
+        <div class="window-label">
+            <select id="@uniqueId" name="properties[@ViewBag.iterator].name" style="width:100%;">
+                @foreach (var propertyName in Model)
+                {
+                    <option>@propertyName.name</option>
+                }
+            </select>
+        </div>
 
-<div class="product-info-grid">
-    <div class="window-label">
-        <select id="@uniqueId" name="properties[@ViewBag.iterator].name" style="width: 50%">
-            @foreach (var propertyName in Model)
-            {
-                <option>@propertyName.name</option>
-            }
-        </select>
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Значение"
+                   name="properties[@ViewBag.iterator].value" />
+        </div>
     </div>
-
-    <div class="window-label">
-        <input class="text-box single-line" placeholder="����������"
-               name="properties[@ViewBag.iterator].count" />
-    </div>
+    <span class="delete-icon">❌</span>
 </div>
+
 <script>   
     $('[id^="Property"]').select2({
-            placeholder: '��������������',
+            placeholder: 'Характеристика',
             tags: true
+    });
+
+    var deleteIcons = document.querySelectorAll('.delete-icon');
+
+    // Добавляем обработчик события для каждой иконки
+    deleteIcons.forEach(icon => {
+        icon.addEventListener('click', function () {
+            // Удаляем родительский элемент (весь блок)
+            this.parentElement.remove();
+        });
     });
 </script>

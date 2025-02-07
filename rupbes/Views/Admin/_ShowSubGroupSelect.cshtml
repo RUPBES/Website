@@ -1,9 +1,23 @@
 ﻿@using rupbes.Models.Products
 @model List<SubGroupProduct>
+    @{ 
+        var str = "";
+        if (ViewBag.subGroupName != null)
+        {
+            str = ViewBag.subGroupName;
+        }
+    }
 <select id="SubGroupProduct" name="subGroupProduct" style="width: 50%">
     @foreach (var subGroup in Model)
     {
-        <option>@subGroup.name</option>
+        if (str == subGroup.name)
+        {
+            <option selected>@subGroup.name</option>
+        }
+        else
+        {
+            <option>@subGroup.name</option>
+        }
     }
 </select>   
 <script>

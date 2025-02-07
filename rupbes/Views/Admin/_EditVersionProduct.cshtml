@@ -1,0 +1,160 @@
+﻿@using rupbes.Models.ViewModels
+@using rupbes.Models.Products
+@model VersionProductViewModel
+
+@{
+    ViewBag.Title = "Редактировать версию продукцию собственного производства";
+    var count = 0;
+}
+
+<style>
+    .window-label:last-of-type {
+        margin-bottom: 10px;
+    }
+</style>
+
+<section class="form-block">
+    <h2>Редактировать версию товар</h2>
+    <div class="AddProductWindow">
+        <form id="myForm" action="/Admin/EditVersion" method="post">
+            <input value="@Model.id" name="id" style="display: none;" />
+            <input value="@Model.ProductId" name="ProductId" style="display: none;" />
+            <div class="window-label">
+                <input class="text-box single-line" placeholder="Название"
+                       value="@Model.name" name="name" />
+            </div>
+            <div class="window-label">
+                <input class="text-box single-line" placeholder="Примечание"
+                       value="@Model.note" name="note" />
+            </div>
+            <div class="section-property">
+                @foreach (var item in Model.properties)
+                {
+                    var uniqueId = "Property" + count.ToString(); // Генерируем уникальный ID
+                    <div class="flex">
+                        <div class="product-info-grid">
+                            <div class="window-label">
+                                <select id="@uniqueId" name="properties[@count].name" style="width:100%;">
+                                    @foreach (Property propertyName in ViewBag.properties)
+                                    {
+                                        if (propertyName.name == item.name)
+                                        {
+                                            <option selected>@propertyName.name</option>
+                                        }
+                                        else
+                                        {
+                                            <option>@propertyName.name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="window-label">
+                                <input class="text-box single-line" placeholder="Значение" value="@item.value"
+                                       name="properties[@count].value" />
+                            </div>
+                        </div>
+                        <span class="delete-icon">❌</span>
+                    </div>
+                    count++;
+                }
+                <div id="prop">
+                    <button onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
+                </div>
+            </div>
+
+            <div class="window-label">
+                <label>
+                    Прикрепить фото версии товара
+                </label>
+            </div>
+            <div class="admin-upfile">
+                <input class="upload-img" type="file" name="upload" id="uploadFile">
+                <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
+            </div>
+            <div class="admin-imgs">
+                @foreach (var img in Model.Imgs)
+                {
+                    <label>
+                        <img src="@img.src_min" />
+                        <input type="checkbox" checked name="img_ids" value="@img.id" />
+                    </label>
+                }
+            </div>
+            <div class="window-label">
+                <input id="EditButton" type="submit" value="Изменить" />
+            </div>
+        </form>
+    </div>
+</section>
+<script>
+
+       var count = @count;
+       $('[id^="Property"]').select2({
+           placeholder: 'Характеристика',
+           tags: true
+       });     
+
+       function AddPropertySelectGroup() {
+           $.ajax({
+               type: "get",
+               url: '@Url.Action("AddPropertySelectGroup", "Admin")',
+               data: { count: count },
+               success: function (data) {
+                   $('#prop').before(data);
+                   count = count + 1;
+               }
+           })
+       }     
+
+       $('#clickbutton').on('click', function (event) {
+        event.preventDefault();
+        var files = document.getElementById('uploadFile').files;
+        if (files.length > 0) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UploadAjax","Admin")',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        $('.admin-imgs').append(result);
+                    },
+                    error: function (xhr, status, p3) {
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                alert("Ваш браузер не поддерживает Html5!");
+            }
+        }
+       });   
+
+    $('#myForm').submit(function (event) {
+        event.preventDefault();
+        var button = $('#EditButton');
+        button.prop('disabled', true).text('Подождите...'); // Меняем текст
+        $('#myForm').off('submit').submit();
+
+        setTimeout(function () {
+            button.prop('disabled', false).text('Изменить'); // Возвращаем текст
+        }, 5000);
+    });
+
+    var deleteIcons = document.querySelectorAll('.delete-icon');
+
+    // Добавляем обработчик события для каждой иконки
+    deleteIcons.forEach(icon => {
+        icon.addEventListener('click', function () {
+            // Удаляем родительский элемент (весь блок)
+            this.parentElement.remove();
+        });
+    });
+
+</script>

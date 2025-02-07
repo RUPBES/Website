@@ -30,7 +30,6 @@
                 <div class="news-imgs">
                     @if (imgs.Count() > 0)
                     {
-
                         foreach (var img in imgs)
                         {
                             <img src="@img.src" />
@@ -55,7 +54,7 @@
                     <li class="list-group-item"><span class="text-bold">Организация :</span> @ViewData["departmentName"]</li>
                     @foreach (PropertyViewModel property in ViewBag.properties)
                     {
-                        <li class="list-group-item"><span class="text-bold">@property.name :</span> @(property.count)</li>
+                        <li class="list-group-item"><span class="text-bold">@property.name :</span> @(property.value)</li>
                     }
                 </ul>
             </div>
@@ -82,7 +81,7 @@
                             <td class="dir-table-cell">
                                 @foreach (var property in version.properties)
                                 {
-                                    <span>@property.name : @(property.count). </span>
+                                    <span>@property.name : @(property.value). </span>
                                 }
                             </td>
                             <td class="dir-table-cell">
@@ -96,9 +95,10 @@
                                 else
                                 {
                                     <span style="color:red">Нет</span>
-                                }                                
+                                }
                             </td>
                             <td class="dir-table-cell">
+                                <div onclick="EditVersion(@version.id)" class="edit-img"></div>
                             </td>
                         </tr>
                     }
@@ -125,6 +125,17 @@
                 $('#searchResult').html(data);
             }
          })
+    }
+
+    function EditVersion(id) {
+     $.ajax({
+        type: "get",
+         url: '@Url.Action("EditVersion", "Admin")',
+         data: { id: id},
+        success: function (data) {
+            $('#searchResult').html(data);
+        }
+     })
     }
 
     function GetVersionProductTable(id) {

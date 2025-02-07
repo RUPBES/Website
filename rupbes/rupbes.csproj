@@ -772,6 +772,8 @@
     <Content Include="Views\Admin\_AddSubGroup.cshtml" />
     <Content Include="Views\Admin\_AddPropertySelectGroup.cshtml" />
     <Content Include="Views\Admin\_GetVersionProductTable.cshtml" />
+    <Content Include="Views\Admin\_EditProduct.cshtml" />
+    <Content Include="Views\Admin\_EditVersionProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -184,7 +184,7 @@ namespace rupbes.Controllers
                 foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == item.id))
                 {
                     var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                    itemView.properties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
                 }
                 itemView.Imgs = new List<Imgs>();
                 foreach (var imgToProduct in db.ImgsProduct.Where(x => x.ProductId == item.id))
@@ -211,7 +211,7 @@ namespace rupbes.Controllers
                 foreach (var prop in db.PropertyVersions.Where(x => x.VersionId == item.id))
                 {
                     var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                    itemView.properties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
                 }
                 itemView.Imgs = new List<Imgs>();
                 foreach (var imgToVersion in db.ImgsVersionProduct.Where(x => x.VersionProductId == item.id))
@@ -237,7 +237,7 @@ namespace rupbes.Controllers
             foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == product.id))
             {
                 var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                productProperties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+                productProperties.Add(new PropertyViewModel { name = property.name, value = prop.value });
             }
             ViewBag.properties = productProperties;
             return PartialView("_ShowVersionProduct", modelView);
@@ -282,7 +282,7 @@ namespace rupbes.Controllers
                     foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == item.id))
                     {
                         var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                        itemView.properties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+                        itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
                     }
                     productsView.Add(itemView);
                 }
@@ -313,7 +313,7 @@ namespace rupbes.Controllers
                 foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == item.id))
                 {
                     var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                    itemView.properties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
                 }
                 productsView.Add(itemView);
             }

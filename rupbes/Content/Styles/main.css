@@ -1290,6 +1290,11 @@ input[type="submit"], .one-window-link, .upfile-btn {
     box-shadow: 0 0 7px black;
 }
 
+    .big-link:hover {
+        background-color: #484d83;
+    }
+
+
 .big-link-main {
     width: 150px;
     background-color: #2e354e;
@@ -2266,6 +2271,7 @@ h2#bidsPages {
         margin: 2px 5px;
         border-radius: 0.25rem;
     }
+
     .admin-content-div a:hover {
         background-color: lightblue;
     }
@@ -2575,5 +2581,33 @@ h2#bidsPages {
     background-color: whitesmoke;
     border-radius: 0.25rem;
     text-align: center;
-    padding: 3px;
+    padding: 3px !important;
+}
+
+.edit-img {
+    background-size: cover;
+    background-image: url(icons/Edit.png);
+    height: 25px;
+    width: 25px;
+}
+
+    .edit-img:hover {
+        opacity: 0.5;
+        cursor: pointer;
+    }
+
+.delete-icon {    
+    cursor: pointer;
+    color: red;
+}
+
+    .delete-icon:hover {
+        color: darkred;
+        opacity: 0.7;
+    }
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

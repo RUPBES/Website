@@ -3010,3 +3010,123 @@ Added 7 tenders at 03.02.2025 15:03:55
 --BEGIN OF RECORD--
 Added 7 tenders at 03.02.2025 15:05:27
 --END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 15:08:12
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 03.02.2025 16:33:24
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 04.02.2025 13:02:43
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 9:41:19
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 9:54:51
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 15:16:29
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 15:18:00
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 15:24:05
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 15:33:06
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 15:34:46
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 15:35:59
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 15:38:23
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 05.02.2025 15:59:19
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 8:58:57
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 9:33:08
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 9:35:11
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 9:37:15
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 10:02:09
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 10:12:07
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 10:20:50
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 10:24:50
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 10:28:52
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 10:29:45
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 06.02.2025 10:31:43
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 06.02.2025 14:10:22
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 07.02.2025 10:16:53
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 07.02.2025 10:23:18
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 07.02.2025 13:42:55
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 07.02.2025 13:46:56
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 14:23:26
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 14:25:00
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 14:27:31
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 14:39:02
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 14:45:39
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 16:02:40
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 16:07:19
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 16:09:06
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 16:13:10
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 16:14:57
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 07.02.2025 16:19:07
+--END--

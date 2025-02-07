@@ -2406,7 +2406,7 @@ namespace rupbes.Controllers
 
         [HttpGet]
         [Authorize(Roles = "product, admin")]
-        public ActionResult CreateProduct()//Страница добавления для филиалов
+        public ActionResult CreateProduct()
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             var viewmodel = new ProductViewModel();
@@ -2452,22 +2452,23 @@ namespace rupbes.Controllers
                 SubGroupProductId = subGroupAdd.id,
                 DepartmentId = model.DepartmentId
             };
-            if (img_ids != null)
+            db.Products.Add(product);
+            db.SaveChanges();
+            if (img_ids != null && img_ids.Count() > 0)
             {
                 foreach (int id in img_ids)
                 {
                     var x = new Imgs_to_product();
-                    x.Product = product;
+                    x.ProductId = product.id;
                     x.ImgsId = id;
                     db.ImgsProduct.Add(x);
                 }
             }
-            db.SaveChanges();
-            if (model.properties.Count() > 0)
+            if (model.properties != null && model.properties.Count() > 0)
             {
                 foreach (var property in model.properties)
                 {
-                    if (property.count != 0)
+                    if (property.value != "")
                     {
                         var PP = new PropertyProduct();
                         PP.ProductId = product.id;
@@ -2482,13 +2483,157 @@ namespace rupbes.Controllers
                         }
                         else PP.Property = prop;
 
-                        PP.count = property.count;
+                        PP.value = property.value;
                         db.PropertyProducts.Add(PP);
                     }
                 }
             }
             Usage_report rep = new Usage_report { title = product.name, action = "Add", table = "Product", date = DateTime.Now, id_user = user.id };
-            db.Products.Add(product);
+            db.Usage_report.Add(rep);
+            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+                return RedirectToAction("Products");
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error", new { message = e.Message });
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult EditProduct(int id)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            var product = db.Products.Where(x => x.id == id).FirstOrDefault();
+            var viewmodel = new ProductViewModel();
+            #region приведение
+            viewmodel.id = product.id;
+            viewmodel.name = product.name;
+            viewmodel.groupProduct = product.SubGroupProduct.GroupProduct.name;
+            viewmodel.subGroupProduct = product.SubGroupProduct.name;
+            viewmodel.note = product.note;
+            viewmodel.codeTNVD = product.codeTNVD;
+            viewmodel.unitName = product.Unit.name;
+            viewmodel.Imgs = new List<Imgs>();
+            var imgsProduct = db.ImgsProduct.Where(x => x.ProductId == product.id).ToList();
+            foreach (var img in imgsProduct)
+            {
+                viewmodel.Imgs.Add(db.Imgs.Where(x => x.id == img.ImgsId).FirstOrDefault());
+            }
+            viewmodel.properties = new List<PropertyViewModel>();
+            var propProduct = db.PropertyProducts.Where(x => x.ProductId == product.id).ToList();
+            foreach (var prop in propProduct)
+            {
+                var propView = new PropertyViewModel();
+                propView.value = prop.value;
+                propView.name = db.Properties.Where(x => x.id == prop.PropertyId).Select(x => x.name).FirstOrDefault();
+                viewmodel.properties.Add(propView);
+            }
+            #endregion
+            ViewBag.units = db.Units.ToList();
+            ViewBag.groups = db.GroupProducts.ToList();
+            ViewBag.properties = db.Properties.ToList();            
+            return PartialView("_EditProduct", viewmodel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult EditProduct(ProductViewModel model, int[] img_ids)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            var subGroupAdd = new SubGroupProduct();
+            var group = db.GroupProducts.Where(x => x.name == model.groupProduct).FirstOrDefault();
+            if (group == null)
+            {
+                group = new GroupProduct { name = model.groupProduct };
+                db.GroupProducts.Add(group);
+                var subgroup = new SubGroupProduct { name = model.subGroupProduct, GroupProduct = group };
+                db.SubGroupProducts.Add(subgroup);
+                subGroupAdd = subgroup;
+            }
+            else
+            {
+                SubGroupProduct subgroup = db.SubGroupProducts.Where(x => x.GroupProduct.name == group.name && x.name == model.subGroupProduct).FirstOrDefault();
+                if (subgroup == null)
+                {
+                    subgroup = new SubGroupProduct { name = model.subGroupProduct, GroupProduct = group };
+                    db.SubGroupProducts.Add(subgroup);
+                }
+                subGroupAdd = subgroup;
+            }
+            db.SaveChanges();
+            var product = db.Products.Where(x => x.id == model.id).FirstOrDefault();
+            product.name = model.name;
+            product.codeTNVD = model.codeTNVD;
+            product.note = model.note;
+            product.UnitId = model.UnitId;
+            product.SubGroupProductId = subGroupAdd.id;
+            
+            if (img_ids != null && img_ids.Count() > 0)
+            {
+                foreach (int id in img_ids)
+                {
+                    var y = db.ImgsProduct.Where(x => x.ImgsId == id && x.ProductId == model.id).FirstOrDefault();
+                    if (y == null)
+                    {
+                        var x = new Imgs_to_product();
+                        x.Product = product;
+                        x.ImgsId = id;
+                        db.ImgsProduct.Add(x);
+                    }
+                }
+            }
+          
+            if (model.properties == null)
+                model.properties = new List<PropertyViewModel>();
+            var props = db.PropertyProducts.Where(x => x.ProductId == product.id).ToList();
+            if (props != null && props.Count() > 0)
+            {
+                foreach (var property in props)
+                {
+                    var propName = db.Properties?.Where(x => x.id == property.PropertyId)?.FirstOrDefault();
+                    var propLocal = model.properties.Where(x => x.name == propName.name).FirstOrDefault();
+                    if (propLocal == null)
+                    {
+                        db.PropertyProducts.Remove(property);
+                    }
+                    else
+                    {
+                        if (property.value != propLocal.value)
+                            property.value = propLocal.value;
+                        model.properties.Remove(propLocal);
+                    }
+                }
+            }
+            if (model.properties != null && model.properties.Count() > 0)
+            {
+                foreach (var property in model.properties)
+                {
+                    if (property.value != "")
+                    {
+                        var PP = new PropertyProduct();
+                        PP.ProductId = product.id;
+
+                        var propName = db.Properties?.Where(x => x.name == property.name)?.FirstOrDefault();
+                        if (propName == null)
+                        {
+                            var prop = new Property();
+                            prop.name = property.name;
+                            db.Properties.Add(prop);
+                            PP.Property = prop;
+                        }
+                        else PP.Property = propName;
+
+                        PP.value = property.value;
+                        db.PropertyProducts.Add(PP);
+                    }
+                }
+            }
+
+            Usage_report rep = new Usage_report { title = product.name, action = "Edit", table = "Product", date = DateTime.Now, id_user = user.id };            
             db.Usage_report.Add(rep);
             try
             {
@@ -2510,6 +2655,7 @@ namespace rupbes.Controllers
             foreach (var item in model)
             {
                 var itemView = new VersionProductViewModel();
+                itemView.id = item.id;
                 itemView.name = item.name;
                 itemView.note = item.note;
                 itemView.isSale = item.isSale;
@@ -2517,49 +2663,7 @@ namespace rupbes.Controllers
                 foreach (var prop in db.PropertyVersions.Where(x => x.VersionId == item.id))
                 {
                     var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                    itemView.properties.Add(new PropertyViewModel { name = property.name, count = prop.count });
-                }
-                modelView.Add(itemView);
-            }
-            var product = db.Products.Where(x => x.id == productId).FirstOrDefault();
-            var imgs = new List<Imgs>();
-            foreach (var imgsToProduct in db.ImgsProduct.Where(x => x.ProductId == product.id))
-            {
-                var img = db.Imgs.Where(x => x.id == imgsToProduct.ImgsId).FirstOrDefault();
-                imgs.Add(img);
-            }
-            ViewBag.imgs = imgs;            
-            ViewData["productName"] = product.name;
-            ViewData["codeTNVED"] = product.codeTNVD;
-            ViewData["unitName"] = product.Unit.name;
-            ViewData["departmentName"] = product.Departments.short_name_ru;
-            ViewData["productId"] = product.id;
-            var productProperties = new List<PropertyViewModel>();
-            foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == product.id))
-            {
-                var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                productProperties.Add(new PropertyViewModel { name = property.name, count = prop.count });
-            }
-            ViewBag.properties = productProperties;
-            return View("ShowVersionProduct", modelView);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult GetVersionProductTable(int productId)
-        {
-            var modelView = new List<VersionProductViewModel>();
-            var model = db.VersionProducts.Where(x => x.ProductId == productId).ToList();
-            foreach (var item in model)
-            {
-                var itemView = new VersionProductViewModel();
-                itemView.name = item.name;
-                itemView.note = item.note;
-                itemView.properties = new List<PropertyViewModel>();
-                foreach (var prop in db.PropertyVersions.Where(x => x.VersionId == item.id))
-                {
-                    var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                    itemView.properties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
                 }
                 modelView.Add(itemView);
             }
@@ -2580,7 +2684,49 @@ namespace rupbes.Controllers
             foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == product.id))
             {
                 var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                productProperties.Add(new PropertyViewModel { name = property.name, count = prop.count });
+                productProperties.Add(new PropertyViewModel { name = property.name, value = prop.value });
+            }
+            ViewBag.properties = productProperties;
+            return View("ShowVersionProduct", modelView);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult GetVersionProductTable(int productId)
+        {
+            var modelView = new List<VersionProductViewModel>();
+            var model = db.VersionProducts.Where(x => x.ProductId == productId).ToList();
+            foreach (var item in model)
+            {
+                var itemView = new VersionProductViewModel();
+                itemView.name = item.name;
+                itemView.note = item.note;
+                itemView.properties = new List<PropertyViewModel>();
+                foreach (var prop in db.PropertyVersions.Where(x => x.VersionId == item.id))
+                {
+                    var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
+                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
+                }
+                modelView.Add(itemView);
+            }
+            var product = db.Products.Where(x => x.id == productId).FirstOrDefault();
+            var imgs = new List<Imgs>();
+            foreach (var imgsToProduct in db.ImgsProduct.Where(x => x.ProductId == product.id))
+            {
+                var img = db.Imgs.Where(x => x.id == imgsToProduct.ImgsId).FirstOrDefault();
+                imgs.Add(img);
+            }
+            ViewBag.imgs = imgs;
+            ViewData["productName"] = product.name;
+            ViewData["codeTNVED"] = product.codeTNVD;
+            ViewData["unitName"] = product.Unit.name;
+            ViewData["departmentName"] = product.Departments.short_name_ru;
+            ViewData["productId"] = product.id;
+            var productProperties = new List<PropertyViewModel>();
+            foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == product.id))
+            {
+                var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
+                productProperties.Add(new PropertyViewModel { name = property.name, value = prop.value });
             }
             ViewBag.properties = productProperties;
             return PartialView("_GetVersionProductTable", modelView);
@@ -2615,22 +2761,24 @@ namespace rupbes.Controllers
 
         [HttpGet]
         [Authorize(Roles = "product, admin")]
-        public ActionResult ShowSubGroupSelect(string name)
+        public ActionResult ShowSubGroupSelect(string name, string subGroupName = "")
         {
             var model = db.SubGroupProducts.Where(x => x.GroupProduct.name == name).ToList();
+            if (subGroupName != "")
+                ViewData["subGroupName"] = subGroupName;
             return PartialView("_ShowSubGroupSelect", model);
         }
 
         [HttpGet]
         [Authorize(Roles = "product, admin")]
-        public ActionResult CreateVersionProduct(int productId)//Страница добавления для филиалов
+        public ActionResult CreateVersionProduct(int productId)
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             var model = new VersionProductViewModel();
             model.ProductId = productId;
             var nameProduct = db.Products.Where(x => x.id == productId).Select(x => x.name).FirstOrDefault();
             model.name = nameProduct;
-            ViewBag.groups = db.GroupProducts.ToList();            
+            ViewBag.groups = db.GroupProducts.ToList();
             return PartialView("_AddVersionProduct", model);
         }
 
@@ -2663,7 +2811,7 @@ namespace rupbes.Controllers
             {
                 foreach (var property in model.properties)
                 {
-                    if (property.count != 0)
+                    if (property.value != "")
                     {
                         var PV = new PropertyVersion();
                         PV.VersionProduct = versionProduct;
@@ -2675,7 +2823,7 @@ namespace rupbes.Controllers
                             db.Properties.Add(prop);
                         }
                         PV.Property = prop;
-                        PV.count = property.count;
+                        PV.value = property.value;
                         db.PropertyVersions.Add(PV);
                     }
                 }
@@ -2694,7 +2842,7 @@ namespace rupbes.Controllers
         [HttpGet]
         [Authorize(Roles = "product, admin")]
         public ActionResult CreateGroup()
-        {                        
+        {
             return PartialView("_AddGroup");
         }
 
@@ -2702,10 +2850,10 @@ namespace rupbes.Controllers
         [Authorize(Roles = "product, admin")]
         public ActionResult CreateGroup(GroupProduct model)
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);            
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = model.name, action = "Add", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
             db.GroupProducts.Add(model);
-            db.Usage_report.Add(rep);            
+            db.Usage_report.Add(rep);
             try
             {
                 db.SaveChanges();
@@ -2751,6 +2899,121 @@ namespace rupbes.Controllers
         {
             ViewBag.iterator = count;
             return PartialView("_AddPropertySelectGroup", db.Properties.ToList());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult EditVersion(int id)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            var version = db.VersionProducts.Where(x => x.id == id).FirstOrDefault();
+            var viewmodel = new VersionProductViewModel();
+            #region приведение
+            viewmodel.id = version.id;
+            viewmodel.ProductId = version.ProductId;
+            viewmodel.name = version.name;
+            viewmodel.note = version.note;            
+            viewmodel.Imgs = new List<Imgs>();
+            var imgsProduct = db.ImgsVersionProduct.Where(x => x.VersionProductId == version.id).ToList();
+            foreach (var img in imgsProduct)
+            {
+                viewmodel.Imgs.Add(db.Imgs.Where(x => x.id == img.ImgsId).FirstOrDefault());
+            }
+            viewmodel.properties = new List<PropertyViewModel>();
+            var propVersion = db.PropertyVersions.Where(x => x.VersionId == version.id).ToList();
+            foreach (var prop in propVersion)
+            {
+                var propView = new PropertyViewModel();
+                propView.value = prop.value;
+                propView.name = db.Properties.Where(x => x.id == prop.PropertyId).Select(x => x.name).FirstOrDefault();
+                viewmodel.properties.Add(propView);
+            }
+            #endregion
+            ViewBag.properties = db.Properties.ToList();            
+            return PartialView("_EditVersionProduct", viewmodel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult EditVersion(VersionProductViewModel model, int[] img_ids)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);           
+            var version = db.VersionProducts.Where(x => x.id == model.id).FirstOrDefault();
+            version.name = model.name;            
+            version.note = model.note;     
+
+            if (img_ids != null && img_ids.Count() > 0)
+            {
+                foreach (int id in img_ids)
+                {
+                    var y = db.ImgsVersionProduct.Where(x => x.ImgsId == id && x.VersionProductId == model.id).FirstOrDefault();
+                    if (y == null)
+                    {
+                        var x = new Imgs_to_versionProduct();
+                        x.VersionProductId = model.id;
+                        x.ImgsId = id;
+                        db.ImgsVersionProduct.Add(x);
+                    }
+                }
+            }
+
+            if (model.properties == null)
+                model.properties = new List<PropertyViewModel>();
+            var props = db.PropertyVersions.Where(x => x.VersionId == version.id).ToList();
+            if (props != null && props.Count() > 0)
+            {
+                foreach (var property in props)
+                {
+                    var propName = db.Properties?.Where(x => x.id == property.PropertyId)?.FirstOrDefault();
+                    var propLocal = model.properties.Where(x => x.name == propName.name).FirstOrDefault();
+                    if (propLocal == null)
+                    {
+                        db.PropertyVersions.Remove(property);
+                    }
+                    else
+                    {
+                        if (property.value != propLocal.value)
+                            property.value = propLocal.value;
+                        model.properties.Remove(propLocal);
+                    }
+                }
+            }
+            if (model.properties != null && model.properties.Count() > 0)
+            {
+                foreach (var property in model.properties)
+                {
+                    if (property.value != "")
+                    {
+                        var PP = new PropertyVersion();
+                        PP.VersionId = version.id;
+
+                        var propName = db.Properties?.Where(x => x.name == property.name)?.FirstOrDefault();
+                        if (propName == null)
+                        {
+                            var prop = new Property();
+                            prop.name = property.name;
+                            db.Properties.Add(prop);
+                            PP.Property = prop;
+                        }
+                        else PP.Property = propName;
+
+                        PP.value = property.value;
+                        db.PropertyVersions.Add(PP);
+                    }
+                }
+            }
+
+            Usage_report rep = new Usage_report { title = version.name, action = "Edit", table = "VersionProduct", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+            try
+            {
+                db.SaveChanges();
+                return RedirectToAction("ShowVersionProduct", new { model.ProductId });
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error", new { message = e.Message });
+            }
         }
     }
 }

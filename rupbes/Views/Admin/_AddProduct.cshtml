@@ -3,14 +3,14 @@
 @model ProductViewModel
 
 @{
-    ViewBag.Title = "Добавить продукцию собственногго производства";
+    ViewBag.Title = "Добавить продукцию собственного производства";
 }
 
 
 <section class="form-block">
     <h2>Добавить товар</h2>
     <div class="AddProductWindow">
-        <form action="/Admin/CreateProduct" method="post">
+        <form id="myForm" action="/Admin/CreateProduct" method="post">
             <input name="DepartmentId" value="@Model.DepartmentId" readonly style="display: none" />
             <div class="window-label">
                 <select id="GroupProduct" name="groupProduct" style="width: 50%">
@@ -56,7 +56,7 @@
 
             <div class="window-label">
                 <label>
-                    Прикрепить картинки к новости
+                    Прикрепить фото товара
                 </label>
             </div>
             <div class="admin-upfile">
@@ -65,7 +65,7 @@
             </div>
 
             <div class="window-label">
-                <input type="submit" value="Добавить" />
+                <input id="AddButton" type="submit" value="Добавить" />
             </div>
             <div class="admin-imgs">
             </div>
@@ -139,7 +139,7 @@
                  processData: false,
                  data: data,
                  success: function (result) {
-                     $('.admin-imgs').replaceWith(result);
+                     $('.admin-imgs').append(result);
                  },
                  error: function (xhr, status, p3) {
                      alert(xhr.responseText);
@@ -149,5 +149,16 @@
              alert("Ваш браузер не поддерживает Html5!");
          }
      }
- });
+    });
+
+    $('#myForm').submit(function (event) {
+        event.preventDefault();
+        var button = $('#AddButton');
+        button.prop('disabled', true).text('Подождите...'); // Меняем текст
+        $('#myForm').off('submit').submit();
+
+        setTimeout(function () {
+            button.prop('disabled', false).text('Добавить'); // Возвращаем текст        
+        }, 5000);
+    });
 </script>

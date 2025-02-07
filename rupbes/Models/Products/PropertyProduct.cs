@@ -15,6 +15,6 @@ namespace rupbes.Models.Products
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
         public virtual Product Product { get; set; }
-        public decimal count { get; set; }
+        public string value { get; set; }
     }
 }
