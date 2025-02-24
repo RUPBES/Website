@@ -15,6 +15,7 @@
                 @subgroup.name
             </td>
             <td class="dir-table-cell">
+                <div onclick="EditSubGroup(@subgroup.id)" class="edit-img"></div>
             </td>
         </tr>
     }
@@ -29,5 +30,16 @@
              $('#searchResult').html(data);
          }
      })
- }
+    }
+
+    function EditSubGroup(id) {
+     $.ajax({
+        type: "get",
+         url: '@Url.Action("EditSubGroup", "Admin")',
+         data: { id: id},
+        success: function (data) {
+            $('#searchResult').html(data);
+        }
+     })
+    }
 </script>

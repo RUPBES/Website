@@ -1,0 +1,51 @@
+﻿@using rupbes.Models.ViewModels
+@model ModalViewModel
+
+<style>
+    .info_modal-text {
+        font-weight: bold;
+    }
+
+    .img_primary {
+        margin-right: 5px;
+        height: 24px;
+        width: 24px;
+    }
+
+    button {
+        background-color: #0d6efd;
+        color: #fff !important;        
+        margin-bottom: 0px !important;
+        border-color: #0d6efd;
+    }
+
+    .modal-content div :not(.plus-slide,.minus-slide) {        
+        margin: 0;    
+    }
+</style>
+
+<div class="modal-content" style="height: auto; width: 500px; margin-top: 100px; ">
+    <div class="modal-header">
+        <div>
+            <h2>@Model.header</h2>
+        </div>
+        <div>
+            <span class="closeContent" onclick="CloseModalContent()">&times;</span>
+        </div>
+    </div>
+    <div class="modal-body">
+        <span class="info_modal-text">@Model.message</span>
+    </div>
+    <div class="modal-footer">
+        <button id="modal-button-delete" onclick="closeModal(document.getElementById('messageInput').value)" type="button" class="btn btn-primary"><img class="img_primary" src="~/Content/Styles/icons/check_icon.png" />@Model.textButton</button>
+    </div>
+</div>
+<input id="messageInput" value="@ViewData["reload"]" hidden />
+<script type="text/javascript">
+    function closeModal(result) {
+        $('#modDialog').toggle();
+        if (result === "Yes") {
+            location.reload();
+        }
+    }
+</script>

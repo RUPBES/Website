@@ -20,7 +20,7 @@
             <a href="Products">Товары</a>
         </div>
         <div id="divProduct" class="big-link active">
-            <a onclick="GetVersionProductTable(@ViewData["productId"])">Версии товара</a>
+            <a href="ShowVersionProduct?productId=@ViewData["productId"]">Версия товара</a>
         </div>
     </div>
     <div id="searchResult">
@@ -98,7 +98,10 @@
                                 }
                             </td>
                             <td class="dir-table-cell">
-                                <div onclick="EditVersion(@version.id)" class="edit-img"></div>
+                                <div class="flex">
+                                    <div onclick="EditVersion(@version.id)" class="edit-img"></div>
+                                    <span onclick="DeleteVersionProduct(@version.id)" class="delete-icon">❌</span>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -113,9 +116,39 @@
         </div>
     </div>
 </section>
+<script>
 
+</script>
 @section scripts {
-    <script type="text/javascript">
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    function DeleteVersionProduct(id) {
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("Message", "Admin")',
+            data: { message: "Вы точно хотите удалить версию товара?", header: "Подтверждение", textButton: "Подтвердить" },
+            success: function (data) {
+                $('#modal-block-for-content').html(data);
+                $('.theme_funky').css("overflow", "hidden");
+                $('#modal-block-for-content').css("display", "block");
+                $('#modal-block-for-content').addClass('active');
+
+                let elementDeleteButton = document.querySelectorAll('#modal-button-delete')
+                elementDeleteButton[0].addEventListener('click', () => {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("DeleteVersionProduct", "Admin")',
+                        dataType: 'html',
+                        data: { id: id },
+                        success: function (result) {
+                            $('#modal-block-for-content').html(result);
+                        }
+                    });
+                })
+            }
+        })
+    }
+
     function AddVersionProduct() {
          $.ajax({
             type: "get",
@@ -138,17 +171,6 @@
      })
     }
 
-    function GetVersionProductTable(id) {
-     $.ajax({
-        type: "get",
-         url: '@Url.Action("GetVersionProductTable", "Admin")',
-         data: { productId: id},
-        success: function (data) {
-            $('#searchResult').html(data);
-        }
-     })
-}
-
     var img = document.querySelectorAll('.news-imgs-block')
     $(document).ready(function () {
         initMass();
@@ -160,5 +182,5 @@
             e.style.display = 'none'
         }
     })
-    </script>
+</script>
 }

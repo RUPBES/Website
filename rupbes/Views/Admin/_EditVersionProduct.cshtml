@@ -154,7 +154,25 @@
         icon.addEventListener('click', function () {
             // Удаляем родительский элемент (весь блок)
             this.parentElement.remove();
+            updateItemIds()
         });
     });
+
+    function updateItemIds() {
+        var index = 0;
+        // Перебираем все элементы списка
+        $('[id^="Property"]').each(function (index) {            
+            console.log("Edit");
+            var parent = $(this).parent().parent();
+            var inputElement = parent.find('input');            
+            // Обновляем ID каждого элемента
+            $(this).attr('id', 'Property' + (index));
+            $(this).attr('name', 'properties[' + (index) + '].name');
+            inputElement.attr('name', 'properties[' + (index) + '].value');
+            console.log($(this));
+            console.log(inputElement);
+            index = index + 1;             
+        });       
+    }
 
 </script>

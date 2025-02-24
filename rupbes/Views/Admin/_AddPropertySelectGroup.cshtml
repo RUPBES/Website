@@ -30,18 +30,20 @@
 </div>
 
 <script>   
-    $('[id^="Property"]').select2({
+    // Переменная, содержащая часть id
+    var itemNumber = '@ViewBag.iterator';
+
+    // Формируем полный id, используя конкатенацию строк
+    var fullId = "#Property" + itemNumber;
+    var parent = $(fullId).parent().parent().parent();
+    var spanElement = parent.find('span');  
+    $(fullId).select2({
             placeholder: 'Характеристика',
             tags: true
-    });
+    });    
 
-    var deleteIcons = document.querySelectorAll('.delete-icon');
-
-    // Добавляем обработчик события для каждой иконки
-    deleteIcons.forEach(icon => {
-        icon.addEventListener('click', function () {
-            // Удаляем родительский элемент (весь блок)
-            this.parentElement.remove();
-        });
-    });
+    spanElement.click(function () {
+        this.parentElement.remove();
+        updateItemIds()
+    });  
 </script>

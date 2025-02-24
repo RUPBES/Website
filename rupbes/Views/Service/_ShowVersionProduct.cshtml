@@ -47,7 +47,7 @@
                         <li class="list-group-item"><span class="text-bold">Организация :</span> @ViewData["departmentName"]</li>
                         @foreach (PropertyViewModel property in ViewBag.properties)
                          {
-                            <li class="list-group-item"><span class="text-bold">@property.name :</span> @(property.count)</li>
+                            <li class="list-group-item"><span class="text-bold">@property.name :</span> @(property.value)</li>
                          }
                     </ul>
                 </div>
@@ -70,7 +70,7 @@
                             <td class="dir-table-cell">
                                 @foreach (var property in version.properties)
                                 {
-                                    <span class="text-bold">@property.name :</span><span> @(property.count). </span>
+                                    <span class="text-bold">@property.name :</span><span> @(property.value). </span>
                                 }
                             </td>
                             <td class="dir-table-cell">

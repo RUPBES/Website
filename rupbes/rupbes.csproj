@@ -530,6 +530,7 @@
     <Compile Include="Models\Usage_report.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Vacancies.cs" />
+    <Compile Include="Models\ViewModels\ModalViewModel.cs" />
     <Compile Include="Models\ViewModels\ProductViewModel.cs" />
     <Compile Include="Models\ViewModels\PropertyViewModel.cs" />
     <Compile Include="Models\ViewModels\Review\IndexModel.cs" />
@@ -771,9 +772,11 @@
     <Content Include="Views\Admin\_AddGroup.cshtml" />
     <Content Include="Views\Admin\_AddSubGroup.cshtml" />
     <Content Include="Views\Admin\_AddPropertySelectGroup.cshtml" />
-    <Content Include="Views\Admin\_GetVersionProductTable.cshtml" />
     <Content Include="Views\Admin\_EditProduct.cshtml" />
     <Content Include="Views\Admin\_EditVersionProduct.cshtml" />
+    <Content Include="Views\Admin\_EditGroupProduct.cshtml" />
+    <Content Include="Views\Admin\_EditSubGroupProduct.cshtml" />
+    <Content Include="Views\Shared\_Message.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,6 +1,9 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <script>
+        const startTime = performance.now();        
+    </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122534416-1"></script>
     <script>
@@ -285,6 +288,10 @@
 </head>
 
 <body class="theme_funky">
+    <script>
+        var endTime = performance.now();
+        console.log(`Время отрисовки 1: ${(endTime - startTime).toFixed(2)} мс`);
+    </script>
     <div class="full-screen">
         <div class="top-screen">
             <header class="header">
@@ -295,7 +302,7 @@
                 <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuNews, "News", "Home")</div>
                 <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuObj, "Objects", "Home")</div>
                 @*<div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuPurchases, "Purchases", "Purchases")</div>*@
-                <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuVacancies, "Vacancies", "Home")</div>
+                @*<div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuVacancies, "Vacancies", "Home")</div>*@
                 <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuSoftware, "Software", "Home")</div>
                 <div class="main-menu-item adap-item">@Html.ActionLink(Resources.Resource.MenuWindow, "Index", "OneWindow")</div>
                 <div class="main-menu-item adap-item"><a download href="~/Content/Files/Политика_в_области_персональных_данных.pdf">Политика в обл. ПД</a></div>
@@ -304,13 +311,20 @@
                     <option value="@Resources.Resource.ChoosedLang">@Resources.Resource.Lang</option>
                     <option value="@Resources.Resource.ThreeLangVal">@Resources.Resource.ThreeLang</option>
                     <option value="@Resources.Resource.SecLangVal">@Resources.Resource.SecLang</option>
-
                 </select>
                 <div class="eye" id="theme-switch"></div>
             </header>
         </div>
         <div class="container">
+            <script>
+                endTime = performance.now();
+                console.log(`Время отрисовки начало тела: ${(endTime - startTime).toFixed(2)} мс`);
+            </script>
             @RenderBody()
+            <script>
+                endTime = performance.now();
+                console.log(`Время отрисовки конец тела: ${(endTime - startTime).toFixed(2)} мс`);
+            </script>
         </div>
         <footer class="footer-1lvl">
             <div class="contacts-link">
@@ -371,7 +385,10 @@
         <span class="close" onclick="CloseModal()">&times;</span>
         <div class="modal-content" id="modal-content"></div>
     </div>
-
+    <script>
+        endTime = performance.now();
+        console.log(`Время отрисовки 2: ${(endTime - startTime).toFixed(2)} мс`);
+    </script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/scripts/jquery-1.10.2.js")
@@ -591,6 +608,9 @@
         ga('send', 'pageview');
 
     </script>
-
+    <script>
+        endTime = performance.now();
+        console.log(`Время отрисовки 3: ${(endTime - startTime).toFixed(2)} мс`);
+    </script>
 </body>
 </html> 

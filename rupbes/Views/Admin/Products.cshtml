@@ -18,36 +18,40 @@
         <button class="button button-color-back-forestgreen button-color-white text-big" onclick="AddProduct()">Добавить объект</button>
         <div id="placeForJquery">
             <table class="dir-table">
-                <tr class="dir-table-row">
-                    <th class="dir-table-cell">@Resources.Resource.CodeTNVED</th>
-                    <th class="dir-table-cell">@Resources.Resource.ProductName</th>
-                    <th class="dir-table-cell">@Resources.Resource.ProductUnit</th>
-                    <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
-                    <th class="dir-table-cell">@Resources.Resource.Actions</th>
-                </tr>
-
-                @foreach (Product product in Model)
-                {
+                <thead>
                     <tr class="dir-table-row">
-                        <td class="dir-table-cell">
-                            @product.codeTNVD
-                        </td>
-                        <td class="dir-table-cell">
-                            <span class="span-link text-bold" 
-                                  onclick="location.href='@Url.Action("ShowVersionProduct", "Admin", 
-                                                         new { productId = product.id })'">@product.name</span>
-                        </td>
-                        <td class="dir-table-cell">
-                            @product.Unit.name
-                        </td>
-                        <td class="dir-table-cell">
-                            @product.note
-                        </td>
-                        <td class="dir-table-cell">
-                            <div onclick="EditProduct(@product.id)" class="edit-img"></div>
-                        </td>
+                        <th class="dir-table-cell">@Resources.Resource.CodeTNVED</th>
+                        <th class="dir-table-cell">@Resources.Resource.ProductName</th>
+                        <th class="dir-table-cell">@Resources.Resource.ProductUnit</th>
+                        <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
+                        <th class="dir-table-cell">@Resources.Resource.Actions</th>
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    @foreach (Product product in Model)
+                    {
+                        <tr class="dir-table-row">
+                            <td class="dir-table-cell">
+                                @product.codeTNVD
+                            </td>
+                            <td class="dir-table-cell">
+                                <span class="span-link text-bold" onclick="location.href='@Url.Action("ShowVersionProduct", "Admin", new { productId = product.id })'">@product.name</span>
+                            </td>
+                            <td class="dir-table-cell">
+                                @product.Unit.name
+                            </td>
+                            <td class="dir-table-cell">
+                                @product.note
+                            </td>
+                            <td class="dir-table-cell">
+                                <div class="flex">
+                                    <div onclick="EditProduct(@product.id)" class="edit-img"></div>
+                                    <span onclick="DeleteProduct(@product.id)" class="delete-icon">❌</span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
             </table>
         </div>
         <div class="button button-color-back-red">
@@ -64,7 +68,7 @@
                 url: '@Url.Action("CreateProduct", "Admin")',
                 success: function (data) {
                     $('#searchResult').html(data);
-             }
+                }
              })
         }
 
@@ -76,8 +80,35 @@
              success: function (data) {
                  $('#searchResult').html(data);
              }
-          })    
-         }
+          })
+        }
+
+         function DeleteProduct(id) {
+  $.ajax({
+     type: "GET",
+      url: '@Url.Action("Message", "Admin")',
+      data: { message: "Вы точно хотите удалить товар?", header: "Подтверждение", textButton: "Подтвердить"},
+     success: function (data) {
+         $('#modal-block-for-content').html(data);
+         $('.theme_funky').css("overflow", "hidden");
+         $('#modal-block-for-content').css("display", "block");
+         $('#modal-block-for-content').addClass('active');
+
+         let elementDeleteButton = document.querySelectorAll('#modal-button-delete')
+         elementDeleteButton[0].addEventListener('click', () => {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteProduct", "Admin")',
+                    dataType: 'html',
+                    data: { id: id },
+                    success: function (result) {
+                        $('#modal-block-for-content').html(result);                                                                    
+                    }                    
+                });
+         })
+     }
+  })
+ }
 
         function showProduct() {
         $.ajax({
@@ -87,7 +118,6 @@
                 $('#searchResult').html(data);
                 $('.active').attr('class', 'big-link');
                 $('#divProduct').attr('class', 'big-link active');
-
             }
         })
         }

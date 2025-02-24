@@ -31,6 +31,7 @@
                                 <span class="span-link text-bold"> @group.name</span>                               
                             </td>
                             <td class="dir-table-cell">
+                                <div onclick="EditGroup(@group.id)" class="edit-img"></div>
                             </td>
                         </tr>
                     }
@@ -73,7 +74,7 @@
         ShowSubGroup(@Model.FirstOrDefault().id, 'child-@Model.FirstOrDefault().id');
 
         function ShowSubGroup(id, childObject) {
-        removeActiveClass()        
+        removeActiveClass()
         var child = document.querySelector('td[data-child=' + childObject + ']').querySelector('span').classList.add('active');
          $.ajax({
              type: "get",
@@ -90,5 +91,16 @@
                 span.classList.remove('active');
             });
         }
+
+         function EditGroup(id) {
+          $.ajax({
+             type: "get",
+              url: '@Url.Action("EditGroup", "Admin")',
+              data: { id: id},
+             success: function (data) {
+                 $('#searchResult').html(data);
+             }
+          })
+         }
     </script>
 }

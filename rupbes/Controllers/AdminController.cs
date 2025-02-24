@@ -19,9 +19,14 @@ using rupbes.Models.Products;
 using rupbes.Models.ViewModels;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
+using AngleSharp.Css.Values;
+using System.Runtime.Remoting.Messaging;
+using System.Web.Services.Description;
+using System.Reflection.PortableExecutable;
 
 namespace rupbes.Controllers
 {
+    [TimingActionFilter]
     [Authorize]
     [Filters.Culture]
     public class AdminController : Controller
@@ -2571,10 +2576,23 @@ namespace rupbes.Controllers
             product.note = model.note;
             product.UnitId = model.UnitId;
             product.SubGroupProductId = subGroupAdd.id;
-            
-            if (img_ids != null && img_ids.Count() > 0)
+            List<int> list = new List<int>(img_ids);
+            if (list != null && list.Count() > 0)
             {
-                foreach (int id in img_ids)
+                var imgsProduct = db.ImgsProduct.Where(x => x.ProductId == product.id).ToList();
+                foreach (var imgProduct in imgsProduct)
+                {
+                    var imgId = list.Where(x => x == imgProduct.ImgsId).FirstOrDefault();
+                    if (imgId == 0)
+                    {                        
+                        db.ImgsProduct.Remove(imgProduct);
+                    }
+                    else
+                    {
+                        list.Remove(imgId);
+                    }
+                }
+                foreach (int id in list)
                 {
                     var y = db.ImgsProduct.Where(x => x.ImgsId == id && x.ProductId == model.id).FirstOrDefault();
                     if (y == null)
@@ -2688,48 +2706,6 @@ namespace rupbes.Controllers
             }
             ViewBag.properties = productProperties;
             return View("ShowVersionProduct", modelView);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult GetVersionProductTable(int productId)
-        {
-            var modelView = new List<VersionProductViewModel>();
-            var model = db.VersionProducts.Where(x => x.ProductId == productId).ToList();
-            foreach (var item in model)
-            {
-                var itemView = new VersionProductViewModel();
-                itemView.name = item.name;
-                itemView.note = item.note;
-                itemView.properties = new List<PropertyViewModel>();
-                foreach (var prop in db.PropertyVersions.Where(x => x.VersionId == item.id))
-                {
-                    var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
-                }
-                modelView.Add(itemView);
-            }
-            var product = db.Products.Where(x => x.id == productId).FirstOrDefault();
-            var imgs = new List<Imgs>();
-            foreach (var imgsToProduct in db.ImgsProduct.Where(x => x.ProductId == product.id))
-            {
-                var img = db.Imgs.Where(x => x.id == imgsToProduct.ImgsId).FirstOrDefault();
-                imgs.Add(img);
-            }
-            ViewBag.imgs = imgs;
-            ViewData["productName"] = product.name;
-            ViewData["codeTNVED"] = product.codeTNVD;
-            ViewData["unitName"] = product.Unit.name;
-            ViewData["departmentName"] = product.Departments.short_name_ru;
-            ViewData["productId"] = product.id;
-            var productProperties = new List<PropertyViewModel>();
-            foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == product.id))
-            {
-                var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                productProperties.Add(new PropertyViewModel { name = property.name, value = prop.value });
-            }
-            ViewBag.properties = productProperties;
-            return PartialView("_GetVersionProductTable", modelView);
         }
 
         [HttpGet]
@@ -2914,6 +2890,7 @@ namespace rupbes.Controllers
             viewmodel.name = version.name;
             viewmodel.note = version.note;            
             viewmodel.Imgs = new List<Imgs>();
+
             var imgsProduct = db.ImgsVersionProduct.Where(x => x.VersionProductId == version.id).ToList();
             foreach (var img in imgsProduct)
             {
@@ -2940,11 +2917,24 @@ namespace rupbes.Controllers
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);           
             var version = db.VersionProducts.Where(x => x.id == model.id).FirstOrDefault();
             version.name = model.name;            
-            version.note = model.note;     
-
-            if (img_ids != null && img_ids.Count() > 0)
+            version.note = model.note;
+            List<int> list = new List<int>(img_ids);
+            if (list != null && list.Count() > 0)
             {
-                foreach (int id in img_ids)
+                var imgsVersion = db.ImgsVersionProduct.Where(x => x.VersionProductId == version.id).ToList();
+                foreach (var imgVersion in imgsVersion)
+                {
+                    var imgId = list.Where(x => x == imgVersion.ImgsId).FirstOrDefault();
+                    if (imgId == 0)
+                    {
+                        db.ImgsVersionProduct.Remove(imgVersion);
+                    }
+                    else
+                    {
+                        list.Remove(imgId);
+                    }
+                }
+                foreach (int id in list)
                 {
                     var y = db.ImgsVersionProduct.Where(x => x.ImgsId == id && x.VersionProductId == model.id).FirstOrDefault();
                     if (y == null)
@@ -3014,6 +3004,127 @@ namespace rupbes.Controllers
             {
                 return RedirectToAction("Error", new { message = e.Message });
             }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult EditGroup(int id)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            var group = db.GroupProducts.Where(x => x.id == id).FirstOrDefault();            
+            return PartialView("_EditGroupProduct", group);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult EditSubGroup(int id)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            var subGroup = db.SubGroupProducts.Where(x => x.id == id).FirstOrDefault();
+            return PartialView("_EditSubGroupProduct", subGroup);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult EditGroupProduct(GroupProduct model)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            Usage_report rep = new Usage_report { title = model.name, action = "Edit", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
+            var group = db.GroupProducts.Where(x => x.id == model.id).FirstOrDefault();
+            group.name = model.name;            
+            db.Usage_report.Add(rep);
+            try
+            {
+                db.SaveChanges();
+                return RedirectToAction("ShowGroup");
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error", new { message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult EditSubGroupProduct(SubGroupProduct model)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            Usage_report rep = new Usage_report { title = model.name, action = "Edit", table = "SubGroupProduct", date = DateTime.Now, id_user = user.id };
+            var group = db.SubGroupProducts.Where(x => x.id == model.id).FirstOrDefault();
+            group.name = model.name;
+            db.Usage_report.Add(rep);
+            try
+            {
+                db.SaveChanges();
+                return RedirectToAction("ShowGroup");
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error", new { message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult DeleteProduct(int id)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            var product = db.Products.Where(x => x.id == id).FirstOrDefault();
+            string message, header, textButton;
+            try
+            {
+                db.Products.Remove(product);
+                db.SaveChanges();
+                ViewData["reload"] = "Yes";
+                message = "Товар успешно удален.";
+                header = "Успешно";
+                textButton = "Хорошо";
+                return PartialView("_Message", new ModalViewModel(message, header, textButton));
+            }
+            catch (Exception e)
+            {
+                message = "Во время удаления произошла ошибка.";
+                header = "Ошибка";
+                textButton = "Понятно";
+                return PartialView("_Message", new ModalViewModel(message, header, textButton));
+            }  
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "product, admin")]
+        public ActionResult DeleteVersionProduct(int id)
+        {
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            var versionProduct = db.VersionProducts.Where(x => x.id == id).FirstOrDefault();
+            string message, header, textButton;
+            try
+            {
+                db.VersionProducts.Remove(versionProduct);
+                db.SaveChanges();
+                ViewData["reload"] = "Yes";
+                message = "Версия товара успешно удалена.";
+                header = "Успешно";
+                textButton = "Хорошо";
+                return PartialView("_Message", new ModalViewModel(message, header, textButton));
+            }
+            catch (Exception e)
+            {
+                message = "Во время удаления произошла ошибка.";
+                header = "Ошибка";
+                textButton = "Понятно";
+                return PartialView("_Message", new ModalViewModel(message, header, textButton));
+            }
+        }
+
+        public ActionResult Message(string message, string header, string textButton)
+        {
+            return PartialView("_Message", new ModalViewModel(message, header, textButton));
+        }
+
+        public ActionResult MessageWithReload(string message, string header, string textButton)
+        {
+            ViewData["reload"] = "Yes";
+            return PartialView("_Message", new ModalViewModel(message, header, textButton));
         }
     }
 }

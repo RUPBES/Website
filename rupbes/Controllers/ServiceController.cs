@@ -8,9 +8,11 @@ using rupbes.Models;
 using rupbes.Models.ViewModels;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using rupbes.Classes;
 
 namespace rupbes.Controllers
 {
+    [TimingActionFilter]
     [Filters.Culture]
     public class ServiceController : Controller
     {

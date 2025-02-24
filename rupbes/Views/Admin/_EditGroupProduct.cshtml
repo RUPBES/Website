@@ -1,0 +1,23 @@
+﻿@using rupbes.Models.ViewModels
+@using rupbes.Models.Products
+@model GroupProduct
+
+@{
+    ViewBag.Title = "Редактировать группу товаров";
+}
+
+
+<section class="form-block">
+    <h2>Редактировать группу товаров</h2>
+
+    <form action="/Admin/EditGroupProduct" method="post">
+        <input name="id" value="@Model.id" style="display:none" />
+        <div class="window-label">
+            <input class="text-box single-line" placeholder="Название"
+                   value="@Model.name" name="name" />
+        </div>
+        <div class="window-label">
+            <input type="submit" value="Изменить" />
+        </div>
+    </form>
+</section>
