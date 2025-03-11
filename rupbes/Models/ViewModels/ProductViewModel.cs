@@ -25,6 +25,7 @@ namespace rupbes.Models.ViewModels
         public int DepartmentId { get; set; }
         public string departmentName { get; set; }
         public List<PropertyViewModel> properties { get; set; }
+        public List<ComponentViewModel> components { get; set; }
         public List<Imgs> Imgs { get; set; }
 
         public override bool Equals(object obj)

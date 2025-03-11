@@ -1,0 +1,45 @@
+﻿@using rupbes.Models.Products
+@model List<Component>
+
+<style>
+    .window-label:last-of-type {
+        margin-bottom: 10px;
+    }
+</style>
+
+@{
+    var uniqueId = "Component" + ViewBag.iterator; // Генерируем уникальный ID
+}
+<div class="flex">
+    <div class="product-info-grid-v2">
+        <div class="window-label">
+            <select required id="@uniqueId" name="components[@ViewBag.iterator].name" style="width: 100%; min-width: 200px;">
+                @foreach (var component in Model)
+                {
+                    <option>@component.name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <span class="delete-icon">❌</span>
+</div>
+
+<script>
+
+    // Переменная, содержащая часть id
+    var itemNumber = '@ViewBag.iterator';
+
+    // Формируем полный id, используя конкатенацию строк
+    var fullId = "#Component" + itemNumber;
+    var parent = $(fullId).parent().parent().parent();
+    var spanElement = parent.find('span');
+    $(fullId).select2({
+            placeholder: 'Компонент',
+            tags: true
+    });
+
+    spanElement.click(function () {
+        this.parentElement.remove();
+        updateItemIds()
+    });
+</script>

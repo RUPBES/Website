@@ -10,6 +10,7 @@
            <th class="dir-table-cell">@Resources.Resource.ProductName</th>
            <th class="dir-table-cell">@Resources.Resource.ProductUnit</th>
            <th class="dir-table-cell">Характеристики</th>
+           <th class="dir-table-cell">Комплектующие</th>
            <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
            <th class="dir-table-cell">Организация</th>
        </tr>
@@ -28,7 +29,13 @@
                <td class="dir-table-cell">
                    @foreach (var property in product.properties)
                    {
-                       <span>@property.name : @(property.value). </span>
+                       <span class="text-bold">@property.name </span><span>: @(property.value). </span>
+                   }
+               </td>
+               <td class="dir-table-cell">
+                   @foreach (var comp in product.components)
+                   {
+                       <span>@comp.name; </span>
                    }
                </td>
                <td class="dir-table-cell">

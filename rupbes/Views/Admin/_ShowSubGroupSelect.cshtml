@@ -7,7 +7,7 @@
             str = ViewBag.subGroupName;
         }
     }
-<select id="SubGroupProduct" name="subGroupProduct" style="width: 50%">
+<select required id="SubGroupProduct" name="subGroupProduct" style="width: 50%">
     @foreach (var subGroup in Model)
     {
         if (str == subGroup.name)

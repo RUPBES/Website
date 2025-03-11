@@ -9,10 +9,10 @@ using rupbes.Models.ViewModels;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using rupbes.Classes;
+using rupbes.Models.Products;
 
 namespace rupbes.Controllers
-{
-    [TimingActionFilter]
+{    
     [Filters.Culture]
     public class ServiceController : Controller
     {
@@ -187,13 +187,13 @@ namespace rupbes.Controllers
                 {
                     var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
                     itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
-                }
-                itemView.Imgs = new List<Imgs>();
-                foreach (var imgToProduct in db.ImgsProduct.Where(x => x.ProductId == item.id))
+                }         
+                itemView.components = new List<ComponentViewModel>();
+                foreach (var components in db.ComponentProducts.Where(x => x.ProductId == item.id))
                 {
-                    var img = db.Imgs.Where(x => x.id == imgToProduct.ImgsId).FirstOrDefault();
-                    itemView.Imgs.Add(img);
-                }
+                    var component = db.Components.Where(x => x.id == components.ComponentId).FirstOrDefault();
+                    itemView.components.Add(new ComponentViewModel { name = component.name});
+                }              
                 productsView.Add(itemView);
             }
             return PartialView("_SelectSubGroupProduct", productsView);
@@ -242,6 +242,13 @@ namespace rupbes.Controllers
                 productProperties.Add(new PropertyViewModel { name = property.name, value = prop.value });
             }
             ViewBag.properties = productProperties;
+            var components = new List<Component>();
+            foreach (var compProduct in db.ComponentProducts.Where(x => x.ProductId == product.id))
+            {
+                var comp = db.Components.Where(x => x.id == compProduct.ComponentId).FirstOrDefault();
+                components.Add(new Component { name = comp.name });
+            }
+            ViewBag.components = components;            
             return PartialView("_ShowVersionProduct", modelView);
         }
 
@@ -286,6 +293,12 @@ namespace rupbes.Controllers
                         var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
                         itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
                     }
+                    itemView.components = new List<ComponentViewModel>();
+                    foreach (var components in db.ComponentProducts.Where(x => x.ProductId == item.id))
+                    {
+                        var component = db.Components.Where(x => x.id == components.ComponentId).FirstOrDefault();
+                        itemView.components.Add(new ComponentViewModel { name = component.name });
+                    }
                     productsView.Add(itemView);
                 }
                 list.Add(productsView);
@@ -316,6 +329,12 @@ namespace rupbes.Controllers
                 {
                     var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
                     itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
+                }
+                itemView.components = new List<ComponentViewModel>();
+                foreach (var components in db.ComponentProducts.Where(x => x.ProductId == item.id))
+                {
+                    var component = db.Components.Where(x => x.id == components.ComponentId).FirstOrDefault();
+                    itemView.components.Add(new ComponentViewModel { name = component.name });
                 }
                 productsView.Add(itemView);
             }

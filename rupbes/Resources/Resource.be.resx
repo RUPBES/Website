@@ -548,4 +548,7 @@
   <data name="ProductUnit" xml:space="preserve">
     <value>Адзінка вымярэння</value>
   </data>
+  <data name="FindByCategories" xml:space="preserve">
+    <value />
+  </data>
 </root>

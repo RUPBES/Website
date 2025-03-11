@@ -5,6 +5,9 @@
     .window-label:last-of-type {
         margin-bottom: 10px;
     }
+    .product-info-grid .window-label > input {
+        width: 100%;
+    }
 </style>
 
 @{
@@ -13,7 +16,7 @@
 <div class="flex">
     <div class="product-info-grid">
         <div class="window-label">
-            <select id="@uniqueId" name="properties[@ViewBag.iterator].name" style="width:100%;">
+            <select required id="@uniqueId" name="properties[@ViewBag.iterator].name" style="width:100%;">
                 @foreach (var propertyName in Model)
                 {
                     <option>@propertyName.name</option>
@@ -22,7 +25,7 @@
         </div>
 
         <div class="window-label">
-            <input class="text-box single-line" placeholder="Значение"
+            <input required class="text-box single-line" placeholder="Значение"
                    name="properties[@ViewBag.iterator].value" />
         </div>
     </div>

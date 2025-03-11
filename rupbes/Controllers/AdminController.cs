@@ -26,7 +26,6 @@ using System.Reflection.PortableExecutable;
 
 namespace rupbes.Controllers
 {
-    [TimingActionFilter]
     [Authorize]
     [Filters.Culture]
     public class AdminController : Controller
@@ -2406,7 +2405,32 @@ namespace rupbes.Controllers
         public ActionResult Products()
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            return View(db.Products.ToList());
+            var productsView = new List<ProductViewModel>();
+            var products = db.Products.Where(x => x.DepartmentId == user.id_dep).ToList();
+            foreach (var item in products)
+            {
+                var itemView = new ProductViewModel();
+                itemView.id = item.id;
+                itemView.name = item.name;
+                itemView.codeTNVD = item.codeTNVD;
+                itemView.unitName = item.Unit.name;
+                itemView.note = item.note;
+                itemView.departmentName = item.Departments.short_name_ru;
+                itemView.properties = new List<PropertyViewModel>();
+                foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == item.id))
+                {
+                    var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
+                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
+                }
+                itemView.components = new List<ComponentViewModel>();
+                foreach (var components in db.ComponentProducts.Where(x => x.ProductId == item.id))
+                {
+                    var component = db.Components.Where(x => x.id == components.ComponentId).FirstOrDefault();
+                    itemView.components.Add(new ComponentViewModel { name = component.name });
+                }
+                productsView.Add(itemView);
+            }
+            return View(productsView);
         }
 
         [HttpGet]
@@ -2419,6 +2443,7 @@ namespace rupbes.Controllers
             ViewBag.units = db.Units.ToList();
             ViewBag.groups = db.GroupProducts.ToList();
             ViewBag.property = db.Properties.ToList();
+            ViewBag.property = db.Components.ToList();
             return PartialView("_AddProduct", viewmodel);
         }
 
@@ -2431,9 +2456,9 @@ namespace rupbes.Controllers
             var group = db.GroupProducts.Where(x => x.name == model.groupProduct).FirstOrDefault();
             if (group == null)
             {
-                group = new GroupProduct { name = model.groupProduct };
+                group = new GroupProduct { name = model.groupProduct.Trim() };
                 db.GroupProducts.Add(group);
-                var subgroup = new SubGroupProduct { name = model.subGroupProduct, GroupProduct = group };
+                var subgroup = new SubGroupProduct { name = model.subGroupProduct.Trim(), GroupProduct = group };
                 db.SubGroupProducts.Add(subgroup);
                 subGroupAdd = subgroup;
             }
@@ -2450,9 +2475,9 @@ namespace rupbes.Controllers
             db.SaveChanges();
             Product product = new Product
             {
-                name = model.name,
-                codeTNVD = model.codeTNVD,
-                note = model.note,
+                name = model.name.Trim(),
+                codeTNVD = model.codeTNVD.Trim(),
+                note = model.note?.Trim(),
                 UnitId = model.UnitId,
                 SubGroupProductId = subGroupAdd.id,
                 DepartmentId = model.DepartmentId
@@ -2482,14 +2507,36 @@ namespace rupbes.Controllers
                         if (prop == null)
                         {
                             var props = new Property();
-                            props.name = property.name;
+                            props.name = property.name.Trim();
                             db.Properties.Add(props);
                             PP.Property = props;
                         }
                         else PP.Property = prop;
 
-                        PP.value = property.value;
+                        PP.value = property.value.Trim();
                         db.PropertyProducts.Add(PP);
+                    }
+                }
+            }
+            if (model.components != null && model.components.Count() > 0)
+            {
+                foreach (var component in model.components)
+                {
+                    if (component.name != "")
+                    {
+                        var CP = new ComponentProduct();
+                        CP.ProductId = product.id;
+
+                        var comp = db.Components?.Where(x => x.name == component.name)?.FirstOrDefault();
+                        if (comp == null)
+                        {
+                            var compon = new Component();
+                            compon.name = component.name.Trim();
+                            db.Components.Add(compon);
+                            CP.Component = compon;
+                        }
+                        else CP.Component = comp;
+                        db.ComponentProducts.Add(CP);
                     }
                 }
             }
@@ -2537,10 +2584,19 @@ namespace rupbes.Controllers
                 propView.name = db.Properties.Where(x => x.id == prop.PropertyId).Select(x => x.name).FirstOrDefault();
                 viewmodel.properties.Add(propView);
             }
+            viewmodel.components = new List<ComponentViewModel>();
+            var compProduct = db.ComponentProducts.Where(x => x.ProductId == product.id).ToList();
+            foreach (var compP in compProduct)
+            {
+                var compView = new ComponentViewModel();
+                compView.name = db.Components.Where(x => x.id == compP.ComponentId).Select(x => x.name).FirstOrDefault();
+                viewmodel.components.Add(compView);
+            }
             #endregion
             ViewBag.units = db.Units.ToList();
             ViewBag.groups = db.GroupProducts.ToList();
-            ViewBag.properties = db.Properties.ToList();            
+            ViewBag.properties = db.Properties.ToList();
+            ViewBag.components = db.Components.ToList();
             return PartialView("_EditProduct", viewmodel);
         }
 
@@ -2553,9 +2609,9 @@ namespace rupbes.Controllers
             var group = db.GroupProducts.Where(x => x.name == model.groupProduct).FirstOrDefault();
             if (group == null)
             {
-                group = new GroupProduct { name = model.groupProduct };
+                group = new GroupProduct { name = model.groupProduct.Trim() };
                 db.GroupProducts.Add(group);
-                var subgroup = new SubGroupProduct { name = model.subGroupProduct, GroupProduct = group };
+                var subgroup = new SubGroupProduct { name = model.subGroupProduct.Trim(), GroupProduct = group };
                 db.SubGroupProducts.Add(subgroup);
                 subGroupAdd = subgroup;
             }
@@ -2564,47 +2620,50 @@ namespace rupbes.Controllers
                 SubGroupProduct subgroup = db.SubGroupProducts.Where(x => x.GroupProduct.name == group.name && x.name == model.subGroupProduct).FirstOrDefault();
                 if (subgroup == null)
                 {
-                    subgroup = new SubGroupProduct { name = model.subGroupProduct, GroupProduct = group };
+                    subgroup = new SubGroupProduct { name = model.subGroupProduct.Trim(), GroupProduct = group };
                     db.SubGroupProducts.Add(subgroup);
                 }
                 subGroupAdd = subgroup;
             }
             db.SaveChanges();
             var product = db.Products.Where(x => x.id == model.id).FirstOrDefault();
-            product.name = model.name;
-            product.codeTNVD = model.codeTNVD;
-            product.note = model.note;
+            product.name = model.name.Trim();
+            product.codeTNVD = model.codeTNVD.Trim();
+            product.note = model.note?.Trim();
             product.UnitId = model.UnitId;
             product.SubGroupProductId = subGroupAdd.id;
-            List<int> list = new List<int>(img_ids);
-            if (list != null && list.Count() > 0)
+            if (img_ids != null && img_ids.Count() > 0)
             {
-                var imgsProduct = db.ImgsProduct.Where(x => x.ProductId == product.id).ToList();
-                foreach (var imgProduct in imgsProduct)
+
+                List<int> list = new List<int>(img_ids);
+                if (list != null && list.Count() > 0)
                 {
-                    var imgId = list.Where(x => x == imgProduct.ImgsId).FirstOrDefault();
-                    if (imgId == 0)
-                    {                        
-                        db.ImgsProduct.Remove(imgProduct);
-                    }
-                    else
+                    var imgsProduct = db.ImgsProduct.Where(x => x.ProductId == product.id).ToList();
+                    foreach (var imgProduct in imgsProduct)
                     {
-                        list.Remove(imgId);
+                        var imgId = list.Where(x => x == imgProduct.ImgsId).FirstOrDefault();
+                        if (imgId == 0)
+                        {
+                            db.ImgsProduct.Remove(imgProduct);
+                        }
+                        else
+                        {
+                            list.Remove(imgId);
+                        }
                     }
-                }
-                foreach (int id in list)
-                {
-                    var y = db.ImgsProduct.Where(x => x.ImgsId == id && x.ProductId == model.id).FirstOrDefault();
-                    if (y == null)
+                    foreach (int id in list)
                     {
-                        var x = new Imgs_to_product();
-                        x.Product = product;
-                        x.ImgsId = id;
-                        db.ImgsProduct.Add(x);
+                        var y = db.ImgsProduct.Where(x => x.ImgsId == id && x.ProductId == model.id).FirstOrDefault();
+                        if (y == null)
+                        {
+                            var x = new Imgs_to_product();
+                            x.Product = product;
+                            x.ImgsId = id;
+                            db.ImgsProduct.Add(x);
+                        }
                     }
                 }
             }
-          
             if (model.properties == null)
                 model.properties = new List<PropertyViewModel>();
             var props = db.PropertyProducts.Where(x => x.ProductId == product.id).ToList();
@@ -2639,19 +2698,58 @@ namespace rupbes.Controllers
                         if (propName == null)
                         {
                             var prop = new Property();
-                            prop.name = property.name;
+                            prop.name = property.name.Trim();
                             db.Properties.Add(prop);
                             PP.Property = prop;
                         }
                         else PP.Property = propName;
 
-                        PP.value = property.value;
+                        PP.value = property.value.Trim();
                         db.PropertyProducts.Add(PP);
                     }
                 }
             }
+            var components = db.ComponentProducts.Where(x => x.ProductId == product.id).ToList();
+            if (components != null && components.Count() > 0)
+            {
+                foreach (var component in components)
+                {
+                    var compName = db.Components?.Where(x => x.id == component.ComponentId)?.FirstOrDefault();
+                    var compLocal = model.components.Where(x => x.name == compName.name).FirstOrDefault();
+                    if (compLocal == null)
+                    {
+                        db.ComponentProducts.Remove(component);
+                    }
+                    else
+                    {                        
+                        model.components.Remove(compLocal);
+                    }
+                }
+            }
+            if (model.components != null && model.components.Count() > 0)
+            {
+                foreach (var component in model.components)
+                {
+                    if (component.name != "")
+                    {
+                        var CP = new ComponentProduct();
+                        CP.ProductId = product.id;
 
-            Usage_report rep = new Usage_report { title = product.name, action = "Edit", table = "Product", date = DateTime.Now, id_user = user.id };            
+                        var compName = db.Components?.Where(x => x.name == component.name)?.FirstOrDefault();
+                        if (compName == null)
+                        {
+                            var comp = new Component();
+                            comp.name = component.name.Trim();
+                            db.Components.Add(comp);
+                            CP.Component = comp;
+                        }
+                        else CP.Component = compName;
+
+                        db.ComponentProducts.Add(CP);
+                    }
+                }
+            }
+            Usage_report rep = new Usage_report { title = product.name, action = "Edit", table = "Product", date = DateTime.Now, id_user = user.id };
             db.Usage_report.Add(rep);
             try
             {
@@ -2683,6 +2781,12 @@ namespace rupbes.Controllers
                     var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
                     itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
                 }
+                itemView.Imgs = new List<Imgs>();
+                foreach (var imgToVersion in db.ImgsVersionProduct.Where(x => x.VersionProductId == item.id))
+                {
+                    var img = db.Imgs.Where(x => x.id == imgToVersion.ImgsId).FirstOrDefault();
+                    itemView.Imgs.Add(img);
+                }
                 modelView.Add(itemView);
             }
             var product = db.Products.Where(x => x.id == productId).FirstOrDefault();
@@ -2705,6 +2809,13 @@ namespace rupbes.Controllers
                 productProperties.Add(new PropertyViewModel { name = property.name, value = prop.value });
             }
             ViewBag.properties = productProperties;
+            var components = new List<Component>();
+            foreach (var compProduct in db.ComponentProducts.Where(x => x.ProductId == product.id))
+            {
+                var comp = db.Components.Where(x => x.id == compProduct.ComponentId).FirstOrDefault();
+                components.Add(new Component { name = comp.name});
+            }
+            ViewBag.components = components;
             return View("ShowVersionProduct", modelView);
         }
 
@@ -2765,9 +2876,9 @@ namespace rupbes.Controllers
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             var versionProduct = new VersionProduct
             {
-                name = model.name,
+                name = model.name.Trim(),
                 isSale = model.isSale,
-                note = model.note,
+                note = model.note?.Trim(),
                 ProductId = productId
             };
             if (img_ids != null)
@@ -2795,11 +2906,11 @@ namespace rupbes.Controllers
                         if (prop == null)
                         {
                             prop = new Property();
-                            prop.name = property.name;
+                            prop.name = property.name.Trim();
                             db.Properties.Add(prop);
                         }
                         PV.Property = prop;
-                        PV.value = property.value;
+                        PV.value = property.value.Trim();
                         db.PropertyVersions.Add(PV);
                     }
                 }
@@ -2807,7 +2918,7 @@ namespace rupbes.Controllers
             try
             {
                 db.SaveChanges();
-                return RedirectToAction("Products");
+                return RedirectToAction("ShowVersionProduct", new { productId = productId });
             }
             catch (Exception e)
             {
@@ -2828,6 +2939,7 @@ namespace rupbes.Controllers
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = model.name, action = "Add", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
+            model.name = model.name.Trim();            
             db.GroupProducts.Add(model);
             db.Usage_report.Add(rep);
             try
@@ -2856,6 +2968,7 @@ namespace rupbes.Controllers
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = model.name, action = "Add", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
+            model.name = model.name.Trim();
             db.SubGroupProducts.Add(model);
             db.Usage_report.Add(rep);
             try
@@ -2879,6 +2992,14 @@ namespace rupbes.Controllers
 
         [HttpGet]
         [Authorize(Roles = "product, admin")]
+        public ActionResult AddComponent(int count)
+        {
+            ViewBag.iterator = count;
+            return PartialView("_AddComponent", db.Components.ToList());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
         public ActionResult EditVersion(int id)
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
@@ -2888,7 +3009,8 @@ namespace rupbes.Controllers
             viewmodel.id = version.id;
             viewmodel.ProductId = version.ProductId;
             viewmodel.name = version.name;
-            viewmodel.note = version.note;            
+            viewmodel.note = version.note;
+            viewmodel.isSale = version.isSale;
             viewmodel.Imgs = new List<Imgs>();
 
             var imgsProduct = db.ImgsVersionProduct.Where(x => x.VersionProductId == version.id).ToList();
@@ -2906,7 +3028,7 @@ namespace rupbes.Controllers
                 viewmodel.properties.Add(propView);
             }
             #endregion
-            ViewBag.properties = db.Properties.ToList();            
+            ViewBag.properties = db.Properties.ToList();
             return PartialView("_EditVersionProduct", viewmodel);
         }
 
@@ -2914,11 +3036,20 @@ namespace rupbes.Controllers
         [Authorize(Roles = "product, admin")]
         public ActionResult EditVersion(VersionProductViewModel model, int[] img_ids)
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);           
+            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             var version = db.VersionProducts.Where(x => x.id == model.id).FirstOrDefault();
-            version.name = model.name;            
-            version.note = model.note;
-            List<int> list = new List<int>(img_ids);
+            version.name = model.name.Trim();
+            version.note = model.note?.Trim();
+            version.isSale = model.isSale;
+            List<int> list;
+            if (img_ids != null && img_ids.Count() > 0)
+            {
+                list = new List<int>(img_ids);
+            }
+            else
+            {
+                list = new List<int>();
+            }
             if (list != null && list.Count() > 0)
             {
                 var imgsVersion = db.ImgsVersionProduct.Where(x => x.VersionProductId == version.id).ToList();
@@ -2962,8 +3093,8 @@ namespace rupbes.Controllers
                     }
                     else
                     {
-                        if (property.value != propLocal.value)
-                            property.value = propLocal.value;
+                        if (property.value != propLocal.value.Trim())
+                            property.value = propLocal.value.Trim();
                         model.properties.Remove(propLocal);
                     }
                 }
@@ -2981,13 +3112,13 @@ namespace rupbes.Controllers
                         if (propName == null)
                         {
                             var prop = new Property();
-                            prop.name = property.name;
+                            prop.name = property.name.Trim();
                             db.Properties.Add(prop);
                             PP.Property = prop;
                         }
                         else PP.Property = propName;
 
-                        PP.value = property.value;
+                        PP.value = property.value.Trim();
                         db.PropertyVersions.Add(PP);
                     }
                 }
@@ -3020,7 +3151,7 @@ namespace rupbes.Controllers
         public ActionResult EditSubGroup(int id)
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var subGroup = db.SubGroupProducts.Where(x => x.id == id).FirstOrDefault();
+            var subGroup = db.SubGroupProducts.Where(x => x.id == id).FirstOrDefault();            
             return PartialView("_EditSubGroupProduct", subGroup);
         }
 
@@ -3031,7 +3162,7 @@ namespace rupbes.Controllers
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = model.name, action = "Edit", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
             var group = db.GroupProducts.Where(x => x.id == model.id).FirstOrDefault();
-            group.name = model.name;            
+            group.name = model.name.Trim();
             db.Usage_report.Add(rep);
             try
             {
@@ -3051,7 +3182,7 @@ namespace rupbes.Controllers
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = model.name, action = "Edit", table = "SubGroupProduct", date = DateTime.Now, id_user = user.id };
             var group = db.SubGroupProducts.Where(x => x.id == model.id).FirstOrDefault();
-            group.name = model.name;
+            group.name = model.name.Trim();
             db.Usage_report.Add(rep);
             try
             {
@@ -3087,7 +3218,7 @@ namespace rupbes.Controllers
                 header = "Ошибка";
                 textButton = "Понятно";
                 return PartialView("_Message", new ModalViewModel(message, header, textButton));
-            }  
+            }
         }
 
         [HttpPost]

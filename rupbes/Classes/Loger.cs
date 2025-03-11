@@ -21,20 +21,4 @@ namespace rupbes.Classes
             }
         }
     }
-
-    public class TimingActionFilter : ActionFilterAttribute
-    {
-        private Stopwatch _stopwatch;
-
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            _stopwatch = Stopwatch.StartNew();
-        }
-
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            _stopwatch.Stop();
-            Console.WriteLine($"Время выполнения действия: {_stopwatch.ElapsedMilliseconds} мс");
-        }
-    }
 }

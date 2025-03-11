@@ -11,6 +11,21 @@
     imgExample.id = 7073;
 }
 
+<style>
+    .dir-table-cell .news-imgs-block .img-little {
+        width: 50px; /* Ширина изображения 50 пикселей */
+        height: 50px; /* Высота изображения 50 пикселей */
+        object-fit: cover; /* Сохраняет пропорции, обрезая изображение при необходимости */
+    }
+    .dir-table-cell .mini, dir-table-cell .news-imgs-block .news-imgs .mini {
+        height: 70px;
+        width: 70px;
+    }
+    .dir-table-cell .news-imgs-block.mini .plus-slide,
+    .dir-table-cell .news-imgs-block.mini .minus-slide {
+        display: none; /* Скрываем элементы */
+    }
+</style>
 <div class="modal-dialog">
     <div class="modal-content-text">
         <div class="modal-header">
@@ -45,10 +60,22 @@
                         <li class="list-group-item"><span class="text-bold">Код ТН ВЭД :</span> @ViewData["codeTNVED"]</li>
                         <li class="list-group-item"><span class="text-bold">Единица измерения :</span> @ViewData["unitName"]</li>
                         <li class="list-group-item"><span class="text-bold">Организация :</span> @ViewData["departmentName"]</li>
+                        @if (ViewData["properties"] is List<PropertyViewModel> properties && properties.Count > 0)
+                        {
+                            <li class="list-group-item"><span class="text-bold">Характеристики:</span></li>
+                        }
                         @foreach (PropertyViewModel property in ViewBag.properties)
-                         {
+                        {
                             <li class="list-group-item"><span class="text-bold">@property.name :</span> @(property.value)</li>
-                         }
+                        }
+                        @if (ViewData["components"] is List<Component> components && components.Count > 0)
+                        {
+                            <li class="list-group-item"><span class="text-bold">Комплектующие:</span></li>
+                        }
+                        @foreach (Component component in ViewBag.components)
+                        {
+                            <li class="list-group-item"><span>@component.name</span></li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -59,6 +86,7 @@
                         <th class="dir-table-cell">@Resources.Resource.ProductName</th>
                         <th class="dir-table-cell">Характеристики</th>
                         <th class="dir-table-cell">@Resources.Resource.ProductNote</th>
+                        <th class="dir-table-cell">Изображения</th>
                     </tr>
 
                     @foreach (var version in Model)
@@ -75,6 +103,25 @@
                             </td>
                             <td class="dir-table-cell">
                                 @version.note
+                            </td>
+                            <td class="dir-table-cell">
+                                <div class="news-imgs-block mini">
+                                    <div class="news-imgs mini">
+                                        @if (version.Imgs.Count() > 0)
+                                        {
+
+                                            foreach (var img in version.Imgs)
+                                            {
+                                                <img src="@img.src" class="img-little"/>
+                                            }
+                                        }                                        
+                                    </div>
+
+                                    <div class="minus-slide"></div>
+                                    <div class="plus-slide"></div>
+                                    <div class="full-screen-btn mini"></div>
+                                    <p></p>
+                                </div>
                             </td>
                         </tr>
                     }

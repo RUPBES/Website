@@ -4,17 +4,15 @@
 }
 <section class="admin-content">
     <h2>HashGen</h2>
-    @Html.ActionLink("Назад", "Index")
     @using (Ajax.BeginForm("HashGen", new AjaxOptions { UpdateTargetId = "result" }))
     {
         <div class="window-label">
             <input type="text" name="pass" />
         </div>
+        <div id="result"></div>
         <div class="window-label">
             <input type="submit" value="Отправить" />
         </div>
     }
-   
 </section>
-<div id="result"></div>
-
+@Html.ActionLink("Назад", "Index")

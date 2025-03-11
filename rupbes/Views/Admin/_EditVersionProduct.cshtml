@@ -11,6 +11,29 @@
     .window-label:last-of-type {
         margin-bottom: 10px;
     }
+
+    .form-block {
+        min-width: 60vw;
+        max-width: 90vw;
+        width: auto;
+    }
+
+    .product-info-grid, .product-info-grid-v2 {
+        flex: 1 1 200px; /* Элементы будут занимать равное пространство */
+        min-width: 200px; /* Устанавливает минимальную ширину */
+    }
+
+    .admin-imgs {
+        max-width: 100%;
+    }
+
+    .product-info-grid .window-label > input {
+        width: 100%;
+    }
+
+    .select2-container {
+        max-width: 85vw !important;
+    }   
 </style>
 
 <section class="form-block">
@@ -20,13 +43,16 @@
             <input value="@Model.id" name="id" style="display: none;" />
             <input value="@Model.ProductId" name="ProductId" style="display: none;" />
             <div class="window-label">
-                <input class="text-box single-line" placeholder="Название"
+                <input required class="text-box single-line" placeholder="Название"
                        value="@Model.name" name="name" />
             </div>
             <div class="window-label">
                 <input class="text-box single-line" placeholder="Примечание"
                        value="@Model.note" name="note" />
             </div>
+            <label>
+                <input type="checkbox" name="isSale" value="true" @(Model.isSale ? "checked" : "") /> Продается ли?
+            </label>
             <div class="section-property">
                 @foreach (var item in Model.properties)
                 {
@@ -48,7 +74,6 @@
                                     }
                                 </select>
                             </div>
-
                             <div class="window-label">
                                 <input class="text-box single-line" placeholder="Значение" value="@item.value"
                                        name="properties[@count].value" />
@@ -59,7 +84,7 @@
                     count++;
                 }
                 <div id="prop">
-                    <button onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
+                    <button id="addPropertyBtn" onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
                 </div>
             </div>
 
@@ -93,19 +118,25 @@
        $('[id^="Property"]').select2({
            placeholder: 'Характеристика',
            tags: true
-       });     
+       });
 
        function AddPropertySelectGroup() {
-           $.ajax({
-               type: "get",
-               url: '@Url.Action("AddPropertySelectGroup", "Admin")',
-               data: { count: count },
-               success: function (data) {
-                   $('#prop').before(data);
-                   count = count + 1;
-               }
-           })
-       }     
+           var button = document.getElementById('addPropertyBtn');
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("AddPropertySelectGroup", "Admin")',
+                data: { count: count },
+                success: function (data) {
+                    $('#prop').before(data);
+                    count = count + 1;
+                }
+            })
+            button.disabled = true;
+            // Разблокируем кнопку через 2 секунды
+            setTimeout(() => {
+                button.disabled = false;
+            }, 3000);
+       }
 
        $('#clickbutton').on('click', function (event) {
         event.preventDefault();
@@ -134,7 +165,7 @@
                 alert("Ваш браузер не поддерживает Html5!");
             }
         }
-       });   
+       });
 
     $('#myForm').submit(function (event) {
         event.preventDefault();
@@ -161,18 +192,18 @@
     function updateItemIds() {
         var index = 0;
         // Перебираем все элементы списка
-        $('[id^="Property"]').each(function (index) {            
+        $('[id^="Property"]').each(function (index) {
             console.log("Edit");
             var parent = $(this).parent().parent();
-            var inputElement = parent.find('input');            
+            var inputElement = parent.find('input');
             // Обновляем ID каждого элемента
             $(this).attr('id', 'Property' + (index));
             $(this).attr('name', 'properties[' + (index) + '].name');
             inputElement.attr('name', 'properties[' + (index) + '].value');
             console.log($(this));
             console.log(inputElement);
-            index = index + 1;             
-        });       
+            index = index + 1;
+        });
     }
 
 </script>

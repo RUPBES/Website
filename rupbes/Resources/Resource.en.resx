@@ -548,4 +548,7 @@ The scope of services includes engeneering, supply of equipment, manufacturing o
   <data name="Actions" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="FindByCategories" xml:space="preserve">
+    <value />
+  </data>
 </root>

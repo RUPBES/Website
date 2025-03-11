@@ -5,18 +5,17 @@
     ViewBag.Title = "Добавить группу товаров";
 }
 
-
 <section class="form-block">
     <h2>Добавить группу товаров</h2>
 
     <form action="/Admin/CreateGroup" method="post">
-      
+
         <div class="window-label">
             <input class="text-box single-line" placeholder="Название"
                    name="name" />
-        </div>    
+        </div>
         <div class="window-label">
-            <input type="submit" value="Добавить" />
-        </div>       
+            <button type="submit" class="button button-color-back-forestgreen button-color-white text-big">Добавить</button>
+        </div>
     </form>
 </section>

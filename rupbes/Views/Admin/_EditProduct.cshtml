@@ -5,12 +5,35 @@
 @{
     ViewBag.Title = "Редактировать продукцию собственного производства";
     var count = 0;
+    var countComp = 0;
 }
 
 <style>
     .window-label:last-of-type {
         margin-bottom: 10px;
     }
+    .form-block {
+        min-width: 60vw;
+        max-width: 90vw;
+        width: auto;
+    }
+
+    .product-info-grid, .product-info-grid-v2 {
+        flex: 1 1 200px; /* Элементы будут занимать равное пространство */
+        min-width: 200px; /* Устанавливает минимальную ширину */
+    }
+
+    .admin-imgs {
+        max-width: 100%;
+    }
+
+    .product-info-grid .window-label > input {
+        width: 100%;
+    }
+
+    .select2-container {
+        max-width: 85vw !important;
+    }   
 </style>
 
 <section class="form-block">
@@ -19,7 +42,7 @@
         <form id="myForm" action="/Admin/EditProduct" method="post">
             <input value="@Model.id" name="id" style="display: none;" />
             <div class="window-label">
-                <select id="GroupProduct" name="groupProduct" style="width: 50%">
+                <select required id="GroupProduct" name="groupProduct" style="width: 50%">
                     @foreach (GroupProduct group in ViewBag.groups)
                     {
                         if (Model.groupProduct == group.name)
@@ -37,11 +60,11 @@
 
             </div>
             <div class="window-label">
-                <input class="text-box single-line" placeholder="Название"
+                <input required class="text-box single-line" placeholder="Название"
                        value="@Model.name" name="name" />
             </div>
             <div class="window-label">
-                <input class="text-box single-line" placeholder="Код ТН ВЭД"
+                <input required class="text-box single-line" placeholder="Код ТН ВЭД"
                        value="@Model.codeTNVD" name="codeTNVD" />
             </div>
             <select id="Unit" name="UnitId" style="width: 50%">
@@ -68,7 +91,7 @@
                     <div class="flex">
                         <div class="product-info-grid">
                             <div class="window-label">
-                                <select id="@uniqueId" name="properties[@count].name" style="width:100%;">
+                                <select required id="@uniqueId" name="properties[@count].name" style="width:100%;">
                                     @foreach (Property propertyName in ViewBag.properties)
                                     {
                                         if (propertyName.name == item.name)
@@ -84,7 +107,7 @@
                             </div>
 
                             <div class="window-label">
-                                <input class="text-box single-line" placeholder="Значение" value="@item.value"
+                                <input required class="text-box single-line" placeholder="Значение" value="@item.value"
                                        name="properties[@count].value" />
                             </div>
                         </div>
@@ -93,7 +116,38 @@
                     count++;
                 }
                 <div id="prop">
-                    <button onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
+                    <button id="addPropertyBtn" onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
+                </div>
+            </div>
+
+            <div class="section-property">
+                @foreach (var item in Model.components)
+                {
+                    var uniqueId = "Component" + countComp.ToString(); // Генерируем уникальный ID
+                    <div class="flex">
+                        <div class="product-info-grid-v2">
+                            <div class="window-label">
+                                <select required id="@uniqueId" name="components[@countComp].name" style="width:100%;">
+                                    @foreach (Component componentName in ViewBag.components)
+                                    {
+                                        if (componentName.name == item.name)
+                                        {
+                                            <option selected>@componentName.name</option>
+                                        }
+                                        else
+                                        {
+                                            <option>@componentName.name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <span class="delete-icon">❌</span>
+                    </div>
+                    countComp++;
+                }
+                <div id="component">
+                    <button id="addComponentBtn" onclick="AddComponent()" type="button" class="button">Добавить компонент</button>
                 </div>
             </div>
 
@@ -117,14 +171,17 @@
             </div>
 
             <div class="window-label">
-                <input id="EditButton" type="submit" value="Изменить" />
+                <button type="submit" id="EditButton" class="button button-color-back-forestgreen button-color-white text-big">Изменить</button>                
             </div>
         </form>
     </div>
 </section>
 <script>
+       var grProd = '@Model.groupProduct'
+       var subGrProd = '@Model.subGroupProduct'
+       var count = @count
+    var countComp = @countComp
 
-       var count = @count;
        $('#GroupProduct').select2({
            placeholder: 'Группа товара',
            tags: true
@@ -137,6 +194,10 @@
            placeholder: 'Характеристика',
            tags: true
        });
+    $('[id^="Component"]').select2({
+        placeholder: 'Характеристика',
+        tags: true
+    });
 
        $('#GroupProduct').on('select2:select', function (e) {
            var name = e.params.data.text;
@@ -156,18 +217,40 @@
        }
 
        function AddPropertySelectGroup() {
-           $.ajax({
-               type: "get",
-               url: '@Url.Action("AddPropertySelectGroup", "Admin")',
-               data: { count: count },
-               success: function (data) {
-                   $('#prop').before(data);
-                   count = count + 1;
-               }
-           })
+           var button = document.getElementById('addPropertyBtn');
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("AddPropertySelectGroup", "Admin")',
+                data: { count: count },
+                success: function (data) {
+                    $('#prop').before(data);
+                    count = count + 1;
+                }
+            })
+            button.disabled = true;
+            // Разблокируем кнопку через 2 секунды
+            setTimeout(() => {
+                button.disabled = false;
+            }, 3000);
        }
-       var grProd = '@Model.groupProduct';
-       var subGrProd = '@Model.subGroupProduct';
+
+       function AddComponent() {
+         var button = document.getElementById('addComponentBtn');
+         $.ajax({
+             type: "get",
+             url: '@Url.Action("AddComponent", "Admin")',
+             data: { count: countComp },
+             success: function (data) {
+                 $('#component').before(data);
+                 countComp = countComp + 1;
+             }
+         })
+        button.disabled = true;
+        // Разблокируем кнопку через 2 секунды
+        setTimeout(() => {
+            button.disabled = false;
+        }, 3000);
+       }
 
        $('#clickbutton').on('click', function (event) {
         event.preventDefault();

@@ -555,4 +555,7 @@
   <data name="Actions" xml:space="preserve">
     <value>Действия</value>
   </data>
+  <data name="FindByCategories" xml:space="preserve">
+    <value>Поиск по категориям</value>
+  </data>
 </root>

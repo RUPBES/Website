@@ -226,6 +226,8 @@ namespace rupbes.Models
             modelBuilder.Entity<VersionProduct>().ToTable("VersionProduct", "rupbesby_admin");
             modelBuilder.Entity<PropertyProduct>().ToTable("PropertyProduct", "rupbesby_admin");
             modelBuilder.Entity<PropertyVersion>().ToTable("PropertyVersion", "rupbesby_admin");
+            modelBuilder.Entity<ComponentProduct>().ToTable("ComponentProduct", "rupbesby_admin");
+            modelBuilder.Entity<Component>().ToTable("Component", "rupbesby_admin");
             modelBuilder.Entity<Property>().ToTable("Property", "rupbesby_admin");
             modelBuilder.Entity<Unit>().ToTable("Unit", "rupbesby_admin");
 

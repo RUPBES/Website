@@ -5,7 +5,24 @@
 @{
     ViewBag.Title = "Добавить продукцию собственного производства";
 }
+<style>
+    .form-block {
+        min-width: 60vw;
+        max-width: 90vw;
+        width: auto;
+    }
+    .product-info-grid, .product-info-grid-v2 {
+        flex: 1 1 200px; /* Элементы будут занимать равное пространство */
+        min-width: 200px; /* Устанавливает минимальную ширину */
+    }
+    .admin-imgs {
+        max-width: 100%;
+    }
 
+    .select2-container {
+        max-width: 85vw !important;        
+    }    
+</style>
 
 <section class="form-block">
     <h2>Добавить товар</h2>
@@ -13,7 +30,7 @@
         <form id="myForm" action="/Admin/CreateProduct" method="post">
             <input name="DepartmentId" value="@Model.DepartmentId" readonly style="display: none" />
             <div class="window-label">
-                <select id="GroupProduct" name="groupProduct" style="width: 50%">
+                <select required id="GroupProduct" name="groupProduct" style="width: 50%">
                     @foreach (GroupProduct group in ViewBag.groups)
                     {
                         <option>@group.name</option>
@@ -24,11 +41,11 @@
 
             </div>
             <div class="window-label">
-                <input class="text-box single-line" placeholder="Название"
+                <input required class="text-box single-line" placeholder="Название"
                        value="@Model.name" name="name" />
             </div>
             <div class="window-label">
-                <input class="text-box single-line" placeholder="Код ТН ВЭД"
+                <input required class="text-box single-line" placeholder="Код ТН ВЭД"
                        value="@Model.codeTNVD" name="codeTNVD" />
             </div>
             <select id="Unit" name="UnitId" style="width: 50%">
@@ -50,10 +67,14 @@
             </div>
             <div class="section-property">
                 <div id="prop">
-                    <button onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
+                    <button id="addPropertyBtn" onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
                 </div>
             </div>
-
+            <div class="section-property">
+                <div id="component">
+                    <button id="addComponentBtn" onclick="AddComponent()" type="button" class="button">Добавить компонент</button>
+                </div>
+            </div>
             <div class="window-label">
                 <label>
                     Прикрепить фото товара
@@ -63,17 +84,18 @@
                 <input class="upload-img" type="file" name="upload" id="uploadFile">
                 <button id="clickbutton" class="upfile-btn">Загрузить файл</button>
             </div>
+            <div class="admin-imgs">
+            </div>
 
             <div class="window-label">
-                <input id="AddButton" type="submit" value="Добавить" />
-            </div>
-            <div class="admin-imgs">
+                <button type="submit" id="AddButton" class="button button-color-back-forestgreen button-color-white text-big">Добавить</button>
             </div>
         </form>
     </div>
 </section>
 <script>
     var count = 0;
+    var countComp = 0;
     $('#GroupProduct').select2({
         placeholder: 'Группа товара',
         tags: true
@@ -109,6 +131,7 @@
     }
 
     function AddPropertySelectGroup() {
+        var button = document.getElementById('addPropertyBtn');        
         $.ajax({
             type: "get",
             url: '@Url.Action("AddPropertySelectGroup", "Admin")',
@@ -118,6 +141,29 @@
                 count = count + 1;
             }
         })
+        button.disabled = true;    
+        // Разблокируем кнопку через 3 секунды
+        setTimeout(() => {
+            button.disabled = false;
+        }, 3000);
+    }
+
+    function AddComponent() {
+        var button = document.getElementById('addComponentBtn');      
+         $.ajax({
+             type: "get",
+             url: '@Url.Action("AddComponent", "Admin")',
+             data: { count: countComp },
+             success: function (data) {
+                 $('#component').before(data);
+                 countComp = countComp + 1;
+             }
+         })
+        button.disabled = true;     
+        // Разблокируем кнопку через 3 секунды
+        setTimeout(() => {
+            button.disabled = false;
+        }, 3000);
     }
 
     showSubGroupSelect($('#GroupProduct').select2('data')[0].text);
@@ -158,7 +204,7 @@
         $('#myForm').off('submit').submit();
 
         setTimeout(function () {
-            button.prop('disabled', false).text('Добавить'); // Возвращаем текст        
+            button.prop('disabled', false).text('Добавить'); // Возвращаем текст
         }, 5000);
     });
 

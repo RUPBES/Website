@@ -449,6 +449,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Поиск по категориям.
+        /// </summary>
+        public static string FindByCategories {
+            get {
+                return ResourceManager.GetString("FindByCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Рус.
         /// </summary>
         public static string Lang {
