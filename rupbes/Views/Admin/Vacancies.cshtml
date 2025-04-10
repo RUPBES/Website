@@ -1,13 +1,19 @@
-﻿
+﻿@using rupbes.Models
+@model List<Departments>
 @{
     ViewBag.Title = "Вакансии";
 }
 <section class="admin-content">
-    @Html.ActionLink("Назад", "Index")
-    <h2>@Html.ActionLink("Добавить новую вакансию", "AddVacancy")</h2>
     <h2>Все вакансии по филиалам:</h2>
-    @foreach (rupbes.Models.Departments department in ViewBag.Departments)
-    {
-        <p>@Html.ActionLink(department.name_ru, "DepVacancy", "Admin", new { id = department.id }, null)</p>
-    }
+
+    <a href="AddVacancy" class="button button-color-back-forestgreen button-color-white text-big">Добавить новую вакансию</a>
+    <div class="admin-content-div">
+        @foreach (var department in Model)
+        {
+            @Html.ActionLink(department.name_ru, "DepVacancy", "Admin", new { id = department.id }, null)
+        }
+    </div>
+    <div class="button button-color-back-red">
+        @Html.ActionLink("В меню", "Index")
+    </div>
 </section>

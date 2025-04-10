@@ -10,7 +10,9 @@
 
 <script>
     var selGroupProduct = $("#selSubGroupProduct");
-
+    $('#selSubGroupProduct').select2({
+        placeholder: 'Выберите подгруппу товаров'
+    });
     selGroupProduct.bind("change", function () {
         $.ajax({
             type: "get",

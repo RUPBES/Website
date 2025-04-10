@@ -2,8 +2,20 @@
 @model List<GroupProduct>
 @{
     ViewBag.Title = "Материалы собственного приготовления";
+    var index = 1;
 }
 
+<style>
+    .dir-table {
+        margin: 0 auto !important;
+        width: 100%;
+    }
+
+    #searchResult {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+</style>
 <section class="admin-content">
     <div class="flex-block1">
         <div id="divGroup" class="big-link active">
@@ -20,6 +32,7 @@
                 <button class="button button-color-back-forestgreen button-color-white text-big" onclick="AddGroup()">Добавить группу товаров</button>
                 <table class="dir-table">
                     <tr class="dir-table-row">
+                        <th class="dir-table-cell">№</th>
                         <th class="dir-table-cell">@Resources.Resource.ProductName</th>
                         <th class="dir-table-cell">@Resources.Resource.Actions</th>
                     </tr>
@@ -27,13 +40,17 @@
                     @foreach (var group in Model)
                     {
                         <tr class="dir-table-row">
-                            <td data-child="child-@group.id"  onclick="ShowSubGroup(@group.id,this.dataset.child)" class="dir-table-cell" >
-                                <span class="span-link text-bold"> @group.name</span>                               
+                            <td class="dir-table-cell">
+                                <span class="text-bold"> @index</span>
+                            </td>
+                            <td data-child="child-@group.id" onclick="ShowSubGroup(@group.id,this.dataset.child)" class="dir-table-cell">
+                                <span class="span-link text-bold"> @group.name</span>
                             </td>
                             <td class="dir-table-cell">
                                 <div onclick="EditGroup(@group.id)" class="edit-img"></div>
                             </td>
                         </tr>
+                        index = index + 1;
                     }
                 </table>
             </div>

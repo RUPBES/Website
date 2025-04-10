@@ -56,7 +56,7 @@
                 <span>@depTypes.type</span>
                 @foreach (rupbes.Models.Departments dep in depTypes.Departments)
                 {
-                    if (dep.id != 7) // не отображать УС БелАЭС
+                    if (dep.id != 7 && dep.id < 21) // не отображать УС БелАЭС
                     {
                     <a href="#@dep.id">@dep.short_name_ru</a>
                     }

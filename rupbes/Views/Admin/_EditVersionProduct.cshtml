@@ -54,6 +54,7 @@
                 <input type="checkbox" name="isSale" value="true" @(Model.isSale ? "checked" : "") /> Продается ли?
             </label>
             <div class="section-property">
+                <h3 style="text-align: center; color: white;">Характеристики</h3>
                 @foreach (var item in Model.properties)
                 {
                     var uniqueId = "Property" + count.ToString(); // Генерируем уникальный ID

@@ -3,10 +3,58 @@
 @{
     ViewData["Title"] = Resources.Resource.ServiceProduct;
 }
+<style>
+    .product-organization {
+        background-color: #2e354e; /* Цвет фона */
+        color: white; /* Цвет текста */
+        border: 2px solid #ba5600;
+        border-radius: 5px; /* Скругленные углы */
+        padding: 10px 20px; /* Отступы внутри кнопки */
+        font-size: 16px; /* Размер шрифта */
+        cursor: pointer; /* Курсор при наведении */
+        transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+        margin-top: 10px;
+    }
+
+        .product-organization:hover {
+            background-color: #0056b3; /* Цвет фона при наведении */
+        }
+
+        .product-organization:active {
+            background-color: #004085; /* Цвет фона при нажатии */
+        }
+
+        .product-organization:focus {
+            outline: none; /* Убираем обводку при фокусе */
+        }
+
+    .h2-pointer {
+        color: #007bff; /* Цвет текста */
+        text-decoration: none; /* Убираем подчеркивание */
+        font-size: 1.5rem; /* Размер шрифта */
+        font-weight: bold; /* Жирный текст */
+        transition: color 0.3s, text-shadow 0.3s; /* Плавный переход для эффектов */
+    }
+
+        .h2-pointer:hover {
+            color: #0056b3; /* Цвет текста при наведении */
+            text-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Эффект тени при наведении */
+        }
+
+        .h2-pointer:active {
+            color: #003d80; /* Цвет текста при нажатии */
+        }
+
+    .select option {
+        white-space: normal; /* Разрешить перенос текста */
+        word-wrap: break-word; /* Переносить длинные слова */
+        max-width: 300px; /* Ограничить ширину */
+    }
+</style>
 
 <h2 class="headline">@ViewData["Title"]</h2>
 
-<h2 class="h2-pointer" onclick="ShowBlock('urls');">Производители</h2>
+<button class="product-organization" onclick="ShowBlock('urls')">Производители</button>
 
 <div id="urls" class="construction-materials">
     <a class="h2-pointer" href="https://bsess.by/katalog" target="_blank">ОАО «Белсельэлектросетьстрой»</a>
@@ -31,7 +79,7 @@
     </section>
     <section class="content">
         <div id="advSearchForm" class="dir-adv-search-form" style="display:none;">
-            <div class="dir-label">
+            <div id="selGroupBlock" class="dir-label">
                 <select id="selGroupProduct" class="select dir-select">
                     <option>@Resources.Resource.SelectGroupProduct</option>
                     @foreach (GroupProduct groupProduct in Model)
@@ -46,7 +94,12 @@
     </section>
 </div>
 @section scripts {
-    <script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+    $('#selGroupProduct').select2({
+        placeholder: 'Выберите группу товаров',
+        width: 440,
+    });
     var searchResult = document.getElementById('searchResult');
     var advSearchForm = document.getElementById('advSearchForm');
     var selGroupProduct = $("#selGroupProduct");
@@ -91,30 +144,32 @@
     var queue = 0;
     var req_stack = new Array();
 
-searchFormJS.oninput = function () {
-    searchName(searchFormJS.value);
-}
+    searchFormJS.oninput = function () {
+        searchName(searchFormJS.value);
+    }
 
-function searchName(searchStr) {
-    advSearchForm.style.display = 'none';
-    if (searchStr.length > 1) {
-            $.ajax({
-                type: "get",
-                url: '@Url.Action("GetProductByNameOrCode", "Service")',
-                data: { search: searchStr },
-                success: function (data) {
-                    searchResult.html(data);
-                    check_ready = 1;
-                    if (req_stack.length != 0) {
-                        queue = 1;
-                        searchName(req_stack.shift());
+    function searchName(searchStr) {
+        advSearchForm.style.display = 'none';
+        if (searchStr.length > 1) {
+                $.ajax({
+                    type: "get",
+                    url: '@Url.Action("GetProductByNameOrCode", "Service")',
+                    data: { search: searchStr },
+                    success: function (data) {
+                        searchResult.html(data);
+                        check_ready = 1;
+                        if (req_stack.length != 0) {
+                            queue = 1;
+                            searchName(req_stack.shift());
+                        }
                     }
-                }
-            })
+                })
+        }
+        else {
+            searchResult.empty();
+        }
     }
-    else {
-        searchResult.empty();
-    }
-}
-</script>
+
+
+    </script>
 }

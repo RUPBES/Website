@@ -59,7 +59,7 @@
     }
     <script>
         var endTime = performance.now();
-        console.log(`Время загрузки link: ${(endTime - startTime).toFixed(2)} мс`);
+        console.log(`Время загрузки link, cookie, main.css: ${(endTime - startTime).toFixed(2)} мс`);
         startTime = endTime;
     </script>
     <script defer src="~/js/cookieconsent-master/dist/cookieconsent.js"></script>
@@ -448,16 +448,16 @@
         console.log(`Время загрузки js библиотек: ${(endTime - startTime).toFixed(2)} мс`);
         startTime = endTime;
     </script>
-    @RenderSection("scripts", required: false)
-    <script>
-        var endTime = performance.now();
-        console.log(`Время загрузки render section: ${(endTime - startTime).toFixed(2)} мс`);
-        startTime = endTime;
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
     <script>
         var endTime = performance.now();
         console.log(`Время загрузки select2.js: ${(endTime - startTime).toFixed(2)} мс`);
+        startTime = endTime;
+    </script>
+    @RenderSection("scripts", required: false)
+    <script>
+        var endTime = performance.now();
+        console.log(`Время загрузки render section: ${(endTime - startTime).toFixed(2)} мс`);
         startTime = endTime;
     </script>
     <script>

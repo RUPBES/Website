@@ -66,11 +66,13 @@
                        value="@Model.note" name="note" />
             </div>
             <div class="section-property">
+                <h3 style="text-align: center; color: white;">Характеристики</h3>
                 <div id="prop">
                     <button id="addPropertyBtn" onclick="AddPropertySelectGroup()" type="button" class="button">Добавить характеристику</button>
                 </div>
             </div>
             <div class="section-property">
+                <h3 style="text-align: center; color: white;">Компоненты</h3>
                 <div id="component">
                     <button id="addComponentBtn" onclick="AddComponent()" type="button" class="button">Добавить компонент</button>
                 </div>
@@ -110,7 +112,7 @@
     $('#GroupProduct').on('select2:select', function (e) {
         var name = e.params.data.text;
          $.ajax({
-             type: "get",
+             type: "post",
              url: '@Url.Action("ShowSubGroupSelect", "Admin")',
              data: { name: name },
              success: function (data) {
@@ -121,7 +123,7 @@
 
     function showSubGroupSelect(name) {
         $.ajax({
-            type: "get",
+            type: "post",
             url: '@Url.Action("ShowSubGroupSelect", "Admin")',
             data: { name: name },
             success: function (data) {
@@ -229,9 +231,7 @@
             // Обновляем ID каждого элемента
             $(this).attr('id', 'Property' + (index));
             $(this).attr('name', 'properties[' + (index) + '].name');
-            inputElement.attr('name', 'properties[' + (index) + '].value');
-            console.log($(this));
-            console.log(inputElement);
+            inputElement.attr('name', 'properties[' + (index) + '].value');     
             index = index + 1;
         });
     }

@@ -85,6 +85,7 @@
                        value="@Model.note" name="note" />
             </div>
             <div class="section-property">
+                <h3 style="text-align: center; color: white;">Характеристики</h3>
                 @foreach (var item in Model.properties)
                 {
                     var uniqueId = "Property" + count.ToString(); // Генерируем уникальный ID
@@ -121,6 +122,7 @@
             </div>
 
             <div class="section-property">
+                <h3 style="text-align: center; color: white;">Компоненты</h3>
                 @foreach (var item in Model.components)
                 {
                     var uniqueId = "Component" + countComp.ToString(); // Генерируем уникальный ID
@@ -207,7 +209,7 @@
        function showSubGroupSelect(name, subGroup) {
            console.log(subGroup);
            $.ajax({
-               type: "get",
+               type: "post",
                url: '@Url.Action("ShowSubGroupSelect", "Admin")',
                data: { name: name, subGroupName: subGroup},
                success: function (data) {

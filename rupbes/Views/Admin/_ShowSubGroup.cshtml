@@ -1,9 +1,14 @@
 ﻿@using rupbes.Models.Products
 @model List<SubGroupProduct>
+    @{ 
+        var indexSub = 1;
+    }
+
 <h2>Подгруппа товаров</h2>
 <button class="button button-color-back-forestgreen button-color-white text-big" onclick="AddSubGroup()">Добавить подгруппу товаров</button>
 <table class="dir-table">
     <tr class="dir-table-row">
+        <th class="dir-table-cell">№</th>
         <th class="dir-table-cell">@Resources.Resource.ProductName</th>
         <th class="dir-table-cell">@Resources.Resource.Actions</th>
     </tr>
@@ -12,12 +17,16 @@
     {
         <tr class="dir-table-row">
             <td class="dir-table-cell">
+                <span class="text-bold"> @indexSub</span>
+            </td>  
+            <td class="dir-table-cell">
                 @subgroup.name
             </td>
             <td class="dir-table-cell">
                 <div onclick="EditSubGroup(@subgroup.id)" class="edit-img"></div>
             </td>
         </tr>
+        indexSub = indexSub + 1;
     }
 </table>
 <script>

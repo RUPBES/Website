@@ -336,8 +336,8 @@ namespace rupbes.Controllers
         [Authorize(Roles = "admin, ok_master")]
         public ActionResult Vacancies()//Страница с выбором филиала
         {
-            ViewBag.Departments = db.Departments.ToList();
-            return View();
+           var departments = db.Departments.Where(x => x.id < 21).ToList();
+            return View(departments);
         }
         [HttpGet]
         [Authorize(Roles = "admin, ok_master")]
@@ -2846,7 +2846,7 @@ namespace rupbes.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "product, admin")]
         public ActionResult ShowSubGroupSelect(string name, string subGroupName = "")
         {

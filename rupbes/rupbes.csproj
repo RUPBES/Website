@@ -826,6 +826,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Styles\Authorization.css" />
     <TypeScriptCompile Include="js\cookieconsent-master\types\types.d.ts" />
   </ItemGroup>
   <PropertyGroup>
