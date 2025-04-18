@@ -1,24 +1,23 @@
-﻿
-@{
-    ViewBag.Title = Resources.Resource.MenuAntiCorruptionNews;
+﻿@{
+    ViewBag.Title = Resources.Resource.EAES;
     var count = 0;
     var id = 0;
 }
-<h2 class="headline">@Resources.Resource.MenuAntiCorruptionNews</h2>
 
-
+<h2 class="headline">@Resources.Resource.EAES</h2>
 
 <section class="content">
+
     <div class="news-guide">
         <div class="flex-block1">
-            <div class="big-link">
-                @Html.ActionLink(Resources.Resource.MenuNews, "News", "Home")
-            </div>
             <div class="big-link">
                 @Html.ActionLink(Resources.Resource.MenuSocialNews, "SocialNews", "Home")
             </div>
             <div class="big-link">
                 @Html.ActionLink(Resources.Resource.MenuLifeSafetyNews, "LifeSafetyNews", "Home")
+            </div>
+            <div class="big-link">
+                @Html.ActionLink(Resources.Resource.MenuAntiCorruptionNews, "AntiCorruptionNews", "Home")
             </div>
             <div class="big-link">
                 @Html.ActionLink(Resources.Resource.MenuRoadSafety, "RoadSafetyNews", "Home")
@@ -30,7 +29,7 @@
                 @Html.ActionLink(Resources.Resource.MenuCurrentYear, "CurrentYearNews", "Home")
             </div>
             <div class="big-link">
-                @Html.ActionLink(Resources.Resource.EAES, "EAES", "Home")
+                @Html.ActionLink(Resources.Resource.MenuNews, "News", "Home")
             </div>
         </div>
         @foreach (rupbes.Models.News news in ViewBag.News)
@@ -41,36 +40,37 @@
 
     @foreach (rupbes.Models.News news in ViewBag.News)
     {
+        count = 0;
         id = id + 1;
         <p class="news-title" id="@news.id">@news.title_ru</p>
         <p class="news-date">@news.date.ToShortDateString()</p>
 
         if (news.Imgs.Count > 0)
         {
-            <div class="news-imgs-block">
-                <div class="news-imgs">
-                    @foreach (rupbes.Models.Imgs img in news.Imgs)
-                    {
-                        if (img.src_min != "document")
+            if (news.Imgs.Any(x => x.src_min != "document"))
+            {
+                <div class="news-imgs-block">
+                    <div class="news-imgs">
+                        @foreach (rupbes.Models.Imgs img in news.Imgs)
                         {
-                            <img src="@img.src" />
-                            count = count + 1;
+                            if (img.src_min != "document")
+                            {
+                                <img src="@img.src" />
+                                count = count + 1;
+                            }
                         }
-                    }
-                </div>
+                    </div>
 
-                <div class="minus-slide"></div>
-                <div class="plus-slide"></div>
-                <div class="full-screen-btn"></div>
-                <p></p>
-            </div>
+                    <div class="minus-slide"></div>
+                    <div class="plus-slide"></div>
+                    <div class="full-screen-btn"></div>
+                    <p></p>
+                </div>
+            }
             if (count < news.Imgs.Count)
             {
-                if (count == 0)
-                { }
                 foreach (rupbes.Models.Imgs img in news.Imgs)
                 {
-
                     if (img.src_min == "document")
                     {
                         <span></span>
@@ -98,4 +98,3 @@
         })
     }
 </script>
-

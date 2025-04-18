@@ -395,6 +395,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Представительство РБ в органах ЕАЭС.
+        /// </summary>
+        public static string EAES {
+            get {
+                return ResourceManager.GetString("EAES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на ОАО «Электроцентрмонтаж».
         /// </summary>
         public static string Electrocentrmontaj {

@@ -278,6 +278,9 @@
   <data name="MenuCurrentYear" xml:space="preserve">
     <value>Год качества</value>
   </data>
+  <data name="EAES" xml:space="preserve">
+    <value>Представительство РБ в органах ЕАЭС</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>Адрес</value>
   </data>

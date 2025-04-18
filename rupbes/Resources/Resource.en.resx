@@ -275,6 +275,9 @@ The scope of services includes engeneering, supply of equipment, manufacturing o
   <data name="MenuCurrentYear" xml:space="preserve">
     <value>Year of quality</value>
   </data>
+  <data name="EAES" xml:space="preserve">
+    <value>Representation of the Republic of Belarus in the bodies of the EAEU</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>

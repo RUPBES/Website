@@ -365,7 +365,28 @@ namespace rupbes.Controllers
             ViewBag.News = news;
             return View();
         }
-
+        public ActionResult EAES()
+        {
+            HttpCookie cookie = Request.Cookies["lang"];
+            List<News> news = db.News.Where(x => x.News_type.id == 8 & x.Departments.id == 3).ToList();
+            news.Sort((x, y) => x.date.CompareTo(y.date));
+            news.Reverse();
+            foreach (News itemNews in news)
+            {
+                itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
+                itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+            }
+            if (cookie != null && cookie.Value == "be")
+            {
+                foreach (News itemNews in news)
+                {
+                    itemNews.title_ru = itemNews.title_bel;
+                    itemNews.body_ru = itemNews.body_bel;
+                }
+            }
+            ViewBag.News = news;
+            return View();
+        }
         public ActionResult Objects()
         {
             HttpCookie cookie = Request.Cookies["lang"];

@@ -3619,3 +3619,12 @@ Added 9 tenders at 10.04.2025 10:15:36
 --BEGIN OF RECORD--
 Added 9 tenders at 10.04.2025 10:21:36
 --END--
+--BEGIN OF RECORD--
+Added 5 tenders at 18.04.2025 11:17:41
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 18.04.2025 11:19:16
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 18.04.2025 11:21:18
+--END--
