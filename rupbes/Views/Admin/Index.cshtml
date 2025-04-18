@@ -2,8 +2,7 @@
     ViewBag.Title = "Админка";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-<section class="admin-content">
-    <h2>Управление сайтом</h2>
+<section class="admin-content"> 
 
     <div class="admin-content-div">
         @if (ViewBag.provider.IsUserInRole(User.Identity.Name, "admin"))
