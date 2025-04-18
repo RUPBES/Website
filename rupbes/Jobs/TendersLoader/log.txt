@@ -3620,13 +3620,205 @@ Added 9 tenders at 10.04.2025 10:15:36
 Added 9 tenders at 10.04.2025 10:21:36
 --END--
 --BEGIN OF RECORD--
-Added 5 tenders at 18.04.2025 11:17:41
+Added 9 tenders at 10.04.2025 10:25:39
 --END--
 --BEGIN OF RECORD--
-Added 5 tenders at 18.04.2025 11:19:16
+Added 9 tenders at 10.04.2025 10:46:48
 --END--
 --BEGIN OF RECORD--
-Added 5 tenders at 18.04.2025 11:21:18
+Added 9 tenders at 10.04.2025 10:54:49
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 10.04.2025 11:26:49
+--END--
+--BEGIN OF RECORD--
+Added 9 tenders at 10.04.2025 12:34:12
+--END--
+--BEGIN OF RECORD--
+Added 9 tenders at 10.04.2025 14:23:45
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 11:01:53
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 11:42:02
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 11:59:32
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 12:55:18
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 13:00:48
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 13:06:32
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\Source\Repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 13:09:12
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 16:17:21
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 11.04.2025 16:18:39
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 8:41:43
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 8:59:20
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 9:06:21
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 9:10:13
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 9:28:25
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 9:33:35
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 11:01:06
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 11:19:38
+--END--
+--BEGIN OF RECORD--
+Error message: Заданный аргумент находится вне диапазона допустимых значений.
+Имя параметра: index Source: AngleSharp Method:    в AngleSharp.Extensions.CollectionExtensions.GetItemByIndex[T](IEnumerable`1 items, Int32 index)
+   в rupbes.Jobs.TendersLoader.Parser.<GetTendersAsync>d__2.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Parser.cs:строка 63
+--- Конец трассировка стека из предыдущего расположения, где возникло исключение ---
+   в System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   в System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   в System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   в rupbes.Jobs.TendersLoader.Updater.<Execute>d__0.MoveNext() в C:\Users\zhadejko.aa\source\repos\Website\rupbes\Jobs\TendersLoader\Updater.cs:строка 34 Date: 14.04.2025 11:32:23
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 18.04.2025 9:26:46
 --END--
 --BEGIN OF RECORD--
 Added 5 tenders at 07.05.2025 10:27:23

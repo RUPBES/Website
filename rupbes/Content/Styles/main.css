@@ -2554,32 +2554,32 @@ h2#bidsPages {
 }
 
 .button-color-back-forestgreen {
-    background-color: forestgreen;
+    background-color: forestgreen !important;
 }
 
     .button-color-back-forestgreen > a {
-        color: white;
+        color: white !important;
     }
 
 
 .button-color-back-darkorange {
-    background-color: darkorange;
+    background-color: darkorange !important;
 }
 
     .button-color-back-darkorange > a {
-        color: white;
+        color: white !important;
     }
 
 .button-color-back-red {
-    background-color: red;
+    background-color: red !important;
 }
 
     .button-color-back-red > a {
-        color: white;
+        color: white !important;
     }
 
 .button-color-white {
-    color: white;
+    color: white !important;
 }
 
 .text-big {

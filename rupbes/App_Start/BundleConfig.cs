@@ -24,7 +24,11 @@ namespace rupbes
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/Styles/main.css"));
+                      "~/Content/Styles/main.css",                       
+                      "~/adminlte/css/adminlte.min.css"));
+
+            bundles.Add(new ScriptBundle("~/adminlte/js").Include(
+             "~/adminlte/js/adminlte.min.js"));
         }
     }
 }

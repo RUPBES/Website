@@ -1,0 +1,32 @@
+﻿@using rupbes.Models
+@model Vacancies
+
+<h2>Вакансия</h2>
+<div class="window-label">
+    <input required class="text-box single-line" placeholder="Название вакансии на русском языке"
+           value="@Model.vacancy_ru" name="vacancy_ru" />
+</div>
+
+<div class="window-label">
+    <input required class="text-box single-line" placeholder="Название вакансии на беларусском языке"
+           value="@Model.vacancy_bel" name="vacancy_bel" />
+</div>
+
+<div class="window-label">
+    <input class="text-box single-line" placeholder="Требование к вакансии на русском языке"
+           value="@Model.requirement_ru" name="requirement_ru" />
+</div>
+
+<div class="window-label">
+    <input required class="text-box single-line" placeholder="Требование к вакансии на белорусском языке"
+           value="@Model.requirement_bel" name="requirement_bel" />
+</div>
+
+<div class="window-label">
+    <input required class="text-box single-line" placeholder="Заработная плата"
+           value="@Model.payment" name="payment" />
+</div>
+
+<div class="window-label">
+    <input value="Изменить" />
+</div>

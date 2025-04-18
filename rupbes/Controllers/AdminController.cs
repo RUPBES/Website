@@ -25,7 +25,7 @@ using System.Web.Services.Description;
 using System.Reflection.PortableExecutable;
 
 namespace rupbes.Controllers
-{
+{    
     [Authorize]
     [Filters.Culture]
     public class AdminController : Controller
@@ -343,11 +343,20 @@ namespace rupbes.Controllers
         [Authorize(Roles = "admin, ok_master")]
         public ActionResult DepVacancy(int id)//Страница со списоком вакансий для выбранного филиала
         {
-            ViewBag.Departments = db.Departments.ToList();
-            ViewBag.Department = db.Departments.Find(id);
-            ViewBag.Vacancies = db.Vacancies.Where(x => x.id_dep == id).ToList();
-            return View();
+            ViewBag.IdDep = id;
+            ViewBag.nameDep = db.Departments.Where(x => x.id == id).Select(x => x.short_name_ru).FirstOrDefault();
+            var Vacancies = db.Vacancies.Where(x => x.id_dep == id).OrderBy(x => x.vacancy_ru).ToList();
+            return View(Vacancies);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, ok_master")]
+        public ActionResult ShowVacancy(int id)//Частичное представление по выбранной вакансии
+        {           
+            var Vacancy = db.Vacancies.Where(x => x.id == id).FirstOrDefault();
+            return PartialView("_ShowVacancy",Vacancy);
+        }
+
         [HttpPost]
         [Authorize(Roles = "admin, ok_master, ok")]
         public ActionResult DeleteVacancy(int id)//Удаление выбранной вакансии
@@ -407,13 +416,6 @@ namespace rupbes.Controllers
                 return PartialView("_ValidVacFail");
             }
 
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult AddVacancy()//Страница добавления вакансии
-        {
-            ViewBag.Departments = db.Departments.ToList();
-            return View();
         }
         [HttpGet]
         [Authorize(Roles = "admin, ok_master")]

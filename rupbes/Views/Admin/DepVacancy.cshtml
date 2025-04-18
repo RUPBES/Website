@@ -1,75 +1,110 @@
-﻿
+﻿@using rupbes.Models
+@model List<Vacancies>
 @{
-    ViewBag.Title = "Вакансии "+ ViewBag.Department.short_name_ru;
+    ViewBag.Title = "Вакансии " + ViewBag.nameDep;
+    var index = 1;
 }
+<section class="admin-content">
+    <a href="AddDepVacancy?id=@(ViewBag.IdDep ?? 0)" class="button button-color-back-forestgreen button-color-white text-big">Добавить вакансию</a>
+    <h2>Вакансии филиала <br /> @ViewBag.nameDep</h2>
+    <div id="searchResult">
+        <div class="product-info">
+            <div>
+                <h2>Пересень вакансий</h2>
+                <table class="dir-table">
+                    <tr class="dir-table-row">
+                        <th class="dir-table-cell">№</th>
+                        <th class="dir-table-cell">Должность</th>
+                    </tr>
 
-<section class="form-block">
-    <h2>Вакансии филиала @ViewBag.Department.short_name_ru</h2>
-    <div class="window-label">@Html.ActionLink("Вернуться к выбору филиала", "Vacancies")</div>
-    <div class="window-label">@Html.ActionLink("Добавить новую вакансию для этого филиала", "AddDepVacancy", new { id = ViewBag.Department.id })</div>
-    @foreach (rupbes.Models.Vacancies vacancy in ViewBag.Vacancies)
-    {
-        using (Ajax.BeginForm("EditVacancy", new AjaxOptions { Confirm = "Изменить вакансию?", UpdateTargetId = vacancy.id.ToString() }))
-        {
-            <input type="hidden" value="@vacancy.id" name="id" />
-            <div class="window-label">
-                <label>Название вакансии на русском языке</label>
-                <input type="text" value="@vacancy.vacancy_ru" name="vacancy_ru" />
-            </div>
-
-            <div class="window-label">
-                <label>Название вакансии на беларусском языке</label>
-                <input type="text" value="@vacancy.vacancy_bel" name="vacancy_bel" />
-            </div>
-
-            <div class="window-label">
-                <label>Требование к вакансии на русском языке</label>
-                <input type="text" value="@vacancy.requirement_ru" name="requirement_ru" />
-            </div>
-
-            <div class="window-label">
-                <label>Требование к вакансии на белорусском языке</label>
-                <input type="text" value="@vacancy.requirement_bel" name="requirement_bel" />
-            </div>
-
-            <div class="window-label">
-                <label>Заработная плата</label>
-                <input type="text" value="@vacancy.payment" name="payment" />
-            </div>
-
-            <div class="window-label">
-                <label>Ссылка на вакансию в государственной службе занятости</label>
-                <input type="text" value="@vacancy.link" name="link" />
-            </div>
-
-            <div class="window-label">
-                <label>
-                    Филиал
-
-                </label>
-                <select class="select" name="id_dep">
-                    @foreach (rupbes.Models.Departments deparment in ViewBag.Departments)
+                    @foreach (var vacancy in Model)
                     {
-                        <option value="@deparment.id" @(deparment.id == vacancy.id_dep ? "selected" : "")>@deparment.short_name_ru</option>
+                        <tr class="dir-table-row">
+                            <td class="dir-table-cell">
+                                <span class="text-bold"> @index</span>
+                            </td>
+                            <td data-child="child-@vacancy.id" onclick="ShowVacancy(@vacancy.id,this.dataset.child)" class="dir-table-cell">
+                                <span class="span-link text-bold"> @vacancy.vacancy_ru</span>
+                            </td>
+                        </tr>
+                        index = index + 1;
                     }
-                </select>
-
+                </table>
             </div>
-            <div class="window-label">
-                <input type="submit" value="Изменить" />
+            <div id="jquerySubGroup">
+                <h2>Вакансия</h2>
             </div>
 
-        }
-        <div class="form-label">
-            @using (Ajax.BeginForm("DeleteVacancy", new AjaxOptions { Confirm = "Удалить вакансию?", UpdateTargetId = vacancy.id.ToString() }))
+        </div>
+    </div>
+    @*@foreach (var vacancy in Model)
+        {
+            using (Ajax.BeginForm("EditVacancy", new AjaxOptions { Confirm = "Изменить вакансию?", UpdateTargetId = vacancy.id.ToString() }))
             {
                 <input type="hidden" value="@vacancy.id" name="id" />
-                <input type="submit" value="Удалить" />
+                <div class="window-label">
+                    <label>Название вакансии на русском языке</label>
+                    <input type="text" value="@vacancy.vacancy_ru" name="vacancy_ru" />
+                </div>
+
+                <div class="window-label">
+                    <label>Название вакансии на беларусском языке</label>
+                    <input type="text" value="@vacancy.vacancy_bel" name="vacancy_bel" />
+                </div>
+
+                <div class="window-label">
+                    <label>Требование к вакансии на русском языке</label>
+                    <input type="text" value="@vacancy.requirement_ru" name="requirement_ru" />
+                </div>
+
+                <div class="window-label">
+                    <label>Требование к вакансии на белорусском языке</label>
+                    <input type="text" value="@vacancy.requirement_bel" name="requirement_bel" />
+                </div>
+
+                <div class="window-label">
+                    <label>Заработная плата</label>
+                    <input type="text" value="@vacancy.payment" name="payment" />
+                </div>
+                <div class="window-label">
+                    <input type="submit" value="Изменить" />
+                </div>
+
             }
-        </div>
-        <span id="@vacancy.id"></span>
-        <hr />
-    }
+            <div class="form-label">
+                @using (Ajax.BeginForm("DeleteVacancy", new AjaxOptions { Confirm = "Удалить вакансию?", UpdateTargetId = vacancy.id.ToString() }))
+                {
+                    <input type="hidden" value="@vacancy.id" name="id" />
+                    <input type="submit" value="Удалить" />
+                }
+            </div>
+        }*@
+    <div class="button button-color-back-red">
+        @Html.ActionLink("Вернуться к выбору филиала", "Vacancies")
+    </div>
 </section>
+@section scripts {
+    <script>
+    function removeActiveClass() {
+        const activeSpans = document.querySelectorAll('span.active');
+        activeSpans.forEach(span => {
+            span.classList.remove('active');
+        });
+    }
 
+    ShowVacancy(@Model.FirstOrDefault().id, 'child-@Model.FirstOrDefault().id');
 
+    function ShowVacancy(id, childObject) {
+        removeActiveClass()
+        var child = document.querySelector('td[data-child=' + childObject + ']').querySelector('span').classList.add('active');
+         $.ajax({
+             type: "get",
+             url: '@Url.Action("ShowVacancy", "Admin")',
+             data: { id: id },
+             success: function (data) {
+                 $('#jquerySubGroup').html(data);
+             }
+         })
+        }
+    </script>
+}
