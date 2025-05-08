@@ -23,9 +23,12 @@ using AngleSharp.Css.Values;
 using System.Runtime.Remoting.Messaging;
 using System.Web.Services.Description;
 using System.Reflection.PortableExecutable;
+using System.Web.Providers.Entities;
+using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace rupbes.Controllers
-{    
+{
     [Authorize]
     [Filters.Culture]
     public class AdminController : Controller
@@ -38,7 +41,6 @@ namespace rupbes.Controllers
         [HttpGet]
         public ActionResult Index()//Страница админки
         {
-            ViewBag.provider = roleProvider;
             return View();
         }
         [HttpGet]
@@ -75,472 +77,206 @@ namespace rupbes.Controllers
 
         [HttpPost]
         //пока без аттрибутов
-        public ActionResult UploadAjax()//Загрузка картинок
+        public async Task<ActionResult> UploadAjax()//Загрузка картинок
         {
+            //получаем путь куда сохранять из запроса
+            string path = Request.Form["path"];
+            string link = "https://rupbes.by"; // ссылка для доступа к файлам            
+            //добавить запись о добавлении
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = "Добавление картинки", action = "Add", table = "Imgs", date = DateTime.Now, id_user = user.id };
+            List<Imgs> addedImgs = new List<Imgs>();
+
             //перебираем все загруженные файлы из запроса
-            HttpPostedFileBase upload = Request.Files[0];
-            string referer = "All";
-            if (Request.Headers[8].Split('/')[4] == "CreateNews" || Request.Headers[8].Split('/')[4] == "EditNews")
+            foreach (string fileKey in Request.Files)
             {
-                referer = "News";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "CreateObject" || Request.Headers[8].Split('/')[4] == "EditObject")
-            {
-                referer = "Object";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "CreateCertificate" || Request.Headers[8].Split('/')[4] == "EditCertificate")
-            {
-                referer = "Certificate";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "AddBoss" || Request.Headers[8].Split('/')[4] == "EditBoss" || Request.Headers[8].Split('/')[4] == "CreateBoss" || Request.Headers[8].Split('/')[4] == "EditDepBoss")
-            {
-                referer = "Boss";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "Department")
-            {
-                referer = "Department";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "AddRealty" || Request.Headers[8].Split('/')[4] == "EditRealty" || Request.Headers[8].Split('/')[4] == "CreateRealty" || Request.Headers[8].Split('/')[4] == "EditDepRealty")
-            {
-                referer = "Realty";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "AddSale" || Request.Headers[8].Split('/')[4] == "EditSale" || Request.Headers[8].Split('/')[4] == "CreateSale" || Request.Headers[8].Split('/')[4] == "EditDepSale")
-            {
-                referer = "Sale";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "AddMech" || Request.Headers[8].Split('/')[4] == "EditMech" || Request.Headers[8].Split('/')[4] == "CreateMech" || Request.Headers[8].Split('/')[4] == "EditDepMech")
-            {
-                referer = "Mech";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "AddService" || Request.Headers[8].Split('/')[4] == "EditService" || Request.Headers[8].Split('/')[4] == "CreateService" || Request.Headers[8].Split('/')[4] == "EditDepService")
-            {
-                referer = "Service";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "Products" || Request.Headers[8].Split('/')[4] == "EditProduct" || Request.Headers[8].Split('/')[4] == "CreateProduct" || Request.Headers[8].Split('/')[4] == "EditDepProduct")
-            {
-                referer = "Product";
-            }
-            else if (Request.Headers[8].Split('/')[4] == "AddVersionProduct" || Request.Headers[8].Split('/')[4] == "EditVersionProduct" || Request.Headers[8].Split('/')[4] == "CreateVersionProduct" || Request.Headers[8].Split('/')[4] == "EditDepVersionProduct")
-            {
-                referer = "VersionProduct";
-            }
-            string type = upload.ContentType.Split('/')[0];
-
-            try
-            {
-                if (upload != null && type == "image")
+                HttpPostedFileBase file = Request.Files[fileKey];
+                if (file != null && file.ContentLength > 0)
                 {
-                    // получаем имя файла
-                    Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                    string fileName = unixTimestamp.ToString() + ".jpg";
-                    string path_fullSize = Server.MapPath("~/Content/Images/" + referer + "/" + fileName);
-                    string path_min = Server.MapPath("~/Content/Images/" + referer + "/min/" + fileName);
+                    string type = file.ContentType.Split('/')[0];
 
-                    // сохраняем уменьшенную копию
-                    ResizeImgHelper.ResizeImage(upload.InputStream, path_fullSize, 5000, 1640, ImageFormat.Jpeg);
-                    ResizeImgHelper.ResizeImage(upload.InputStream, path_min, 250, 250, ImageFormat.Jpeg);
+                    if (type == "image")
+                    {
+                        // получаем имя файла
+                        Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                        string fileName = unixTimestamp.ToString() + ".jpg";
+                        string path_fullSize = Server.MapPath("~/Content/Images/" + path + "/" + fileName);
+                        string path_min = Server.MapPath("~/Content/Images/" + path + "/min/" + fileName);
 
-                    // добавляем в базу информацию о путях к картинке и её уменьшенной копии
-                    string link = db.Departments.Find(3).link;
-                    Imgs img = new Imgs
-                    {
-                        src = link + "/Content/Images/" + referer + "/" + fileName,
-                        src_min = link + "/Content/Images/" + referer + "/min/" + fileName
-                    };
-                    if (referer == "News")
-                    {
-                        img.type_id = 1;
-                    }
-                    else if (referer == "Object")
-                    {
-                        img.type_id = 2;
-                    }
-                    else if (referer == "Certificate")
-                    {
-                        img.type_id = 5;
-                    }
-                    else if (referer == "Boss")
-                    {
-                        img.type_id = 6;
-                    }
-                    else if (referer == "Department")
-                    {
-                        img.type_id = 9;
-                    }
-                    else if (referer == "Realty")
-                    {
-                        img.type_id = 7;
-                    }
-                    else if (referer == "Sale")
-                    {
-                        img.type_id = 10;
-                    }
-                    else if (referer == "Mech")
-                    {
-                        img.type_id = 8;
-                    }
-                    else if (referer == "Service")
-                    {
-                        img.type_id = 4;
-                    }
-                    else if (referer == "Product")
-                    {
-                        img.type_id = 11;
-                    }
-                    else if (referer == "VersionProduct")
-                    {
-                        img.type_id = 12;
-                    }
-                    try
-                    {
+                        // сохраняем уменьшенную копию
+                        ResizeImgHelper.ResizeImage(file.InputStream, path_fullSize, 5000, 1640, ImageFormat.Jpeg);
+                        ResizeImgHelper.ResizeImage(file.InputStream, path_min, 250, 250, ImageFormat.Jpeg);
+
+                        // добавляем в базу информацию о путях к картинке и её уменьшенной копии
+
+                        Imgs img = new Imgs
+                        {
+                            src = /*link + */"/Content/Images/" + path + "/" + fileName,
+                            src_min =/* link + */"/Content/Images/" + path + "/min/" + fileName
+                        };
+                        img.type_id = await db.Img_types.Where(x => x.type.ToLower() == path.ToLower()).Select(x => x.id).FirstOrDefaultAsync();
+
                         db.Imgs.Add(img);
                         db.Usage_report.Add(rep);
                         db.SaveChanges();
-                        ViewBag.AddedImage = img;
-                        if (referer == "Boss" || referer == "Department")
+                        addedImgs.Add(img);
+                    }
+
+                    else
+                    {
+                        string path_fullSize = Server.MapPath("~/Content/Files/News/" + file.FileName);
+                        using (var fileStream = new FileStream(path_fullSize, FileMode.Create))
                         {
-                            return PartialView("AddSingleImage");
-                        }
-                        else
-                        {
-                            return PartialView("_AddImage");
+                            file.InputStream.Position = 0;
+                            byte[] buffer;
+                            using (var binaryReader = new BinaryReader(file.InputStream))
+                            {
+                                buffer = binaryReader.ReadBytes(file.ContentLength);
+                            }
+                            fileStream.Write(buffer, 0, buffer.Length);
                         }
 
-                    }
-                    catch (Exception)
-                    {
-                        return PartialView("Error");
-                    }
-                }
-
-                else if (upload != null)
-                {
-                    string path_fullSize = Server.MapPath("~/Content/Files/News/" + upload.FileName);
-                    using (var fileStream = new FileStream(path_fullSize, FileMode.Create))
-                    {
-                        upload.InputStream.Position = 0;
-                        byte[] buffer;
-                        using (var binaryReader = new BinaryReader(upload.InputStream))
+                        Imgs img = new Imgs
                         {
-                            buffer = binaryReader.ReadBytes(upload.ContentLength);
-                        }
-                        fileStream.Write(buffer, 0, buffer.Length);
-                    }
-                    //добавляем в базу информацию о путях к картинке и её уменьшенной копии
-                    string link = db.Departments.Find(3).link;
-                    Imgs img = new Imgs
-                    {
-                        src = link + "/Content/Files/News/" + upload.FileName,
-                        src_min = "document",
-                        type_id = 1
-                    };
-                    try
-                    {
+                            src = link + "/Content/Files/News/" + file.FileName,
+                            src_min = "document",
+                            type_id = 1
+                        };
+
                         db.Imgs.Add(img);
                         db.Usage_report.Add(new Usage_report { title = "Добавление файла", action = "Add", table = "Imgs", date = DateTime.Now, id_user = user.id });
                         db.SaveChanges();
-                        ViewBag.AddedImage = img;
-                        return PartialView("_AddImage");
-                    }
-                    catch (Exception)
-                    {
-                        return PartialView("Error");
+                        addedImgs.Add(img);
                     }
                 }
             }
-            catch (Exception e)
-            {
-                return Content(e.Message);
-            }
-
-            return View("Error");
+            return PartialView("~/Views/Admin/_AddImage.cshtml", addedImgs);
         }
 
-        [HttpGet]
-        public ActionResult DeleteImgs()//Страница удаление картинок
-        {
-            if (roleProvider.IsUserInRole(User.Identity.Name, "news"))
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 1).ToList();
-            }
-            else if (roleProvider.IsUserInRole(User.Identity.Name, "obj"))
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 2).ToList();
-            }
-            else if (roleProvider.IsUserInRole(User.Identity.Name, "admin"))
-            {
-                ViewBag.Imgs = db.Imgs.ToList();
-            }
-            else if (roleProvider.IsUserInRole(User.Identity.Name, "ok_master"))
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 6).ToList();
-            }
-            else if (roleProvider.IsUserInRole(User.Identity.Name, "realty_master"))
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 7 || x.type_id == 10).ToList();
-            }
-            else if (roleProvider.IsUserInRole(User.Identity.Name, "mech_master"))
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 8).ToList();
-            }
-            else if (roleProvider.IsUserInRole(User.Identity.Name, "service_master"))
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 4).ToList();
-            }
-            return View();
-        }
-        [HttpPost]
-        public ActionResult DeleteImgs(int[] ids)//Удаление картинок
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = "Удаление картинки", action = "Delete", table = "Imgs", date = DateTime.Now, id_user = user.id };
-            if (ids != null)
-            {
-                try
-                {
-                    foreach (int id in ids)
-                    {
-                        Imgs img = db.Imgs.Find(id);
-                        string link = db.Departments.Find(3).link;
-
-                        if (img.src_min != "document")
-                        {
-                            System.IO.File.Delete(Server.MapPath("~" + img.src.Substring(link.Length)));//удаляем оригинал
-                            System.IO.File.Delete(Server.MapPath("~" + img.src_min.Substring(link.Length)));//миниатюру
-                        }
-                        else
-                        {
-                            System.IO.File.Delete(Server.MapPath("~" + img.src.Substring(link.Length)));//удаляем оригинал
-                        }
-
-                        db.Imgs.Remove(img);
-                        db.Usage_report.Add(rep);
-                        db.SaveChanges();
-                    }
-                    return RedirectToAction("DeleteImgs");
-                }
-                catch (Exception e)
-                {
-                    return RedirectToAction("Error", new { message = e.Message });
-                }
-            }
-            else
-            {
-                return RedirectToAction("Error", new { message = "Для удаления ничего не выбрано" });
-            }
-        }
         //ВАКАНСИИ
         [HttpGet]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult Vacancies()//Страница с выбором филиала
+        [Authorize(Roles = "ok")]
+        public async Task<ActionResult> Vacancies()//Страница с выбором филиала
         {
-           var departments = db.Departments.Where(x => x.id < 21).ToList();
-            return View(departments);
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult DepVacancy(int id)//Страница со списоком вакансий для выбранного филиала
-        {
-            ViewBag.IdDep = id;
-            ViewBag.nameDep = db.Departments.Where(x => x.id == id).Select(x => x.short_name_ru).FirstOrDefault();
-            var Vacancies = db.Vacancies.Where(x => x.id_dep == id).OrderBy(x => x.vacancy_ru).ToList();
-            return View(Vacancies);
+            var id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            if (id_dep == 0)
+            {
+                return HttpNotFound("Пользователь не найден.");
+            }
+            ViewBag.IdDep = id_dep;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id_dep).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+            var vacancies = await db.Vacancies.Where(x => x.id_dep == id_dep).ToListAsync();
+            return View("~/Views/Admin/Vacancies/Vacancies.cshtml", vacancies);
         }
 
         [HttpGet]
         [Authorize(Roles = "admin, ok_master")]
-        public ActionResult ShowVacancy(int id)//Частичное представление по выбранной вакансии
-        {           
-            var Vacancy = db.Vacancies.Where(x => x.id == id).FirstOrDefault();
-            return PartialView("_ShowVacancy",Vacancy);
+        public async Task<ActionResult> DepartmentsForVacancy()//Страница с выбором филиала
+        {
+            var departments = await db.Departments.Where(x => x.id < 21 /*&& x.id != 7*/).ToListAsync();
+            return View("~/Views/Admin/Vacancies/DepartmentsForVacancy.cshtml", departments);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, ok_master")]
+        public async Task<ActionResult> VacanciesByDepartment(int id)//Страница со списоком вакансий для выбранного филиала
+        {
+            ViewBag.IdDep = id;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+            var vacancies = await db.Vacancies.Where(x => x.id_dep == id).OrderBy(x => x.vacancy_ru).ToListAsync();
+            return View("~/Views/Admin/Vacancies/VacanciesByDepartment.cshtml", vacancies);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, ok_master, ok")]
+        public async Task<ActionResult> ShowVacancy(int id)//Частичное представление по выбранной вакансии
+        {
+            var Vacancy = await db.Vacancies.Where(x => x.id == id).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Vacancies/_ShowVacancy.cshtml", Vacancy);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, ok_master, ok")]
+        public async Task<ActionResult> ShowAddVacancy(int departmentId)//Страница добавления новой вакансии
+        {
+            return PartialView("~/Views/Admin/Vacancies/_ShowAddVacancy.cshtml", departmentId);
         }
 
         [HttpPost]
         [Authorize(Roles = "admin, ok_master, ok")]
-        public ActionResult DeleteVacancy(int id)//Удаление выбранной вакансии
+        public async Task<ActionResult> AddVacancy(Vacancies vacancy)//Добавление новой вакансии
         {
-            try
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Vacancies vacancy = db.Vacancies.Find(id);
-                Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Delete", table = "Vacancies", date = DateTime.Now, id_user = user.id };
-                if (vacancy.id_dep == user.id_dep || user.Roles.role == "admin" || user.Roles.role == "ok_master")
-                {
-                    try
-                    {
-                        db.Vacancies.Remove(vacancy);
-                        db.Usage_report.Add(rep);
-                        db.SaveChanges();
-                        return PartialView("_VacSuc");
-                    }
-                    catch (Exception e)
-                    {
-                        return PartialView("_VacFail");
-                    }
-                }
-                else
-                {
-                    return PartialView("_VacFail");
-                }
-            }
-            catch
-            {
-                return PartialView("_VacFail");
-            }
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Add", table = "Vacancies", date = DateTime.Now, id_user = user.id };
+
+            db.Vacancies.Add(vacancy);
+            db.Usage_report.Add(rep);
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Вакансия успешно добавлена!" });
         }
+
         [HttpPost]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult EditVacancy(Vacancies vacancy)//Редактирование выбранной вакансии
+        [Authorize(Roles = "admin, ok_master, ok")]
+        public async Task<ActionResult> EditVacancy(Vacancies vacancyIn)//Редактирование выбранной вакансии
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Edit", table = "Vacancies", date = DateTime.Now, id_user = user.id };
-            if (vacancy.vacancy_ru != null && vacancy.vacancy_bel != null)
-            {
-                db.Entry(vacancy).State = EntityState.Modified;
-                db.Usage_report.Add(rep);
-                try
-                {
-                    db.SaveChanges();
-                    return PartialView("_VacSuc");
-                }
-                catch
-                {
-                    return PartialView("_VacFail");
-                }
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            Usage_report rep = new Usage_report { title = vacancyIn.vacancy_ru, action = "Edit", table = "Vacancies", date = DateTime.Now, id_user = user.id };
+            var vacancy = await db.Vacancies.Where(x => x.id == vacancyIn.id).FirstOrDefaultAsync();           
 
-            }
-            else
+            #region Присваивание измененных значений
+            if (vacancy.vacancy_ru != vacancyIn.vacancy_ru)
             {
-                return PartialView("_ValidVacFail");
+                vacancy.vacancy_ru = vacancyIn.vacancy_ru;
             }
 
+            if (vacancy.vacancy_bel != vacancyIn.vacancy_bel)
+            {
+                vacancy.vacancy_bel = vacancyIn.vacancy_bel;
+            }
+
+            if (vacancy.vacancy_bel != vacancyIn.vacancy_bel)
+            {
+                vacancy.vacancy_bel = vacancyIn.vacancy_bel;
+            }
+
+            if (vacancy.requirement_ru != vacancyIn.requirement_ru)
+            {
+                vacancy.requirement_ru = vacancyIn.requirement_ru;
+            }
+
+            if (vacancy.requirement_bel != vacancyIn.requirement_bel)
+            {
+                vacancy.requirement_bel = vacancyIn.requirement_bel;
+            }
+
+            if (vacancy.payment != vacancyIn.payment)
+            {
+                vacancy.payment = vacancyIn.payment;
+            }
+            vacancy.vacancy_ru = vacancyIn.vacancy_ru;
+            vacancy.vacancy_bel = vacancyIn.vacancy_bel;
+            vacancy.requirement_ru = vacancyIn.requirement_ru;
+            vacancy.requirement_bel = vacancyIn.requirement_bel;
+            vacancy.payment = vacancyIn.payment;
+            db.Usage_report.Add(rep);
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Вакансия успешно изменена!" });
         }
-        [HttpGet]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult AddDepVacancy(int id)//Страница добавления вакансии определенному филиалу
-        {
-            ViewBag.Dep = db.Departments.Find(id);
-            return View();
-        }
+
         [HttpPost]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult AddVacancy(Vacancies vacancy)//Добавление новой вакансии
+        [Authorize(Roles = "admin, ok_master, ok")]
+        public async Task<ActionResult> DeleteVacancy(int id)//Удаление выбранной вакансии
         {
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            Vacancies vacancy = db.Vacancies.Find(id);
+            Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Delete", table = "Vacancies", date = DateTime.Now, id_user = user.id };
 
-            if (vacancy.vacancy_ru != null && vacancy.vacancy_bel != null)
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Add", table = "Vacancies", date = DateTime.Now, id_user = user.id };
-                try
-                {
-                    db.Vacancies.Add(vacancy);
-                    db.Usage_report.Add(rep);
-                    db.SaveChanges();
-                    return PartialView("_AddVacSuc");
-                }
-                catch
-                {
-                    return PartialView("_VacFail");
-                }
-            }
-            else
-            {
-                return PartialView("_ValidVacFail");
-            }
+            db.Vacancies.Remove(vacancy);
+            db.Usage_report.Add(rep);
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Вакансия удалена!" });
         }
 
-        //Отдел кадров для филиалов
-        [HttpGet]
-        [Authorize(Roles = "ok")]
-        public ActionResult AllVacancies()//Список всех вакансий филиала
-        {
-            Models.Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            ViewBag.Vacancies = db.Vacancies.Where(x => x.id_dep == user.id_dep).ToList();
-            return View();
-        }
-        [HttpGet]
-        [Authorize(Roles = "ok")]
-        public ActionResult CreateVacancy()//Страница добавления новой вакансии
-        {
-            return View();
-        }
-        [HttpPost]
-        [Authorize(Roles = "ok")]
-        public ActionResult CreateVacancy(Vacancies vacancy)//Добавление вакансии для филиала
-        {
-            if (vacancy.vacancy_ru == null || vacancy.vacancy_bel == null)
-            {
-                return PartialView("_ValidVacFail");
-            }
-            else
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Add", table = "Vacancies", date = DateTime.Now, id_user = user.id };
-                vacancy.id_dep = user.id_dep;
-                db.Vacancies.Add(vacancy);
-                db.Usage_report.Add(rep);
-                try
-                {
-                    db.SaveChanges();
-                    return PartialView("_AddVacSuc");
-                }
-                catch (Exception)
-                {
-                    return PartialView("_VacFail");
-                }
-            }
-
-        }
-        [HttpPost]
-        [Authorize(Roles = "ok")]
-        public ActionResult EditDepVacancy(int id, string vacancy_ru, string vacancy_bel, string requirement_ru, string requirement_bel, string payment, string link)//Изменение вакансии для филиала
-        {
-
-            if (vacancy_ru == "" || vacancy_bel == "")
-            {
-                return PartialView("_ValidVacFail");
-            }
-            else
-            {
-                try
-                {
-                    Vacancies vacancy = db.Vacancies.Find(id);
-                    Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                    if (vacancy.id_dep == user.id_dep)
-                    {
-                        vacancy.vacancy_ru = vacancy_ru;
-                        vacancy.vacancy_bel = vacancy_bel;
-                        vacancy.requirement_ru = requirement_ru;
-                        vacancy.requirement_bel = requirement_bel;
-                        vacancy.payment = payment;
-                        vacancy.link = link;
-                        Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Edit", table = "Vacancies", date = DateTime.Now, id_user = user.id };
-                        db.Entry(vacancy).State = EntityState.Modified;
-                        db.Usage_report.Add(rep);
-                        try
-                        {
-                            db.SaveChanges();
-                            return PartialView("_VacSuc");
-                        }
-                        catch (Exception)
-                        {
-                            return PartialView("_VacFail");
-                        }
-                    }
-                    else
-                    {
-                        return PartialView("_VacFail");
-                    }
-                }
-                catch (Exception)
-                {
-                    return PartialView("_VacFail");
-                }
-
-            }
-        }
         [HttpGet]
         [Authorize(Roles = "ok")]
         public ActionResult AllBosses()//Все боссы филиала
@@ -651,24 +387,118 @@ namespace rupbes.Controllers
         //НОВОСТИ
         [HttpGet]
         [Authorize(Roles = "admin, news")]
-        public ActionResult News()//Главная страница меню новостей
+        public async Task<ActionResult> NewsCategory()//Главная страница меню новостей
         {
-            var newsType = db.News_type.ToList();
-            return View(newsType);
+            var newsType = await db.News_type.ToListAsync();
+            return View("~/Views/Admin/News/NewsCategory.cshtml", newsType);
         }
 
         [HttpPost]
-        public ActionResult GetNews(int id, int page)
+        public async Task<ActionResult> ShowNewsByCategory(int id, int page, int count = 20)
         {
-            var ans = db.News.Where(n => n.type_id == id).OrderByDescending(n => n.date).ToList();
-            List<News> news = new List<News>();
-            if (page <= (ans.Count / 20) + 1 && ans.Count % 20 != 0 || page <= (ans.Count / 20) && ans.Count % 20 == 0)
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            var listNews = await db.News
+                        .Where(n => n.type_id == id && n.id_dep == user.id_dep) // Фильтрация по type_id
+                        .OrderByDescending(n => n.date) // Сортировка по дате
+                        .Skip((page - 1) * count) // Пропустить элементы для предыдущих страниц
+                        .Take(count) // Взять только count элементов для текущей страницы
+                        .ToListAsync(); // Преобразовать в список
+            var totalItems = await db.News
+                        .Where(n => n.type_id == id && n.id_dep == user.id_dep)
+                        .CountAsync(); // Общее количество элементов
+            var totalPages = (int)Math.Ceiling((double)totalItems / count); // Общее количество страниц
+            ViewBag.totalPages = totalPages;
+            ViewBag.activePage = page;
+            ViewBag.nameNews = await db.News_type.Where(x => x.id == id).Select(x => x.type).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/News/_NewsByCategory.cshtml", listNews);
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "admin,news")]
+        public async Task<ActionResult> ShowNewsById(int id)//Страница показания новости
+        {
+            ViewBag.newsType = await db.News_type.ToListAsync();
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            News news = await db.News.FindAsync(id);
+            return PartialView("~/Views/Admin/News/_ShowNewsById.cshtml", news);
+        }
+    
+        [HttpPost]
+        [Authorize(Roles = "admin, news")]
+        public async Task<ActionResult> EditNews(News model, int[] img_ids)//Изменение существующей новости
+        {
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            News news = await db.News.Where(x => x.id == model.id).FirstOrDefaultAsync();
+
+            #region Присваивание измененных значений
+            if (news.title_ru != model.title_ru)
             {
-                if (page == (ans.Count / 20) + 1 && ans.Count % 20 != 0)
-                    news = ans.GetRange((page - 1) * 20, ans.Count % 20);
-                else news = ans.GetRange((page - 1) * 20, 20);
+                news.title_ru = model.title_ru;
             }
-            return PartialView("_News", news);
+
+            if (news.title_bel != model.title_bel)
+            {
+                news.title_bel = model.title_bel;
+            }
+
+            if (news.body_ru != model.body_ru)
+            {
+                news.body_ru = model.body_ru;
+            }
+
+            if (news.body_bel != model.body_bel)
+            {
+                news.body_bel = model.body_bel;
+            }
+
+            if (news.type_id != model.type_id)
+            {
+                news.type_id = model.type_id;
+            }
+
+            if (img_ids != null)
+            {
+                var currentImgIds = news.Imgs.Select(i => i.id).ToList();
+                foreach (var imgId in currentImgIds)
+                {
+                    if (!img_ids.Contains(imgId))
+                    {
+                        var imgToRemove = news.Imgs.FirstOrDefault(i => i.id == imgId);
+                        if (imgToRemove != null)
+                        {
+                            news.Imgs.Remove(imgToRemove);
+                        }
+                    }
+                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                    foreach (Imgs img in ImgList)
+                    {
+                        if (!news.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
+                        {
+                            news.Imgs.Add(img);
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            Usage_report rep = new Usage_report { title = news.title_ru, action = "Edit", table = "News", date = DateTime.Now, id_user = user.id };            
+            db.Usage_report.Add(rep);
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Новость изменена!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, news")]
+        public async Task<ActionResult> DeleteNews(int id)//Удаление новости
+        {
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            News news = await db.News.Where(x => x.id == id).FirstOrDefaultAsync();
+            Usage_report rep = new Usage_report { title = news.title_ru, action = "Delete", table = "News", date = DateTime.Now, id_user = user.id };
+            db.News.Remove(news);
+
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Новость удалена!" });
         }
 
         [HttpGet]
@@ -728,90 +558,6 @@ namespace rupbes.Controllers
                 }
             }
             return RedirectToAction("News");
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin,news")]
-        public ActionResult EditNews(int id)//Страница изменения существующей новости
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-
-            ViewBag.Types = db.News_type.ToList();
-            News news = db.News.Find(id);
-            ViewBag.Imgs = news.Imgs;
-            if (user.Roles.role == "admin" || news.id_dep == user.id_dep)
-            {
-                return View(news);
-            }
-            else
-            {
-                return RedirectToAction("Error", new { message = "Ошибка доступа" });
-            }
-        }
-        [HttpPost]
-        [Authorize(Roles = "admin, news")]
-        public ActionResult EditNews(int id, string title_ru, string title_bel, string body_ru, string body_bel, int type_id, int[] img_ids)//Изменение существующей новости
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            News news = db.News.Find(id);
-            if (user.Roles.role == "admin" || news.id_dep == user.id_dep)
-            {
-                news.title_ru = title_ru;
-                news.title_bel = title_bel;
-                news.body_ru = body_ru;
-                news.body_bel = body_bel;
-                news.type_id = type_id;
-                news.Imgs.Clear();
-                if (img_ids != null)
-                {
-                    foreach (Imgs img in db.Imgs.Where(x => img_ids.Contains(x.id)))
-                    {
-                        news.Imgs.Add(img);
-                    }
-                }
-
-                Usage_report rep = new Usage_report { title = news.title_ru, action = "Edit", table = "News", date = DateTime.Now, id_user = user.id };
-                db.Entry(news).State = EntityState.Modified;
-                db.Usage_report.Add(rep);
-                try
-                {
-                    db.SaveChanges();
-                    return RedirectToAction("News");
-                }
-                catch (Exception e)
-                {
-                    return RedirectToAction("Error", new { message = e.Message });
-                }
-            }
-            else
-            {
-                return RedirectToAction("Error", new { message = "Ошибка доступа" });
-            }
-
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, news")]
-        public ActionResult DeleteNews(int id)//Удаление новости
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            News news = db.News.Find(id);
-            if (user.Roles.role == "admin" || news.id_dep == user.id_dep)
-            {
-                Usage_report rep = new Usage_report { title = news.title_ru, action = "Delete", table = "News", date = DateTime.Now, id_user = user.id };
-                db.News.Remove(news);
-                try
-                {
-                    db.SaveChanges();
-                    return RedirectToAction("News");
-                }
-                catch (Exception e)
-                {
-                    return RedirectToAction("Error", new { message = e.Message });
-                }
-            }
-            else
-            {
-                return RedirectToAction("Error", new { message = "Ошибка доступа" });
-            }
         }
 
         //ОБЪЕКТЫ
@@ -2724,7 +2470,7 @@ namespace rupbes.Controllers
                         db.ComponentProducts.Remove(component);
                     }
                     else
-                    {                        
+                    {
                         model.components.Remove(compLocal);
                     }
                 }
@@ -2816,7 +2562,7 @@ namespace rupbes.Controllers
             foreach (var compProduct in db.ComponentProducts.Where(x => x.ProductId == product.id))
             {
                 var comp = db.Components.Where(x => x.id == compProduct.ComponentId).FirstOrDefault();
-                components.Add(new Component { name = comp.name});
+                components.Add(new Component { name = comp.name });
             }
             ViewBag.components = components;
             return View("ShowVersionProduct", modelView);
@@ -2942,7 +2688,7 @@ namespace rupbes.Controllers
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = model.name, action = "Add", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
-            model.name = model.name.Trim();            
+            model.name = model.name.Trim();
             db.GroupProducts.Add(model);
             db.Usage_report.Add(rep);
             try
@@ -3145,7 +2891,7 @@ namespace rupbes.Controllers
         public ActionResult EditGroup(int id)
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var group = db.GroupProducts.Where(x => x.id == id).FirstOrDefault();            
+            var group = db.GroupProducts.Where(x => x.id == id).FirstOrDefault();
             return PartialView("_EditGroupProduct", group);
         }
 
@@ -3154,7 +2900,7 @@ namespace rupbes.Controllers
         public ActionResult EditSubGroup(int id)
         {
             Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var subGroup = db.SubGroupProducts.Where(x => x.id == id).FirstOrDefault();            
+            var subGroup = db.SubGroupProducts.Where(x => x.id == id).FirstOrDefault();
             return PartialView("_EditSubGroupProduct", subGroup);
         }
 

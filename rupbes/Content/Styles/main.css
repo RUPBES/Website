@@ -2482,6 +2482,12 @@ h2#bidsPages {
     border-color: #ffecb5;
 }
 
+.alert-info {
+    color: #055160;
+    background-color: #cff4fc;
+    border-color: #b6effb;
+}
+
 .card {
     position: relative;
     display: flex;

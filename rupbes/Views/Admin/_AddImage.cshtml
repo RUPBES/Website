@@ -1,26 +1,21 @@
-﻿@*<div class="admin-img-min">
-        <label>
-            <img src="@ViewBag.AddedImage.src_min" />
-            <input type="checkbox" checked name="img_ids" value="@ViewBag.AddedImage.id" />
-        </label>
+﻿@using rupbes.Models
+@model List<Imgs>
+@foreach (var img in Model)
+{
+    <div class="col-md-4">
+        <div class="custom-control custom-checkbox image-checkbox">
+            <input type="checkbox" class="custom-control-input" id="@img.id" name="img_id" checked>
+            <label class="custom-control-label" for="@img.id">
+                @if (img.src_min == "document")
+                {
+                    <img class="file-icon" src="~/Content/Images/doc_icon.jpg" alt="Document Icon" />
+                    <span class="file-name">@img.src.Substring(img.src.LastIndexOf('/') + 1)</span> <!-- Отображаем имя файла -->
+                }
+                else
+                {
+                    <img src="@img.src_min" class="rounded">
+                }
+            </label>
+        </div>
     </div>
-    <span id="img-flag"></span>*@
-
-
-
-<div class="admin-img-min">
-    @if (@ViewBag.AddedImage.src_min != "document")
-    {
-        <label>
-            <img src="@ViewBag.AddedImage.src_min" />
-            <input type="checkbox" checked name="img_ids" value="@ViewBag.AddedImage.id" />
-        </label>
-    }
-    else
-    {
-        <label>
-            <img src="~/Content/Images/doc_icon.jpg" />
-            <input type="checkbox" checked name="img_ids" value="@ViewBag.AddedImage.id" />
-        </label>
-    }
-</div>
+}

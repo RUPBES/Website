@@ -1,0 +1,92 @@
+﻿@using rupbes.Models
+@model List<Vacancies>
+@{
+    ViewBag.Title = "Вакансии" + ViewBag.nameDep;
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@Html.AntiForgeryToken()
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card card-primary card-outline mb-4">
+            <div class="card-header">
+                <div class="card-title">Вакансии</div>
+            </div>
+            <div class="card-body">
+                @if (Model.Count > 0)
+                {
+
+                    foreach (var item in Model)
+                    {
+                        <button type="button" onclick="ShowVacancy(@item.id)" class="btn btn-outline-primary">
+                            @item.vacancy_ru
+                        </button>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-info" role="alert">
+                        Пока нет добавленных вакансий.
+                    </div>
+                }
+                <hr>
+                <button class="btn btn-success" onclick="ShowAddVacancy(@ViewBag.IdDep)">Добавить вакансию</button>
+            </div>
+        </div>
+    </div>
+    <div id="vacancyDisplay" class="col-md-6" style="display:none">
+        <!--область для карточки вакансии-->
+    </div> 
+</div>
+@section scripts{
+    <script>
+        // Получаем токен антифрода
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        function ShowVacancy(id) {
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("ShowVacancy", "Admin")',
+                data: { id: id },
+                headers: {
+                    'RequestVerificationToken': token // Добавляем токен в заголовок
+                },
+                success: function (data) {
+                    $('#vacancyDisplay').html(data);
+                    $('#vacancyDisplay').show();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            })
+        }
+
+        function ShowAddVacancy(id) {
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("ShowAddVacancy", "Admin")',
+                data: { departmentId: id },
+                headers: {
+                    'RequestVerificationToken': token // Добавляем токен в заголовок
+                },
+                success: function (data) {
+                    $('#vacancyDisplay').html(data);
+                    $('#vacancyDisplay').show();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            })
+        }
+    </script>
+    <script>
+        const toastTriggerList = document.querySelectorAll('[data-bs-toggle="toast"]');
+        toastTriggerList.forEach((btn) => {
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                const toastEle = document.getElementById(btn.getAttribute('data-bs-target'));
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEle);
+                toastBootstrap.show();
+            });
+        });
+    </script>
+}

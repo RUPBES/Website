@@ -1,0 +1,159 @@
+﻿@using rupbes.Models
+@model Vacancies
+
+<div id="vacancy" class="card card-warning card-outline mb-4">
+    <div class="card-header">
+        <div class="card-title">Вакансия</div>
+    </div>
+    <div class="card-body">
+        <div class="g-3">
+            <form id="editVacancy" action="/Admin/EditVacancy" method="post">
+                <input name="id" value="@Model.id" hidden/>
+                <div class="row">
+                    <!--begin::Col-->
+                    <div class="col-md-6">
+                        <label for="validationCustom01" class="form-label">Название вакансии на русском языке</label>
+                        <input type="text" class="form-control" id="validationCustom01" value="@Model.vacancy_ru" required="" name="vacancy_ru">
+                        <div class="invalid-feedback">Заполните название вакансии</div>
+                    </div>
+                    <!--end::Col-->
+                    <!--begin::Col-->
+                    <div class="col-md-6">
+                        <label for="validationCustom02" class="form-label">Название вакансии на беларусском языке</label>
+                        <input type="text" class="form-control" id="validationCustom02" value="@Model.vacancy_bel" required="" name="vacancy_bel">
+                        <div class="invalid-feedback">Заполните название вакансии</div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom03" class="form-label">Требование к вакансии на русском языке</label>
+                    <textarea class="form-control" id="validationCustom03" name="requirement_ru" rows="2" >@Model.requirement_ru</textarea>                    
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom04" class="form-label">Требование к вакансии на белорусском языке</label>                    
+                    <textarea class="form-control" id="validationCustom04" name="requirement_bel" rows="2" >@Model.requirement_bel</textarea>
+                </div>
+                <!--end::Col-->
+                <div class="col">
+                    <!--begin::Col-->
+                    <div class="col-md-6">
+                        <label for="validationCustom05" class="form-label">Заработная плата</label>
+                        <input type="text" class="form-control" id="validationCustom05" value="@Model.payment" required="" name="payment">                        
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <hr id="hrUp">
+                <div class="button-container">
+                    <button type="submit" class="btn btn-warning">Сохранить</button>
+                    <button type="button" onclick="ShowDeleteMessage(@Model.id)" class="btn btn-danger">Удалить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function handleInput() {
+        // HTML-код, который вы хотите добавить
+        var newHtml = '<hr><div class="alert alert-info" role="alert">Для сохранения данных нажмите на кнопку "Сохранить".</div>';
+
+        // Добавление HTML выше элемента с id hrUp
+        $('#hrUp').before(newHtml);
+
+        // Удаление обработчика события после первого срабатывания
+        $('input').off('input', handleInput); // Удаляем обработчик события
+    }
+
+    // Назначение обработчика события на input
+    $('input').on('input', handleInput);
+
+    $('#editVacancy').on('submit', function (event) {
+        event.preventDefault(); // Отменяем стандартное поведение отправки формы
+
+        // Собираем данные формы в объект
+        var formData = $(this).serialize();
+
+        // Отправляем данные через AJAX
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'), // URL для отправки данных
+            data: formData,
+            dataType: "json", // Указываем, что ожидаем JSON-ответ
+            success: function (response) {
+                if (response.success) {
+                    // Показ сообщения об успехе
+                    var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                    $('#toast-body-warning').html(response.message); // Используем .html() для обновления содержимого
+                    toastWarning.show();    
+                    // Перезагрузка страницы через 3 секунды (3000 миллисекунд)
+                    setTimeout(function () {
+                        location.reload(); // Перезагрузка страницы
+                    }, 3000);
+                }
+            },
+            error: function (xhr, status, error) {
+                var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                $('#toast-body-danger').newHtml("Произошла ошибка при редактировании вакансии.")
+                toastDanger.show();
+                console.error("Ошибка при выполнении AJAX-запроса:", error);
+            }
+        });
+    });
+
+    function ShowDeleteMessage(id) {
+        // Создаем элемент alert
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger';
+        alertDiv.innerHTML = `
+            <strong>Внимание!</strong> Вы уверены, что хотите удалить этот элемент?
+             <div class="button-container">
+                <button class="btn btn-danger" id="confirmDelete" >Да</button>
+                <button class="btn btn-light" id="cancelDelete" >Нет</button>
+              </div>
+        `;
+
+        // Находим элемент с id hrUp
+        const hrUpElement = document.getElementById('hrUp');
+
+        // Вставляем alert перед элементом hrUp
+        hrUpElement.parentNode.insertBefore(alertDiv, hrUpElement);
+
+        // Обработчик для кнопки "Да"
+        document.getElementById('confirmDelete').onclick = function () {            
+            alertDiv.remove(); // Удаляем alert после подтверждения
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DeleteVacancy",
+                data: {id: id},
+                dataType: "json", // Указываем, что ожидаем JSON-ответ
+                success: function (response) {
+                    if (response.success) {
+                        // Показ сообщения об успехе
+                        var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                        $('#toast-body-warning').html(response.message); // Используем .html() для обновления содержимого
+                        toastWarning.show();
+                        // Перезагрузка страницы через 3 секунды (3000 миллисекунд)
+                        setTimeout(function () {
+                            location.reload(); // Перезагрузка страницы
+                        }, 3000);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при удалении вакансии.")
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        };
+
+        // Обработчик для кнопки "Нет"
+        document.getElementById('cancelDelete').onclick = function () {
+            // Назначение обработчика события на input
+            $('input').on('input', handleInput);
+            alertDiv.remove(); // Удаляем alert при отказе
+        };
+    }
+</script>

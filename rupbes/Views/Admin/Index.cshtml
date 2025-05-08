@@ -1,75 +1,71 @@
 ﻿@{
-    ViewBag.Title = "Админка";
+    ViewBag.Title = "Управление сайтом";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-<section class="admin-content"> 
+<section class="admin-content">
+    @if (User.IsInRole("admin"))
+    {
+        <div class="alert alert-info" role="alert">
+            Есть доступ ко всем разделам
+        </div>
+    }
 
-    <div class="admin-content-div">
-        @if (ViewBag.provider.IsUserInRole(User.Identity.Name, "admin"))
-        {
-            @Html.ActionLink("Вакансии", "Vacancies", "Admin")
-            @Html.ActionLink("Новости", "News", "Admin")
-            @Html.ActionLink("Объекты", "Objects", "Admin")
-            @Html.ActionLink("Сертификаты", "Certificates", "Admin");
-            @Html.ActionLink("Руководство", "Bosses", "Admin");
-            @Html.ActionLink("Аренда", "Realty", "Admin")
-            @Html.ActionLink("Продажа имущества", "Sale", "Admin")
-            @Html.ActionLink("Техника", "Mechs", "Admin")
-            @Html.ActionLink("Услуги", "Services", "Admin")
-            @Html.ActionLink("Предприятия", "Departments", "Admin")
-            @Html.ActionLink("Продукция собственного производства", "Products", "Admin")
-            @Html.ActionLink("Отчет", "UsageReport", "Admin")
-            @Html.ActionLink("HashGeneration", "HashGenPage", "Admin")
+    else if (User.IsInRole("news"))
+    {
+        <div class="alert alert-info" role="alert">
+            Есть доступ к следующим разделам:<br />
+            Новости
+        </div>
+        @Html.ActionLink("Новости", "News", "Admin")
+    }
 
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "news"))
-        {
-            @Html.ActionLink("Новости", "News", "Admin")
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "ok_master"))
-        {
-            @Html.ActionLink("Вакансии", "Vacancies", "Admin")
-            @Html.ActionLink("Руководство", "Bosses", "Admin");
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "obj"))
-        {
-            @Html.ActionLink("Объекты", "Objects", "Admin")
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "ok"))
-        {
-            @Html.ActionLink("Вакансии", "AllVacancies", "Admin")
-            @Html.ActionLink("Руководство", "AllBosses", "Admin");
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "realty_master"))
-        {
-            @Html.ActionLink("Аренда", "Realty", "Admin")
-            @Html.ActionLink("Продажа имущества", "Sale", "Admin")
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "realty"))
-        {
-            @Html.ActionLink("Аренда", "AllRealty", "Admin")
-            @Html.ActionLink("Продажа имущества", "AllSale", "Admin")
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "mech_master"))
-        {
-            @Html.ActionLink("Техника", "Mechs", "Admin")
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "mech"))
-        {
-            @Html.ActionLink("Техника", "AllMechs", "Admin")
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "service_master"))
-        {
-            @Html.ActionLink("Услуги", "Services", "Admin")
-        }
-        else if (ViewBag.provider.IsUserInRole(User.Identity.Name, "service"))
-        {
-            @Html.ActionLink("Услуги", "AllServices", "Admin")
-        }
-        @if (ViewBag.provider.IsUserInRole(User.Identity.Name, "product"))
-        {
-            @Html.ActionLink("Продукция собственного производства", "Products", "Admin")
-        }
-    </div>
-    @Html.ActionLink("Выйти", "Logoff", "Admin")
+    else if (User.IsInRole("ok_master") || User.IsInRole("ok"))
+    {
+        <div class="alert alert-info" role="alert">
+            Есть доступ к следующим разделам:<br />
+            Вакансии<br />
+            Руководство
+        </div>
+    }
+
+    else if (User.IsInRole("obj"))
+    {
+        <div class="alert alert-info" role="alert">
+            Есть доступ к следующим разделам:<br />
+            Объекты
+        </div>
+    }
+
+    else if (User.IsInRole("realty_master") || User.IsInRole("realty"))
+    {
+        <div class="alert alert-info" role="alert">
+            Есть доступ к следующим разделам:<br />
+            Аренда<br />
+            Продажа имущества
+        </div>
+    }
+
+    else if (User.IsInRole("mech_master") || User.IsInRole("mech"))
+    {
+        <div class="alert alert-info" role="alert">
+            Есть доступ к следующим разделам:<br />
+            Техника
+        </div>
+    }
+
+    else if (User.IsInRole("service_master") || User.IsInRole("service"))
+    {
+        <div class="alert alert-info" role="alert">
+            Есть доступ к следующим разделам:<br />
+            Услуги
+        </div>
+    }
+
+    @if (User.IsInRole("product"))
+    {
+        <div class="alert alert-info" role="alert">
+            Есть доступ к следующим разделам:<br />
+            Продукция собственного производства
+        </div>
+    }
 </section>
