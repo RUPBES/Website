@@ -3655,3 +3655,6 @@ Added 3 tenders at 07.05.2025 11:49:51
 --BEGIN OF RECORD--
 Added 3 tenders at 07.05.2025 11:54:45
 --END--
+--BEGIN OF RECORD--
+Added 2 tenders at 12.05.2025 11:52:56
+--END--

@@ -6,48 +6,53 @@
 
 <section class="form-block">
     <div class="window-label">@Html.ActionLink("Вернуться к выбору филиала", "Vacancies")</div>
-@using (Ajax.BeginForm("AddVacancy", new AjaxOptions { UpdateTargetId="result" }))
-{
-    <h4>Новая вакансия</h4>
-    <div class="window-label">
-        @Html.EditorFor(model => model.vacancy_ru, new { htmlAttributes = new { @placeholder = "Название на русском языке" } })
-        @Html.ValidationMessageFor(model => model.vacancy_ru, "", new { @class = "text-danger" })
-    </div>
+    @using (Ajax.BeginForm("AddVacancy", new AjaxOptions { UpdateTargetId = "result" }))
+    {
+        <h4>Новая вакансия</h4>
+        <div class="window-label">
+            @Html.EditorFor(model => model.vacancy_ru, new { htmlAttributes = new { @placeholder = "Название на русском языке" } })
+            @Html.ValidationMessageFor(model => model.vacancy_ru, "", new { @class = "text-danger" })
+        </div>
 
-    <div class="window-label">
-        @Html.EditorFor(model => model.vacancy_bel, new { htmlAttributes = new { @placeholder = "Название на беларусском языке" } })
-        @Html.ValidationMessageFor(model => model.vacancy_bel, "", new { @class = "text-danger" })
-    </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.vacancy_bel, new { htmlAttributes = new { @placeholder = "Название на беларусском языке" } })
+            @Html.ValidationMessageFor(model => model.vacancy_bel, "", new { @class = "text-danger" })
+        </div>
 
-    <div class="window-label">
-        @Html.EditorFor(model => model.payment, new { htmlAttributes = new { @placeholder = "Информация о зарплате" } })
-        @Html.ValidationMessageFor(model => model.payment, "", new { @class = "text-danger" })
-    </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.payment, new { htmlAttributes = new { @placeholder = "Информация о зарплате" } })
+            @Html.ValidationMessageFor(model => model.payment, "", new { @class = "text-danger" })
+        </div>
 
-    <div class="window-label">
-        @Html.EditorFor(model => model.requirement_ru, new { htmlAttributes = new { @placeholder = "Требования к вакансии на русском языке" } })
-        @Html.ValidationMessageFor(model => model.requirement_ru, "", new { @class = "text-danger" })
-    </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.requirement_ru, new { htmlAttributes = new { @placeholder = "Требования к вакансии на русском языке" } })
+            @Html.ValidationMessageFor(model => model.requirement_ru, "", new { @class = "text-danger" })
+        </div>
 
-    <div class="window-label">
-        @Html.EditorFor(model => model.requirement_bel, new { htmlAttributes = new { @placeholder = "Требования к вакансии на белорусском языке" } })
-        @Html.ValidationMessageFor(model => model.requirement_bel, "", new { @class = "text-danger" })
-    </div>
+        <div class="window-label">
+            @Html.EditorFor(model => model.requirement_bel, new { htmlAttributes = new { @placeholder = "Требования к вакансии на белорусском языке" } })
+            @Html.ValidationMessageFor(model => model.requirement_bel, "", new { @class = "text-danger" })
+        </div>
 
-    <div class="window-label">
-        <label>Филиал</label>
-        <select class="select" name="id_dep">
-            @foreach (rupbes.Models.Departments deparment in ViewBag.Departments)
+        <div class="window-label">
+            @Html.EditorFor(model => model.link, new { htmlAttributes = new { @placeholder = "Ссылка на вакансию в государственной службе занятости" } })
+            @Html.ValidationMessageFor(model => model.link, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="window-label">
+            <label>Филиал</label>
+            <select class="select" name="id_dep">
+                @foreach (rupbes.Models.Departments deparment in ViewBag.Departments)
                 {
-                <option value="@deparment.id">@deparment.short_name_ru</option>
-            }
-        </select>
-    </div>
-    <div class="window-label">
-        <input type="submit" value="Добавить" />
-    </div>
-    <span id="result"></span>
-}
+                    <option value="@deparment.id">@deparment.short_name_ru</option>
+                }
+            </select>
+        </div>
+        <div class="window-label">
+            <input type="submit" value="Добавить" />
+        </div>
+        <span id="result"></span>
+    }
 </section>
 
 @section Scripts {

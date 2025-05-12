@@ -37,6 +37,11 @@
         </div>
 
         <div class="window-label">
+            @Html.EditorFor(model => model.link, new { htmlAttributes = new { @placeholder = "Ссылка на вакансию в государственной службе занятости" } })
+            @Html.ValidationMessageFor(model => model.link, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="window-label">
             <input type="hidden" name="id_dep" value="@ViewBag.Dep.id" />
         </div>
         <div class="window-label">
