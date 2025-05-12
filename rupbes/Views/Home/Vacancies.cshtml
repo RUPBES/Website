@@ -18,7 +18,13 @@
                 foreach (rupbes.Models.Vacancies vacancy in department.Vacancies)
                 {
                     <div class="vacancy-item">
-                        <div class="vacancy-name"><a href="@Url.Action("Index", "ResponseVacancy", new { id = vacancy.id})">@vacancy.vacancy_ru</a><span>@vacancy.payment</span></div>
+                        <div class="vacancy-name">
+                            <a href="@(string.IsNullOrEmpty(@vacancy.link) ? "#" : @vacancy.link)">
+                                @*a href="@Url.Action("Index", "ResponseVacancy", new { id = vacancy.id})">*@
+                                @vacancy.vacancy_ru
+                            </a>
+                            <span>@vacancy.payment</span>
+                        </div>
                         <div class="vacancy-desc">@vacancy.requirement_ru</div>
                     </div>
                 }

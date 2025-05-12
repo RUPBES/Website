@@ -493,7 +493,7 @@ namespace rupbes.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "ok")]
-        public ActionResult EditDepVacancy(int id, string vacancy_ru, string vacancy_bel, string requirement_ru, string requirement_bel, string payment)//Изменение вакансии для филиала
+        public ActionResult EditDepVacancy(int id, string vacancy_ru, string vacancy_bel, string requirement_ru, string requirement_bel, string payment, string link)//Изменение вакансии для филиала
         {
 
             if (vacancy_ru == "" || vacancy_bel == "")
@@ -513,6 +513,7 @@ namespace rupbes.Controllers
                         vacancy.requirement_ru = requirement_ru;
                         vacancy.requirement_bel = requirement_bel;
                         vacancy.payment = payment;
+                        vacancy.link = link;
                         Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Edit", table = "Vacancies", date = DateTime.Now, id_user = user.id };
                         db.Entry(vacancy).State = EntityState.Modified;
                         db.Usage_report.Add(rep);

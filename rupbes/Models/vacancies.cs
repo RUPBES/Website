@@ -22,7 +22,7 @@ namespace rupbes.Models
         public string vacancy_bel { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Зароботная плата")]
+        [Display(Name = "Заработная плата")]
         public string payment { get; set; }
 
         public int id_dep { get; set; }
@@ -32,6 +32,9 @@ namespace rupbes.Models
 
         [Display(Name = "Требования на беларусском языке")]
         public string requirement_bel { get; set; }
+
+        [Display(Name = "Ссылка на вакансию в государственной службе занятости")]
+        public string link { get; set; }
 
         public virtual Departments Departments { get; set; }
 
