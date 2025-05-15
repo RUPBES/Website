@@ -1484,7 +1484,7 @@ appeal {
 }
 
 .dep-vacancy {
-    width: 480px;
+    width: 500px;
     margin-bottom: 20px;
     -webkit-box-shadow: 0 0 5px black;
     box-shadow: 0 0 20px black;
@@ -1528,17 +1528,30 @@ appeal {
     font-size: 16px;
 }
 
+.vacancy-link {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 16px;
+}
+
     .vacancy-name span:first-child {
         margin-right: 15px;
     }
 
     .vacancy-name span:last-child {
         min-width: 130px;
-        max-width: 130px;
+        max-width: 150px;
     }
 
 .vacancy-desc {
-    padding: 0 15px 5px 15px;
+    padding: 0 15px 5px 10px;
 }
 
 .vacancy-name-response {

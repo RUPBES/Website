@@ -18,16 +18,35 @@
                 foreach (rupbes.Models.Vacancies vacancy in department.Vacancies)
                 {
                     <div class="vacancy-item">
-                        <div class="vacancy-name">
-                            <a href="@(string.IsNullOrEmpty(@vacancy.link) ? "#" : @vacancy.link)">
-                                @*a href="@Url.Action("Index", "ResponseVacancy", new { id = vacancy.id})">*@
-                                @vacancy.vacancy_ru
-                            </a>
+                        <div class="vacancy-name" style="font-weight:bold">
+                            @vacancy.vacancy_ru
                             <span>@vacancy.payment</span>
                         </div>
+
+                        <div class="vacancy-name" style="font-size: 14px; padding-top: 0; padding-bottom: 0">
+                            Подробнее с вакансией можно ознакомиться по ссылке:
+
+                            <!--<a href="@(string.IsNullOrEmpty(@vacancy.link) ? "#" : @vacancy.link)">-->
+                            @*a href="@Url.Action("Index", "ResponseVacancy", new { id = vacancy.id})">*@
+                            <!--@vacancy.vacancy_ru
+                            </a>-->
+                        </div>
+
+                        <div class="vacancy-link">
+                            <a style="font-size: 14px; font-style:italic" href="@(string.IsNullOrEmpty(@vacancy.link) ? "#" : @vacancy.link)">
+                                @vacancy.link
+                            </a>
+                        </div>
+
                         <div class="vacancy-desc">@vacancy.requirement_ru</div>
                     </div>
                 }
+            }
+            else
+            {
+                <div class="vacancy-item">
+                    <div class="vacancy-name"><span>@Resources.Resource.VacanciesNoVacancy</span></div>
+                </div>
             }
         </div>
     }

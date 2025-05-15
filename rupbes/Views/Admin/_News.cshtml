@@ -11,8 +11,8 @@
             @Html.DisplayFor(modelItem => item.date)
         </td>
         <td>
-            <button class="btn btn-default" onclick="del('@Url.Action("DeleteNews", "Admin" , new { id=item.id })')">Удалить</button>
-            <button class="btn btn-default" onclick="edit('@Url.Action("EditNews", "Admin" , new { id=item.id })')">Изменить</button>
+            <button class="btn btn-default" onclick="del('@Url.Action("DeleteNews", "Admin" , new { id = item.id })')">Удалить</button>
+            <button class="btn btn-default" onclick="edit('@Url.Action("EditNews", "Admin" , new { id = item.id })')">Изменить</button>
         </td>
     </tr>
 
