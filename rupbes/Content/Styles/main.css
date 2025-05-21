@@ -1484,7 +1484,7 @@ appeal {
 }
 
 .dep-vacancy {
-    width: 500px;
+    width: 520px;
     margin-bottom: 20px;
     -webkit-box-shadow: 0 0 5px black;
     box-shadow: 0 0 20px black;
@@ -1514,8 +1514,7 @@ appeal {
     background-color: rgba(150, 150, 150, 0.5);
 }
 
-.vacancy-name {
-    text-transform: uppercase;
+.vacancy-link {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1528,7 +1527,8 @@ appeal {
     font-size: 16px;
 }
 
-.vacancy-link {
+.vacancy-name {
+    text-transform: uppercase;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

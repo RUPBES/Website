@@ -779,7 +779,6 @@
     <Content Include="Views\Shared\_Message.cshtml" />
     <Content Include="Views\Admin\_AddComponent.cshtml" />
     <Content Include="Views\Home\EAES.cshtml" />
-    <Content Include="Views\Admin\_Vacancies.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
