@@ -8,7 +8,7 @@
     <div class="card-body">
         <div class="g-3">
             <form id="editVacancy" action="/Admin/EditVacancy" method="post">
-                <input name="id" value="@Model.id" hidden/>
+                <input name="id" value="@Model.id" hidden />
                 <div class="row">
                     <!--begin::Col-->
                     <div class="col-md-6">
@@ -28,23 +28,27 @@
                 <!--begin::Col-->
                 <div class="col-md-12">
                     <label for="validationCustom03" class="form-label">Требование к вакансии на русском языке</label>
-                    <textarea class="form-control" id="validationCustom03" name="requirement_ru" rows="2" >@Model.requirement_ru</textarea>                    
+                    <textarea class="form-control" id="validationCustom03" name="requirement_ru" rows="2">@Model.requirement_ru</textarea>
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->
                 <div class="col-md-12">
-                    <label for="validationCustom04" class="form-label">Требование к вакансии на белорусском языке</label>                    
-                    <textarea class="form-control" id="validationCustom04" name="requirement_bel" rows="2" >@Model.requirement_bel</textarea>
+                    <label for="validationCustom04" class="form-label">Требование к вакансии на белорусском языке</label>
+                    <textarea class="form-control" id="validationCustom04" name="requirement_bel" rows="2">@Model.requirement_bel</textarea>
                 </div>
                 <!--end::Col-->
-                <div class="col">
-                    <!--begin::Col-->
-                    <div class="col-md-6">
-                        <label for="validationCustom05" class="form-label">Заработная плата</label>
-                        <input type="text" class="form-control" id="validationCustom05" value="@Model.payment" required="" name="payment">                        
-                    </div>
-                    <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom05" class="form-label">Заработная плата</label>
+                    <input type="text" class="form-control" id="validationCustom05" value="@Model.payment" required="" name="payment">
                 </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom06" class="form-label">Ссылка на биржу труда</label>
+                    <input type="text" class="form-control" id="validationCustom06" value="@Model.link" required="" name="link">
+                </div>
+                <!--end::Col-->
                 <div id="messageContainer"></div>
                 <hr id="hrUp">
                 <div class="button-container">
@@ -64,7 +68,7 @@
         var newHtml = '<hr><div class="alert alert-warning" role="alert">Для сохранения данных нажмите на кнопку "Сохранить".</div>';
 
         // Заменяем содержимое messageContainer на alertDiv
-        messageContainer.innerHTML = newHtml;   
+        messageContainer.innerHTML = newHtml;
 
         // Удаление обработчика события после первого срабатывания
         $('input').off('input', handleInput); // Удаляем обработчик события
@@ -124,19 +128,19 @@
                 <button type="button" class="btn btn-danger" id="confirmDelete" >Да</button>
                 <button type="button" class="btn btn-light" id="cancelDelete" >Нет</button>
               </div>
-        `;        
+        `;
 
         // Заменяем содержимое messageContainer на alertDiv
         messageContainer.innerHTML = alertDiv.outerHTML;
 
         // Обработчик для кнопки "Да"
-        document.getElementById('confirmDelete').onclick = function () {            
+        document.getElementById('confirmDelete').onclick = function () {
             // Очищаем содержимое messageContainer
             messageContainer.innerHTML = '';
             $.ajax({
                 type: "POST",
                 url: "/Admin/DeleteVacancy",
-                data: {id: id},
+                data: { id: id },
                 dataType: "json", // Указываем, что ожидаем JSON-ответ
                 success: function (response) {
                     if (response.success) {

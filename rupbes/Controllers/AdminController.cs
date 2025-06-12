@@ -271,6 +271,11 @@ namespace rupbes.Controllers
                 {
                     vacancy.payment = vacancyIn.payment;
                 }
+
+                if (vacancy.link != vacancyIn.link)
+                {
+                    vacancy.link = vacancyIn.link;
+                }
             }
             else
             {
