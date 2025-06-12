@@ -10,7 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>'БЕЛЭНЕРГОСТРОЙ' ХОЛДИНГ</title>
     <link href="~/Content/favicon.ico" rel="icon" runat="server" type="image/ico">
-    @*<link rel="stylesheet" href="~/adminlte/bootstrap-5.3.5-dist/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="~/adminlte/bootstrap-5.3.5-dist/css/bootstrap.min.css">
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="@Url.Content("https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css")" integrity="sha256-..." crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css" integrity="sha256-tZHrRjVqNSRyWg2wbppGnT833E/Ys0DHWGwT04GiqQg=" crossorigin="anonymous">
@@ -220,7 +220,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             }
                             else if (User.IsInRole("ok"))
                             {
-                                <a href="@Url.Action("Boss", "Admin")" class="nav-link">
+                                <a href="@Url.Action("Bosses", "Admin")" class="nav-link">
                                     <i class="nav-icon bi bi-boss"></i>
                                     <p>
                                         Руководство
@@ -639,8 +639,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="@Url.Content("https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js")" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="~/adminlte/bootstrap-5.3.5-dist/js/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
-    <script src="~/Scripts/select2.min.js"></script>    
-    @Scripts.Render("~/adminlte/js")
+    <script src="~/Scripts/select2.min.js"></script>
+    @Scripts.Render("~/bundles/adminltejs")
     <script>
         const toastTriggerList = document.querySelectorAll('[data-bs-toggle="toast"]');
         toastTriggerList.forEach((btn) => {

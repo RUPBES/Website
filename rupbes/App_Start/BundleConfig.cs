@@ -27,8 +27,8 @@ namespace rupbes
                       "~/Content/Styles/admin.css",                       
                       "~/adminlte/css/adminlte.min.css"));
 
-            bundles.Add(new ScriptBundle("~/adminlte/js").Include(
-             "~/adminlte/js/adminlte.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/adminltejs").Include(
+                        "~/adminlte/js/adminlte.min.js"));
         }
     }
 }
