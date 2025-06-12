@@ -26,8 +26,24 @@
     <div class="card-body">
         <div class="g-3">
             <form id="addNews" action="/Admin/AddNews" method="post">
-                <input name="id_dep" value="@ViewBag.id_dep" hidden/>
                 <div class="row">
+                    @if (User.IsInRole("admin"))
+                    {
+                        <div class="col-md-6">
+                            <label for="validationCustom05" class="form-label">Филиал</label>
+                            <select class="form-select" name="id_dep" id="validationCustom05" required="">
+                                @foreach (Departments item in ViewBag.departments)
+                                {
+                                    <option value="@item.id">@item.short_name_ru</option>
+                                }
+                            </select>
+                            <div class="invalid-feedback">Выберите категорию</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <input name="id_dep" value="@ViewBag.id_dep" hidden />
+                    }
                     <div class="col-md-6">
                         <label for="validationCustom00" class="form-label">Категория новости</label>
                         <select class="form-select" name="type_id" id="validationCustom00" required="">
@@ -98,7 +114,7 @@
     <script>
         $('#loadingSpinner').hide();
 
-        $('#inputGroupFile01').on('change', function () {      
+        $('#inputGroupFile01').on('change', function () {
             // Показываем значок загрузки
             $('#loadingSpinner').show();
 
@@ -116,7 +132,7 @@
 
                     // Добавляем переменную path
                     var path = 'News';
-                    data.append("path", path);                  
+                    data.append("path", path);
 
                     $.ajax({
                         type: "POST",
@@ -204,7 +220,7 @@
                         $('<div class="alert alert-info" id="noFiles" role="alert">Пока нет добавленных фотографий/документов.</div>').insertBefore('#containerFiles');
 
                         // Заменяем содержимое #containerFiles на сообщение о том, что пока нет добавленных фотографий/документов
-                        $('#containerFiles').remove(); // Удаляем существующий контейнер с файлами                        
+                        $('#containerFiles').remove(); // Удаляем существующий контейнер с файлами
                     }
                     else {
                         var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));

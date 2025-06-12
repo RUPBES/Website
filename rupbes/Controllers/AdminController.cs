@@ -505,7 +505,7 @@ namespace rupbes.Controllers
         public async Task<ActionResult> AddNews()//Страница добавления новой новости
         {
             ViewBag.id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
-            ViewBag.newsType = await db.News_type.ToListAsync();
+            ViewBag.departments = await db.Departments.Where(x => x.id < 21).ToListAsync();
             var newsType = await db.News_type.ToListAsync();
             return View("~/Views/Admin/News/AddNews.cshtml", newsType);
         }
