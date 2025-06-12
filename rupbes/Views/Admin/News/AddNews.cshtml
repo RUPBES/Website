@@ -1,0 +1,225 @@
+﻿@using rupbes.Models
+@model IEnumerable<rupbes.Models.News_type>
+@{
+    ViewBag.Title = "Добавить новость";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    .file-icon {
+        width: 64px; /* Фиксированный размер иконки */
+        height: 64px;
+        margin-bottom: 8px; /* Отступ между иконкой и текстом */
+    }
+
+    .file-name {
+        font-family: Arial, sans-serif;
+        font-size: 0.9em;
+        text-align: center;
+        word-break: break-word; /* Перенос длинных слов */
+        max-width: 100%; /* Ограничение ширины текста */
+        color: #333;
+    }
+</style>
+
+<div class="card card-success card-outline mb-4">
+    <!--begin::Body-->
+    <div class="card-body">
+        <div class="g-3">
+            <form id="addNews" action="/Admin/AddNews" method="post">
+                <input name="id_dep" value="@ViewBag.id_dep" hidden/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="validationCustom00" class="form-label">Категория новости</label>
+                        <select class="form-select" name="type_id" id="validationCustom00" required="">
+                            <option selected="" disabled="" value="">Выберите категорию новости</option>
+                            @foreach (News_type item in Model)
+                            {
+                                <option value="@item.id">@item.type</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback">Выберите категорию</div>
+                    </div>
+                    <!--begin::Col-->
+                    <div class="col-md-12">
+                        <label for="validationCustom01" class="form-label">Заголовок на русском языке</label>
+                        <textarea class="form-control" id="validationCustom01" name="title_ru" rows="2" required=""></textarea>
+                        <div class="invalid-feedback">Заполните название вакансии</div>
+                    </div>
+                    <!--end::Col-->
+                    <!--begin::Col-->
+                    <div class="col-md-12">
+                        <label for="validationCustom02" class="form-label">Заголовок на беларусском языке</label>
+                        <textarea class="form-control" id="validationCustom02" name="title_bel" rows="2" required=""></textarea>
+                        <div class="invalid-feedback">Заполните название вакансии</div>
+                    </div>
+                    <!--end::Col-->
+                    <!--begin::Col-->
+                    <div class="col-md-12">
+                        <label for="validationCustom03" class="form-label">Текст новости на русском языке</label>
+                        <textarea class="form-control" id="validationCustom03" name="body_ru" rows="5" required=""></textarea>
+                    </div>
+                    <!--end::Col-->
+                    <!--begin::Col-->
+                    <div class="col-md-12">
+                        <label for="validationCustom04" class="form-label">Текст новости на белорусском языке</label>
+                        <textarea class="form-control" id="validationCustom04" name="body_bel" rows="5" required=""></textarea>
+                    </div>
+                    <!--end::Col-->
+                    <div class="col-md-12">
+                        <label class="form-label" for="inputGroupFile01">Загрузить изображение/документ</label>
+                        <input type="file" class="form-control" id="inputGroupFile01">
+                    </div>
+                    <div id="loadingSpinner" style="text-align: center;">
+                        <div class="spinner-border text-info" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <label for="ImgsBlock" class="form-label">Загруженные изображения/документы</label>
+                    <div class="alert alert-info" id="noFiles" role="alert">
+                        Пока нет добавленных фотографий/документов.
+                    </div>
+                    <div id="messageContainer"></div>
+                    <hr id="hrUp">
+                    <div class="button-container">
+                        <button type="submit" class="btn btn-warning">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--end::Body-->
+    <div class="card-footer">
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        $('#loadingSpinner').hide();
+
+        $('#inputGroupFile01').on('change', function () {      
+            // Показываем значок загрузки
+            $('#loadingSpinner').show();
+
+            // Блокируем input
+            $('#inputGroupFile01').prop('disabled', true);
+
+            var files = $(this).prop('files'); // Получаем выбранные файлы
+
+            if (files.length > 0) {
+                if (window.FormData) {
+                    var data = new FormData();
+                    for (var i = 0; i < files.length; i++) {
+                        data.append("file" + i, files[i]);
+                    }
+
+                    // Добавляем переменную path
+                    var path = 'News';
+                    data.append("path", path);                  
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/Admin/UploadAjax',
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        success: function (result) {
+                            // Проверяем, существует ли div с id="containerFiles"
+                            if ($('#containerFiles').length === 0) {
+                                // Если не существует, находим div с id="noFiles"
+                                var noFilesDiv = $('#noFiles');
+
+                                // Если найден div с id="noFiles", выполняем действия
+                                if (noFilesDiv.length > 0) {
+                                    // Добавляем новый div с классом "row g-3" и id="containerFiles" внутрь noFilesDiv
+                                    noFilesDiv.before($('<div>').addClass('row g-3').attr('id', 'containerFiles'));
+
+                                    // Удаляем div с id="noFiles"
+                                    noFilesDiv.remove();
+                                }
+                            }
+                            $('#containerFiles').append(result);
+                        },
+                        error: function (xhr, status, p3) {
+                            var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                            $('#toast-body-danger').html("Произошла ошибка при загрузке файла.");
+                            toastDanger.show();
+                            console.error("Ошибка при выполнении AJAX-запроса:", p3);
+                        },
+                        complete: function () {
+                            // Скрываем значок загрузки
+                            $('#loadingSpinner').hide();
+                            // Разблокируем input
+                            $('#inputGroupFile01').prop('disabled', false);
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+    <script>
+        // Находим контейнер с id=messageContainer
+        var messageContainer = document.getElementById('messageContainer');
+
+        function handleInput() {
+            // HTML-код, который вы хотите добавить
+            var newHtml = '<hr><div class="alert alert-info" role="alert">Для сохранения данных нажмите на кнопку "Сохранить".</div>';
+
+            // Заменяем содержимое messageContainer на alertDiv
+            messageContainer.innerHTML = newHtml;
+
+            // Удаление обработчика события после первого срабатывания
+            $('input').off('input', handleInput); // Удаляем обработчик события
+            $('textarea').off('input', handleInput); // Удаляем обработчик события
+        }
+
+        // Назначение обработчика события на input
+        $('input').on('input', handleInput);
+        $('textarea').on('input', handleInput);
+
+        $('#addNews').on('submit', function (event) {
+            event.preventDefault(); // Отменяем стандартное поведение отправки формы
+
+            // Собираем данные формы в объект
+            var formData = $(this).serialize();
+
+            // Отправляем данные через AJAX
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'), // URL для отправки данных
+                data: formData,
+                dataType: "json", // Указываем, что ожидаем JSON-ответ
+                success: function (response) {
+                    if (response.success) {
+                        // Показ сообщения об успехе
+                        var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                        $('#toast-body-warning').html(response.message); // Используем .html() для обновления содержимого
+                        toastWarning.show();
+
+                        // Очищаем форму
+                        $('#addNews')[0].reset(); // Сбрасываем все поля формы
+
+                        // Добавляем новый div с сообщением
+                        $('<div class="alert alert-info" id="noFiles" role="alert">Пока нет добавленных фотографий/документов.</div>').insertBefore('#containerFiles');
+
+                        // Заменяем содержимое #containerFiles на сообщение о том, что пока нет добавленных фотографий/документов
+                        $('#containerFiles').remove(); // Удаляем существующий контейнер с файлами                        
+                    }
+                    else {
+                        var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                        $('#toast-body-danger').html("Произошла ошибка при добавлении новости.")
+                        toastDanger.show();
+                        console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при добавлении новости.")
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        });
+    </script>
+}

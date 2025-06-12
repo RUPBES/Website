@@ -1,0 +1,19 @@
+﻿@using rupbes.Models.Products
+@model List<SubGroupProduct>
+
+<div class="col-md-8">
+    <select id="SubCategoryProduct" class="form-select">
+        <option selected="" value="0">Все категории</option>
+        @{
+            foreach (var iterator in Model)
+            {
+                <option value="@iterator.id">@iterator.name</option>
+            }
+        }
+    </select>
+</div>
+<script>
+    $('#SubCategoryProduct').change(function () {
+        loadProductByCategory();
+    });
+</script>

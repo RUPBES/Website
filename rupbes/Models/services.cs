@@ -25,6 +25,9 @@ namespace rupbes.Models
         [Display(Name = "Заголовок на беларусском языке")]
         public string title_bel { get; set; }
 
+        [Display(Name = "Заголовок на английском языке")]
+        public string title_eng { get; set; }
+
         [DataType(DataType.MultilineText)]
         [Column(TypeName = "text")]
         [Display(Name = "Описание")]
@@ -36,6 +39,11 @@ namespace rupbes.Models
         [Display(Name = "Описание на беларусском языке")]
         [Required]
         public string desc_bel { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [Column(TypeName = "text")]
+        [Display(Name = "Описание на английском языке")]        
+        public string desc_eng { get; set; }
 
         public int id_dep { get; set; }
 

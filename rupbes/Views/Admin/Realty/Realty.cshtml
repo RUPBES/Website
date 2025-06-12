@@ -1,7 +1,7 @@
 ﻿@using rupbes.Models
-@model List<Vacancies>
+@model List<Realty>
 @{
-    ViewBag.Title = "Вакансии" + ViewBag.nameDep;
+    ViewBag.Title = "Аренда " + ViewBag.nameDep;
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -9,7 +9,7 @@
     <div class="col-md-6">
         <div class="card card-primary card-outline mb-4">
             <div class="card-header">
-                <div class="card-title">Вакансии</div>
+                <div class="card-title">Объекты аренды</div>
             </div>
             <div class="card-body">
                 @if (Model.Count > 0)
@@ -17,38 +17,36 @@
 
                     foreach (var item in Model)
                     {
-                        <button type="button" onclick="ShowVacancy(@item.id)" class="btn btn-outline-primary">
-                            @item.vacancy_ru
+                        <button type="button" onclick="ShowRealty(@item.id)" class="btn btn-outline-primary">
+                            @item.title
                         </button>
                     }
                 }
                 else
                 {
                     <div class="alert alert-info" role="alert">
-                        Пока нет добавленных вакансий.
+                        Пока нет добавленных объектов аренды.
                     </div>
                 }
                 <hr>
-                <button class="btn btn-success" onclick="ShowAddVacancy(@ViewBag.IdDep)">Добавить вакансию</button>
+                <button class="btn btn-success" onclick="ShowAddRealty(@ViewBag.IdDep)">Добавить объект аренды</button>
             </div>
         </div>
     </div>
-    <div id="vacancyDisplay" class="col-md-6" style="display:none">
+    <div id="realtyDisplay" class="col-md-6" style="display:none">
         <!--область для карточки вакансии-->
-    </div> 
+    </div>
 </div>
 @section scripts{
     <script>
-        // Получаем токен антифрода
-        var token = $('input[name="__RequestVerificationToken"]').val();
-        function ShowVacancy(id) {
+        function ShowRealty(id) {
             $.ajax({
                 type: "get",
-                url: '@Url.Action("ShowVacancy", "Admin")',
+                url: '@Url.Action("ShowRealty", "Admin")',
                 data: { id: id },
                 success: function (data) {
-                    $('#vacancyDisplay').html(data);
-                    $('#vacancyDisplay').show();
+                    $('#realtyDisplay').html(data);
+                    $('#realtyDisplay').show();
                 },
                 error: function (xhr, status, error) {
                     var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
@@ -59,14 +57,14 @@
             });
         }
 
-        function ShowAddVacancy(id) {
+        function ShowAddRealty(id) {
             $.ajax({
                 type: "get",
-                url: '@Url.Action("ShowAddVacancy", "Admin")',
-                data: { departmentId: id },
+                url: '@Url.Action("ShowAddRealty", "Admin")',
+                data: { id: id },
                 success: function (data) {
-                    $('#vacancyDisplay').html(data);
-                    $('#vacancyDisplay').show();
+                    $('#realtyDisplay').html(data);
+                    $('#realtyDisplay').show();
                 },
                 error: function (xhr, status, error) {
                     var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
@@ -75,6 +73,6 @@
                     console.error("Ошибка при выполнении AJAX-запроса:", error);
                 }
             });
-        }       
+        }
     </script>
 }

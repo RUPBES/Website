@@ -1,0 +1,280 @@
+﻿@using rupbes.Models
+@model Realty
+
+<div id="realty" class="card card-warning card-outline mb-4">
+    <div class="card-header">
+        <div class="card-title">Аренда</div>
+    </div>
+    <div class="card-body">
+        <div class="g-3">
+            <form id="editRealty" action="/Admin/EditRealty" method="post">
+                <input name="id" value="@Model.id" hidden />
+                <input name="id_dep" value="@Model.id_dep" hidden />
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom01" class="form-label">Заголовок на русском языке</label>
+                    <input type="text" class="form-control" id="validationCustom01" required="" value="@Model.title" name="title">
+                    <div class="invalid-feedback">Заполните заголовок</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom02" class="form-label">Заголовок на беларусском языке</label>
+                    <input type="text" class="form-control" id="validationCustom02" required="" value="@Model.title_bel" name="title_bel">
+                    <div class="invalid-feedback">Заполните заголовок</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom03" class="form-label">Адрес на русском языке</label>
+                    <input type="text" class="form-control" id="validationCustom03" required="" value="@Model.adress" name="adress">
+                    <div class="invalid-feedback">Заполните адрес</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom04" class="form-label">Адрес на беларусском языке</label>
+                    <input type="text" class="form-control" id="validationCustom04" required="" value="@Model.adress_bel" name="adress_bel">
+                    <div class="invalid-feedback">Заполните адрес</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom05" class="form-label">Описание на русском языке</label>
+                    <textarea class="form-control" id="validationCustom05" name="desc" required="" rows="5">@Model.desc</textarea>
+                    <div class="invalid-feedback">Заполните описание</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom06" class="form-label">Описание на белорусском языке</label>
+                    <textarea class="form-control" id="validationCustom06" name="desc_bel" required="" rows="5">@Model.desc_bel</textarea>
+                    <div class="invalid-feedback">Заполните описание</div>
+                </div>
+                <!--end::Col-->
+                <!--Фотографии-->
+                <div class="col-md-12">
+                    <label class="form-label" for="inputGroupFile01">Загрузить изображение</label>
+                    <input type="file" class="form-control" id="inputGroupFile01">
+                </div>
+                <div id="loadingSpinner" style="text-align: center;">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <hr>
+                <label for="ImgsBlock" class="form-label">Загруженные изображения</label>
+                @if (Model.Imgs.Count() > 0)
+                {
+                    <div class="row g-3" id="containerFiles">
+                        @foreach (var item in Model.Imgs)
+                        {
+                            <div class="col-md-4">
+                                <div class="custom-control custom-checkbox image-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="@item.id" name="img_ids" value="@item.id" checked>
+                                    <label class="custom-control-label" for="@item.id">
+                                        <img src="@item.src_min" class="rounded">
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info" id="noFiles" role="alert">
+                        Пока нет добавленных изображений.
+                    </div>
+                }
+                <div id="messageContainer"></div>
+                <hr id="hrUp">
+                <div class="button-container">
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                    <button type="button" onclick="ShowDeleteMessage(@Model.id)" class="btn btn-danger">Удалить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#loadingSpinner').hide();
+    $('#inputGroupFile01').on('change', function () {
+        // Показываем значок загрузки
+        $('#loadingSpinner').show();
+
+        // Блокируем input
+        $('#inputGroupFile01').prop('disabled', true);
+
+        var files = $(this).prop('files'); // Получаем выбранные файлы
+
+        if (files.length > 0) {
+            if (window.FormData) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+
+                // Добавляем переменную path
+                var path = 'Realty';
+                data.append("path", path);
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Admin/UploadAjax',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        // Проверяем, существует ли div с id="containerFiles"
+                        if ($('#containerFiles').length === 0) {
+                            // Если не существует, находим div с id="noFiles"
+                            var noFilesDiv = $('#noFiles');
+
+                            // Если найден div с id="noFiles", выполняем действия
+                            if (noFilesDiv.length > 0) {
+                                // Добавляем новый div с классом "row g-3" и id="containerFiles" внутрь noFilesDiv
+                                noFilesDiv.before($('<div>').addClass('row g-3').attr('id', 'containerFiles'));
+
+                                // Удаляем div с id="noFiles"
+                                noFilesDiv.remove();
+                            }
+                        }
+                        $('#containerFiles').append(result);
+                    },
+                    error: function (xhr, status, p3) {
+                        var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                        $('#toast-body-danger').html("Произошла ошибка при загрузке файла.");
+                        toastDanger.show();
+                        console.error("Ошибка при выполнении AJAX-запроса:", p3);
+                    },
+                    complete: function () {
+                        // Скрываем значок загрузки
+                        $('#loadingSpinner').hide();
+                        // Разблокируем input
+                        $('#inputGroupFile01').prop('disabled', false);
+                    }
+                });
+            }
+        }
+    });
+</script>
+<script>
+    // Находим контейнер с id=messageContainer
+    var messageContainer = document.getElementById('messageContainer');
+
+    function handleInput() {
+        // HTML-код, который вы хотите добавить
+        var newHtml = '<hr><div class="alert alert-warning" role="alert">Для сохранения данных нажмите на кнопку "Сохранить".</div>';
+
+        // Заменяем содержимое messageContainer на alertDiv
+        messageContainer.innerHTML = newHtml;
+
+        // Удаление обработчика события после первого срабатывания
+        $('input').off('input', handleInput); // Удаляем обработчик события
+        $('textarea').off('input', handleInput); // Удаляем обработчик события
+    }
+
+    $('#editRealty').on('submit', function (event) {
+        event.preventDefault(); // Отменяем стандартное поведение отправки формы
+
+        // Собираем данные формы в объект
+        var formData = $(this).serialize();
+
+        // Отправляем данные через AJAX
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'), // URL для отправки данных
+            data: formData,
+            dataType: "json", // Указываем, что ожидаем JSON-ответ
+            success: function (response) {
+                if (response.success) {
+                    // Дополнительные действия, например, сброс формы или обновление списка вакансий
+                    $('#editRealty')[0].reset(); // Сбрасываем форму
+
+                    // Показ сообщения об успехе
+                    var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                    $('#toast-body-warning').html(response.message); // Используем .html() для обновления содержимого
+                    toastWarning.show();
+                    // Перезагрузка страницы через 3 секунды (3000 миллисекунд)
+                    setTimeout(function () {
+                        location.reload(); // Перезагрузка страницы
+                    }, 3000);
+                }
+                else {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при редактировании аренды: " + response.message)
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                $('#toast-body-danger').html("Произошла ошибка при редактировании аренды.")
+                toastDanger.show();
+                console.error("Ошибка при выполнении AJAX-запроса:", error);
+            }
+        });
+    });
+
+    function ShowDeleteMessage(id) {
+        // Создаем элемент alert
+        var alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger';
+        alertDiv.innerHTML = `
+         <strong>Внимание!</strong> Вы уверены, что хотите удалить этот элемент?
+          <div class="button-container">
+             <button type="button" class="btn btn-danger" id="confirmDelete" >Да</button>
+             <button type="button" class="btn btn-light" id="cancelDelete" >Нет</button>
+           </div>
+     `;
+
+        // Заменяем содержимое messageContainer на alertDiv
+        messageContainer.innerHTML = alertDiv.outerHTML;
+
+        // Обработчик для кнопки "Да"
+        document.getElementById('confirmDelete').onclick = function () {
+            // Очищаем содержимое messageContainer
+            messageContainer.innerHTML = '';
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DeleteRealty",
+                data: { id: id },
+                dataType: "json", // Указываем, что ожидаем JSON-ответ
+                success: function (response) {
+                    if (response.success) {
+                        // Показ сообщения об успехе
+                        var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                        $('#toast-body-warning').html(response.message); // Используем .html() для обновления содержимого
+                        toastWarning.show();
+                        // Перезагрузка страницы через 3 секунды (3000 миллисекунд)
+                        setTimeout(function () {
+                            location.reload(); // Перезагрузка страницы
+                        }, 3000);
+                    }
+                    else {
+                        var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                        $('#toast-body-danger').html("Произошла ошибка при удалении аренды: ", response.message)
+                        toastDanger.show();
+                        console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при удалении аренды.")
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        };
+
+        // Обработчик для кнопки "Нет"
+        document.getElementById('cancelDelete').onclick = function () {
+            // Назначение обработчика события на input
+            $('input').on('input', handleInput);
+            $('textarea').on('input', handleInput);
+            // Очищаем содержимое messageContainer
+            messageContainer.innerHTML = '';
+        };
+    }
+</script>

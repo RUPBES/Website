@@ -1,0 +1,181 @@
+﻿<div id="mech" class="card card-success card-outline mb-4">
+    <div class="card-header">
+        <div class="card-title">Добавить технику</div>
+    </div>
+    <div class="card-body">
+        <div class="g-3">
+            <form id="addMech" action="/Admin/AddMech" method="post">
+                <input name="id_dep" value="@ViewBag.Id_dep" hidden />
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom01" class="form-label">Название на русском языке</label>
+                    <input type="text" class="form-control" id="validationCustom01" required="" name="title">
+                    <div class="invalid-feedback">Заполните название</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom02" class="form-label">Название на беларусском языке</label>
+                    <input type="text" class="form-control" id="validationCustom02" required="" name="title_bel">
+                    <div class="invalid-feedback">Заполните название</div>
+                </div>
+                <!--end::Col-->              
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom03" class="form-label">Описание на русском языке</label>
+                    <textarea class="form-control" id="validationCustom03" name="desc" required="" rows="3"></textarea>
+                    <div class="invalid-feedback">Заполните описание</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-12">
+                    <label for="validationCustom04" class="form-label">Описание на белорусском языке</label>
+                    <textarea class="form-control" id="validationCustom04" name="desc_bel" required="" rows="3"></textarea>
+                    <div class="invalid-feedback">Заполните описание</div>
+                </div>
+                <!--end::Col-->
+                <!--Фотографии-->
+                <div class="col-md-12">
+                    <label class="form-label" for="inputGroupFile01">Загрузить изображение</label>
+                    <input type="file" class="form-control" id="inputGroupFile01">
+                </div>
+                <div id="loadingSpinner" style="text-align: center;">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <hr>
+                <label for="ImgsBlock" class="form-label">Загруженные изображения</label>
+                <div class="alert alert-info" id="noFiles" role="alert">
+                    Пока нет добавленного изображения.
+                </div>
+                <div id="messageContainer"></div>
+                <hr id="hrUp">
+                <div class="button-container">
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#loadingSpinner').hide();
+    $('#inputGroupFile01').on('change', function () {
+        // Показываем значок загрузки
+        $('#loadingSpinner').show();
+
+        // Блокируем input
+        $('#inputGroupFile01').prop('disabled', true);
+
+        var files = $(this).prop('files'); // Получаем выбранные файлы
+
+        if (files.length > 0) {
+            if (window.FormData) {
+                var data = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    data.append("file" + i, files[i]);
+                }
+
+                // Добавляем переменную path
+                var path = 'Mech';
+                data.append("path", path);
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Admin/UploadAjax',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        // Проверяем, существует ли div с id="containerFiles"
+                        if ($('#containerFiles').length === 0) {
+                            // Если не существует, находим div с id="noFiles"
+                            var noFilesDiv = $('#noFiles');
+
+                            // Если найден div с id="noFiles", выполняем действия
+                            if (noFilesDiv.length > 0) {
+                                // Добавляем новый div с классом "row g-3" и id="containerFiles" внутрь noFilesDiv
+                                noFilesDiv.before($('<div>').addClass('row g-3').attr('id', 'containerFiles'));
+
+                                // Удаляем div с id="noFiles"
+                                noFilesDiv.remove();
+                            }
+                        }
+                        $('#containerFiles').append(result);
+                    },
+                    error: function (xhr, status, p3) {
+                        var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                        $('#toast-body-danger').html("Произошла ошибка при загрузке файла.");
+                        toastDanger.show();
+                        console.error("Ошибка при выполнении AJAX-запроса:", p3);
+                    },
+                    complete: function () {
+                        // Скрываем значок загрузки
+                        $('#loadingSpinner').hide();
+                        // Разблокируем input
+                        $('#inputGroupFile01').prop('disabled', false);
+                    }
+                });
+            }
+        }
+    });
+</script>
+<script>
+    // Находим контейнер с id=messageContainer
+    var messageContainer = document.getElementById('messageContainer');
+
+    function handleInput() {
+        // HTML-код, который вы хотите добавить
+        var newHtml = '<hr><div class="alert alert-warning" role="alert">Для сохранения данных нажмите на кнопку "Сохранить".</div>';
+
+        // Заменяем содержимое messageContainer на alertDiv
+        messageContainer.innerHTML = newHtml;
+
+        // Удаление обработчика события после первого срабатывания
+        $('input').off('input', handleInput); // Удаляем обработчик события
+        $('textarea').off('input', handleInput); // Удаляем обработчик события
+    }
+
+    $('#addMech').on('submit', function (event) {
+        event.preventDefault(); // Отменяем стандартное поведение отправки формы
+
+        // Собираем данные формы в объект
+        var formData = $(this).serialize();
+
+        // Отправляем данные через AJAX
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'), // URL для отправки данных
+            data: formData,
+            dataType: "json", // Указываем, что ожидаем JSON-ответ
+            success: function (response) {
+                if (response.success) {
+                    // Дополнительные действия, например, сброс формы или обновление списка вакансий
+                    $('#addMech')[0].reset(); // Сбрасываем форму
+
+                    // Показ сообщения об успехе
+                    var toastSuccess = new bootstrap.Toast(document.getElementById('toastSuccess'));
+                    $('#toast-body-success').html(response.message); // Используем .html() для обновления содержимого
+                    toastSuccess.show();
+                    // Перезагрузка страницы через 3 секунды (3000 миллисекунд)
+                    setTimeout(function () {
+                        location.reload(); // Перезагрузка страницы
+                    }, 3000);
+                }
+                else {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при добавлении техники: ", response.message)
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                $('#toast-body-danger').html("Произошла ошибка при добавлении техники.")
+                toastDanger.show();
+                console.error("Ошибка при выполнении AJAX-запроса:", error);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,18 @@
+﻿@using rupbes.Models.Products
+@model List<SubGroupProduct>
+
+<label for="validationCustom01" class="form-label">Подкатегория товара</label>
+<select class="form-select" name="subGroupProduct" id="validationCustom01" required="">    
+    @foreach (var item in Model)
+    {
+        <option value="@item.name">@item.name</option>
+    }
+</select>
+<div class="invalid-feedback">Выберите подкатегорию</div>
+
+<script>
+    $('#validationCustom01').select2({
+        placeholder: 'Подгруппа товара',
+        tags: true
+    });
+</script>

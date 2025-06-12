@@ -90,6 +90,12 @@
                         location.reload(); // Перезагрузка страницы
                     }, 3000);
                 }
+                else {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при добавлении вакансии.")
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                }
             },
             error: function (xhr, status, error) {
                 var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));

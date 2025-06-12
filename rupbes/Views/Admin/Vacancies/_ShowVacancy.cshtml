@@ -45,6 +45,7 @@
                     </div>
                     <!--end::Col-->
                 </div>
+                <div id="messageContainer"></div>
                 <hr id="hrUp">
                 <div class="button-container">
                     <button type="submit" class="btn btn-warning">Сохранить</button>
@@ -55,19 +56,24 @@
     </div>
 </div>
 <script>
+    // Находим контейнер с id=messageContainer
+    var messageContainer = document.getElementById('messageContainer');
+
     function handleInput() {
         // HTML-код, который вы хотите добавить
-        var newHtml = '<hr><div class="alert alert-info" role="alert">Для сохранения данных нажмите на кнопку "Сохранить".</div>';
+        var newHtml = '<hr><div class="alert alert-warning" role="alert">Для сохранения данных нажмите на кнопку "Сохранить".</div>';
 
-        // Добавление HTML выше элемента с id hrUp
-        $('#hrUp').before(newHtml);
+        // Заменяем содержимое messageContainer на alertDiv
+        messageContainer.innerHTML = newHtml;   
 
         // Удаление обработчика события после первого срабатывания
         $('input').off('input', handleInput); // Удаляем обработчик события
+        $('textarea').off('input', handleInput); // Удаляем обработчик события
     }
 
     // Назначение обработчика события на input
     $('input').on('input', handleInput);
+    $('textarea').on('input', handleInput);
 
     $('#editVacancy').on('submit', function (event) {
         event.preventDefault(); // Отменяем стандартное поведение отправки формы
@@ -86,16 +92,22 @@
                     // Показ сообщения об успехе
                     var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
                     $('#toast-body-warning').html(response.message); // Используем .html() для обновления содержимого
-                    toastWarning.show();    
+                    toastWarning.show();
                     // Перезагрузка страницы через 3 секунды (3000 миллисекунд)
                     setTimeout(function () {
                         location.reload(); // Перезагрузка страницы
                     }, 3000);
                 }
+                else {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при редактировании вакансии.")
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                }
             },
             error: function (xhr, status, error) {
                 var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
-                $('#toast-body-danger').newHtml("Произошла ошибка при редактировании вакансии.")
+                $('#toast-body-danger').html("Произошла ошибка при редактировании вакансии.")
                 toastDanger.show();
                 console.error("Ошибка при выполнении AJAX-запроса:", error);
             }
@@ -104,25 +116,23 @@
 
     function ShowDeleteMessage(id) {
         // Создаем элемент alert
-        const alertDiv = document.createElement('div');
+        var alertDiv = document.createElement('div');
         alertDiv.className = 'alert alert-danger';
         alertDiv.innerHTML = `
             <strong>Внимание!</strong> Вы уверены, что хотите удалить этот элемент?
              <div class="button-container">
-                <button class="btn btn-danger" id="confirmDelete" >Да</button>
-                <button class="btn btn-light" id="cancelDelete" >Нет</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete" >Да</button>
+                <button type="button" class="btn btn-light" id="cancelDelete" >Нет</button>
               </div>
-        `;
+        `;        
 
-        // Находим элемент с id hrUp
-        const hrUpElement = document.getElementById('hrUp');
-
-        // Вставляем alert перед элементом hrUp
-        hrUpElement.parentNode.insertBefore(alertDiv, hrUpElement);
+        // Заменяем содержимое messageContainer на alertDiv
+        messageContainer.innerHTML = alertDiv.outerHTML;
 
         // Обработчик для кнопки "Да"
         document.getElementById('confirmDelete').onclick = function () {            
-            alertDiv.remove(); // Удаляем alert после подтверждения
+            // Очищаем содержимое messageContainer
+            messageContainer.innerHTML = '';
             $.ajax({
                 type: "POST",
                 url: "/Admin/DeleteVacancy",
@@ -139,6 +149,12 @@
                             location.reload(); // Перезагрузка страницы
                         }, 3000);
                     }
+                    else {
+                        var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                        $('#toast-body-danger').html("Произошла ошибка при удалении вакансии.")
+                        toastDanger.show();
+                        console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                    }
                 },
                 error: function (xhr, status, error) {
                     var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
@@ -153,7 +169,9 @@
         document.getElementById('cancelDelete').onclick = function () {
             // Назначение обработчика события на input
             $('input').on('input', handleInput);
-            alertDiv.remove(); // Удаляем alert при отказе
+            $('textarea').on('input', handleInput);
+            // Очищаем содержимое messageContainer
+            messageContainer.innerHTML = '';
         };
     }
 </script>

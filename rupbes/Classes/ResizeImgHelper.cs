@@ -57,28 +57,7 @@ namespace rupbes.Classes
                                 encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, 90L);
                                 bmp.Save(FileNameOutput, info[1], encoderParameters);
                             }
-                        }
-
-						//загрузка отредактированной картинки на ftp
-						//byte[] file;
-						//using (MemoryStream ms = new MemoryStream())
-						//{
-						//	bmp.Save(ms, OutputFormat);
-						//	file = ms.ToArray();
-						//}
-
-						//FtpWebRequest request = (FtpWebRequest)WebRequest.Create(FileNameOutput);
-						//request.Credentials = new NetworkCredential("rupbesby", "Eo2oht7w");
-						//request.Method = WebRequestMethods.Ftp.UploadFile;
-
-						//Stream requestStream = request.GetRequestStream();
-
-						//requestStream.Write(file, 0, file.Length);
-						//requestStream.Close();
-
-
-						//FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-						//response.Close();
+                        }					
 					}
                 }
             }

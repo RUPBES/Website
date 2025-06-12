@@ -1,0 +1,14 @@
+﻿@using rupbes.Models
+@model List<Departments>
+@{
+    ViewBag.Title = "Подразделения (Услуги)";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<p class="h4 text-center">Подразделения</p>
+<br />
+<div class="d-grid gap-2 col-4 mx-auto">
+    @foreach (var department in Model)
+    {
+        <a href="@Url.Action("ServiceByDepartment", "Admin",  new { id = department.id })" class="btn btn-primary">@department.short_name_ru</a>
+    }
+</div>

@@ -1,26 +1,26 @@
 ﻿@using rupbes.Models
-@model List<Vacancies>
+@model List<Sale>
 @{
-    ViewBag.Title = "Вакансии " + ViewBag.nameDep;
+    ViewBag.Title = "Имущество " + ViewBag.nameDep;
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-
 @section breadcrumb{
     <ol class="breadcrumb float-sm-end">
         <li class="breadcrumb-item">
             @Html.ActionLink("Администрование", "Index", "Admin")
         </li>
         <li class="breadcrumb-item">
-            @Html.ActionLink("Подразделения (Вакансии)", "DepartmentsForVacancy", "Admin")
+            @Html.ActionLink("Подразделения (Имущество)", "DepartmentsForSale", "Admin")
         </li>
         <li class="breadcrumb-item active">@ViewBag.Title</li>
     </ol>
 }
+
 <div class="row g-4">
     <div class="col-md-6">
         <div class="card card-primary card-outline mb-4">
             <div class="card-header">
-                <div class="card-title">Вакансии</div>
+                <div class="card-title">Имущество на продажу</div>
             </div>
             <div class="card-body">
                 @if (Model.Count > 0)
@@ -28,35 +28,35 @@
 
                     foreach (var item in Model)
                     {
-                        <button type="button" onclick="ShowVacancy(@item.id)" class="btn btn-outline-primary">
-                            @item.vacancy_ru
+                        <button type="button" onclick="ShowSale(@item.id)" class="btn btn-outline-primary">
+                            @item.title
                         </button>
                     }
                 }
                 else
                 {
                     <div class="alert alert-info" role="alert">
-                        Пока нет добавленных вакансий.
+                        Пока нет добаввили имущество на продажу.
                     </div>
                 }
                 <hr>
-                <button class="btn btn-success" onclick="ShowAddVacancy(@ViewBag.IdDep)">Добавить вакансию</button>
+                <button class="btn btn-success" onclick="ShowAddSale(@ViewBag.IdDep)">Добавить имущество</button>
             </div>
         </div>
     </div>
-    <div id="vacancyDisplay" class="col-md-6" style="display:none">
-        <!--область для карточки вакансии-->
-    </div>  
+    <div id="saleDisplay" class="col-md-6" style="display:none">
+        <!--область для карточки имущества-->
+    </div>
 </div>
 @section ActiveClassSideBar{
     <script>
-        const path = "/Admin/DepartmentsForVacancy"; // Ваша константа
+        const path = "/Admin/DepartmentsForSale"; // Ваша константа
         const baseUrl = window.location.origin;
         const url = baseUrl + path; // Соединяем базовый URL и путь
         // Перебираем все ссылки в меню
         $('ul.sidebar-menu a').each(function () {
-            // Проверяем, совпадает ли URL ссылки с текущим URL            
-            if (this.href === url) {                
+            // Проверяем, совпадает ли URL ссылки с текущим URL
+            if (this.href === url) {
                 // Добавляем класс `active` к элементу <li>
                 $(this).addClass('active');
                 // Добавляем класс `active` к родительскому элементу <ul>, если он есть
@@ -67,37 +67,40 @@
 }
 @section scripts{
     <script>
-        // Получаем токен антифрода
-        var token = $('input[name="__RequestVerificationToken"]').val();
-        function ShowVacancy(id) {
+        function ShowSale(id) {
             $.ajax({
                 type: "get",
-                url: '@Url.Action("ShowVacancy", "Admin")',
+                url: '@Url.Action("ShowSale", "Admin")',
                 data: { id: id },
                 success: function (data) {
-                    $('#vacancyDisplay').html(data);
-                    $('#vacancyDisplay').show();
+                    $('#saleDisplay').html(data);
+                    $('#saleDisplay').show();
                 },
                 error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при получении имущества.");
+                    toastDanger.show();
                     console.error("Ошибка при выполнении AJAX-запроса:", error);
                 }
             });
         }
 
-        function ShowAddVacancy(id) {
+        function ShowAddSale(id) {
             $.ajax({
                 type: "get",
-                url: '@Url.Action("ShowAddVacancy", "Admin")',
-                data: { departmentId: id },
+                url: '@Url.Action("ShowAddSale", "Admin")',
+                data: { id: id },
                 success: function (data) {
-                    $('#vacancyDisplay').html(data);
-                    $('#vacancyDisplay').show();
+                    $('#saleDisplay').html(data);
+                    $('#saleDisplay').show();
                 },
                 error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при отображении страницы для добавления имущества.");
+                    toastDanger.show();
                     console.error("Ошибка при выполнении AJAX-запроса:", error);
                 }
             });
         }
     </script>
-
 }

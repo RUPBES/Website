@@ -1,30 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Security.Cryptography;
-using System.Web.Security;
+﻿using AngleSharp.Css.Values;
+using BotDetect.Web.Mvc;
+using Newtonsoft.Json.Linq;
 using rupbes.Classes;
 using rupbes.Models;
-using BotDetect.Web.Mvc;
-using System.Data.Entity;
-using System.Drawing.Imaging;
-using rupbes.Providers;
 using rupbes.Models.DatabaseBes;
-using System.Net;
-using System.IO;
-using System.Text;
 using rupbes.Models.Products;
 using rupbes.Models.ViewModels;
+using rupbes.Providers;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using AngleSharp.Css.Values;
-using System.Runtime.Remoting.Messaging;
-using System.Web.Services.Description;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Reflection.PortableExecutable;
-using System.Web.Providers.Entities;
+using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Providers.Entities;
+using System.Web.Security;
+using System.Web.Services.Description;
 using static System.Net.WebRequestMethods;
 
 namespace rupbes.Controllers
@@ -47,7 +48,7 @@ namespace rupbes.Controllers
         public ActionResult Logoff()//Выход из учетки
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
         [HttpGet]
         public ActionResult Error(string message)
@@ -111,14 +112,15 @@ namespace rupbes.Controllers
 
                         Imgs img = new Imgs
                         {
-                            src = /*link + */"/Content/Images/" + path + "/" + fileName,
-                            src_min =/* link + */"/Content/Images/" + path + "/min/" + fileName
+                            src = link + "/Content/Images/" + path + "/" + fileName,
+                            src_min = link + "/Content/Images/" + path + "/min/" + fileName
                         };
                         img.type_id = await db.Img_types.Where(x => x.type.ToLower() == path.ToLower()).Select(x => x.id).FirstOrDefaultAsync();
-
+                        if (img.type_id == 0)
+                            throw new Exception("Тип новости не найден.");
                         db.Imgs.Add(img);
                         db.Usage_report.Add(rep);
-                        db.SaveChanges();
+                        await db.SaveChangesAsync();
                         addedImgs.Add(img);
                     }
 
@@ -145,7 +147,7 @@ namespace rupbes.Controllers
 
                         db.Imgs.Add(img);
                         db.Usage_report.Add(new Usage_report { title = "Добавление файла", action = "Add", table = "Imgs", date = DateTime.Now, id_user = user.id });
-                        db.SaveChanges();
+                        await db.SaveChangesAsync();
                         addedImgs.Add(img);
                     }
                 }
@@ -156,15 +158,17 @@ namespace rupbes.Controllers
         //ВАКАНСИИ
         [HttpGet]
         [Authorize(Roles = "ok")]
-        public async Task<ActionResult> Vacancies()//Страница с выбором филиала
+        public async Task<ActionResult> Vacancies()//Страница с cо списком вакансий для филиала пользователя
         {
             var id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
             if (id_dep == 0)
             {
                 return HttpNotFound("Пользователь не найден.");
             }
+
             ViewBag.IdDep = id_dep;
             ViewBag.nameDep = await db.Departments.Where(x => x.id == id_dep).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+
             var vacancies = await db.Vacancies.Where(x => x.id_dep == id_dep).ToListAsync();
             return View("~/Views/Admin/Vacancies/Vacancies.cshtml", vacancies);
         }
@@ -173,7 +177,7 @@ namespace rupbes.Controllers
         [Authorize(Roles = "admin, ok_master")]
         public async Task<ActionResult> DepartmentsForVacancy()//Страница с выбором филиала
         {
-            var departments = await db.Departments.Where(x => x.id < 21 /*&& x.id != 7*/).ToListAsync();
+            var departments = await db.Departments.Where(x => x.id < 21).ToListAsync();
             return View("~/Views/Admin/Vacancies/DepartmentsForVacancy.cshtml", departments);
         }
 
@@ -206,58 +210,74 @@ namespace rupbes.Controllers
         [Authorize(Roles = "admin, ok_master, ok")]
         public async Task<ActionResult> AddVacancy(Vacancies vacancy)//Добавление новой вакансии
         {
+            if (vacancy == null || string.IsNullOrWhiteSpace(vacancy.vacancy_ru))
+            {
+                return Json(new { success = false, message = "Некорректные данные." });
+            }
+
             Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Add", table = "Vacancies", date = DateTime.Now, id_user = user.id };
 
             db.Vacancies.Add(vacancy);
             db.Usage_report.Add(rep);
+
             await db.SaveChangesAsync();
-            return Json(new { success = true, message = "Вакансия успешно добавлена!" });
+
+            return Json(new { success = true, message = "Вакансия успешна добавлена!" });
         }
 
         [HttpPost]
         [Authorize(Roles = "admin, ok_master, ok")]
         public async Task<ActionResult> EditVacancy(Vacancies vacancyIn)//Редактирование выбранной вакансии
         {
+            if (vacancyIn == null || string.IsNullOrWhiteSpace(vacancyIn.vacancy_ru))
+            {
+                return Json(new { success = false, message = "Некорректные данные." });
+            }
+
             Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
             Usage_report rep = new Usage_report { title = vacancyIn.vacancy_ru, action = "Edit", table = "Vacancies", date = DateTime.Now, id_user = user.id };
-            var vacancy = await db.Vacancies.Where(x => x.id == vacancyIn.id).FirstOrDefaultAsync();           
+            var vacancy = await db.Vacancies.Where(x => x.id == vacancyIn.id).FirstOrDefaultAsync();
 
             #region Присваивание измененных значений
-            if (vacancy.vacancy_ru != vacancyIn.vacancy_ru)
+            if (vacancy != null)
             {
-                vacancy.vacancy_ru = vacancyIn.vacancy_ru;
-            }
+                if (vacancy.vacancy_ru != vacancyIn.vacancy_ru)
+                {
+                    vacancy.vacancy_ru = vacancyIn.vacancy_ru;
+                }
 
-            if (vacancy.vacancy_bel != vacancyIn.vacancy_bel)
-            {
-                vacancy.vacancy_bel = vacancyIn.vacancy_bel;
-            }
+                if (vacancy.vacancy_bel != vacancyIn.vacancy_bel)
+                {
+                    vacancy.vacancy_bel = vacancyIn.vacancy_bel;
+                }
 
-            if (vacancy.vacancy_bel != vacancyIn.vacancy_bel)
-            {
-                vacancy.vacancy_bel = vacancyIn.vacancy_bel;
-            }
+                if (vacancy.vacancy_bel != vacancyIn.vacancy_bel)
+                {
+                    vacancy.vacancy_bel = vacancyIn.vacancy_bel;
+                }
 
-            if (vacancy.requirement_ru != vacancyIn.requirement_ru)
-            {
-                vacancy.requirement_ru = vacancyIn.requirement_ru;
-            }
+                if (vacancy.requirement_ru != vacancyIn.requirement_ru)
+                {
+                    vacancy.requirement_ru = vacancyIn.requirement_ru;
+                }
 
-            if (vacancy.requirement_bel != vacancyIn.requirement_bel)
-            {
-                vacancy.requirement_bel = vacancyIn.requirement_bel;
-            }
+                if (vacancy.requirement_bel != vacancyIn.requirement_bel)
+                {
+                    vacancy.requirement_bel = vacancyIn.requirement_bel;
+                }
 
-            if (vacancy.payment != vacancyIn.payment)
-            {
-                vacancy.payment = vacancyIn.payment;
+                if (vacancy.payment != vacancyIn.payment)
+                {
+                    vacancy.payment = vacancyIn.payment;
+                }
             }
-            vacancy.vacancy_ru = vacancyIn.vacancy_ru;
-            vacancy.vacancy_bel = vacancyIn.vacancy_bel;
-            vacancy.requirement_ru = vacancyIn.requirement_ru;
-            vacancy.requirement_bel = vacancyIn.requirement_bel;
-            vacancy.payment = vacancyIn.payment;
+            else
+            {
+                return Json(new { success = false, message = "Вакансия не найдена." });
+            }
+            #endregion
+
             db.Usage_report.Add(rep);
             await db.SaveChangesAsync();
             return Json(new { success = true, message = "Вакансия успешно изменена!" });
@@ -267,8 +287,15 @@ namespace rupbes.Controllers
         [Authorize(Roles = "admin, ok_master, ok")]
         public async Task<ActionResult> DeleteVacancy(int id)//Удаление выбранной вакансии
         {
+
             Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
-            Vacancies vacancy = db.Vacancies.Find(id);
+            Vacancies vacancy = await db.Vacancies.FindAsync(id); // Используем асинхронный метод
+
+            if (vacancy == null)
+            {
+                return Json(new { success = false, message = "Вакансия не найдена." });
+            }
+
             Usage_report rep = new Usage_report { title = vacancy.vacancy_ru, action = "Delete", table = "Vacancies", date = DateTime.Now, id_user = user.id };
 
             db.Vacancies.Remove(vacancy);
@@ -276,113 +303,6 @@ namespace rupbes.Controllers
             await db.SaveChangesAsync();
             return Json(new { success = true, message = "Вакансия удалена!" });
         }
-
-        [HttpGet]
-        [Authorize(Roles = "ok")]
-        public ActionResult AllBosses()//Все боссы филиала
-        {
-            Models.Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            ViewBag.Bosses = db.Bosses.Where(x => x.id_dep == user.id_dep).ToList();
-            return View();
-        }
-        [HttpGet]
-        [Authorize(Roles = "ok")]
-        public ActionResult CreateBoss()//Страница добавления нового босса
-        {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 6).ToList();
-            return View();
-        }
-        [HttpPost]
-        [Authorize(Roles = "ok")]
-        public ActionResult CreateBoss(string name, string name_bel, string name_eng, string post, string post_bel, string post_eng, string desc, string desc_bel, string desc_eng, int id_img, string meet_day, string meet_day_bel, string meet_day_eng, string meet_time, string phone)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Bosses boss = new Bosses { name = name, name_bel = name_bel, name_eng = name_eng, post = post, post_bel = post_bel, post_eng = post_eng, desc = desc, desc_bel = desc_bel, desc_eng = desc_eng, id_img = id_img, meet_day = meet_day, meet_day_bel = meet_day_bel, meet_day_eng = meet_day_eng, meet_time = meet_time, phone = phone, id_dep = user.id_dep };
-            Usage_report rep = new Usage_report { title = boss.name, action = "Add", table = "Bosses", date = DateTime.Now, id_user = user.id };
-            db.Bosses.Add(boss);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("AllBosses");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-        [HttpGet]
-        [Authorize(Roles = "ok")]
-        public ActionResult EditDepBoss(int id)
-        {
-            try
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Bosses boss = db.Bosses.Find(id);
-                if (boss.id_dep == user.id_dep)
-                {
-                    ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 6).ToList();
-                    return View(boss);
-                }
-                else
-                {
-                    return RedirectToAction("Error", new { message = "Ошибка доступа" });
-                }
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-        [HttpPost]
-        [Authorize(Roles = "ok")]
-        public ActionResult EditDepBoss(int id, string name, string name_bel, string name_eng, string post, string post_bel, string post_eng, string desc, string desc_bel, string desc_eng, int id_img, string meet_day, string meet_day_bel, string meet_day_eng, string meet_time, string phone)
-        {
-            try
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Bosses boss = db.Bosses.Find(id);
-                if (boss.id_dep == user.id_dep)
-                {
-                    boss.name = name;
-                    boss.name_bel = name_bel;
-                    boss.name_eng = name_eng;
-                    boss.post = post;
-                    boss.post_bel = post_bel;
-                    boss.post_eng = post_eng;
-                    boss.desc = desc;
-                    boss.desc_bel = desc_bel;
-                    boss.desc_eng = desc_eng;
-                    boss.id_img = id_img;
-                    boss.meet_day = meet_day;
-                    boss.meet_day_bel = meet_day_bel;
-                    boss.meet_day_eng = meet_day_eng;
-                    boss.meet_time = meet_time;
-                    boss.phone = phone;
-                    Usage_report rep = new Usage_report { title = boss.name, action = "Edit", table = "Bosses", date = DateTime.Now, id_user = user.id };
-                    db.Entry(boss).State = EntityState.Modified;
-                    db.Usage_report.Add(rep);
-                    try
-                    {
-                        db.SaveChanges();
-                        return RedirectToAction("AllBosses");
-                    }
-                    catch (Exception)
-                    {
-                        return View("Error");
-                    }
-                }
-                else
-                {
-                    return View("Error");
-                }
-            }
-            catch
-            {
-                return View("Error");
-            }
-        }
-
 
         //НОВОСТИ
         [HttpGet]
@@ -396,20 +316,52 @@ namespace rupbes.Controllers
         [HttpPost]
         public async Task<ActionResult> ShowNewsByCategory(int id, int page, int count = 20)
         {
+            if (page < 1)
+            {
+                page = 1; // Убедитесь, что номер страницы не меньше 1
+            }
+
             Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
-            var listNews = await db.News
-                        .Where(n => n.type_id == id && n.id_dep == user.id_dep) // Фильтрация по type_id
+            if (user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
+            var listNews = new List<News>();
+            var totalItems = 0;
+            if (User.IsInRole("admin"))
+            {
+                listNews = await db.News
+                        .Where(n => n.type_id == id /*&& n.id_dep == user.id_dep*/) // Фильтрация по type_id
                         .OrderByDescending(n => n.date) // Сортировка по дате
                         .Skip((page - 1) * count) // Пропустить элементы для предыдущих страниц
                         .Take(count) // Взять только count элементов для текущей страницы
                         .ToListAsync(); // Преобразовать в список
-            var totalItems = await db.News
-                        .Where(n => n.type_id == id && n.id_dep == user.id_dep)
-                        .CountAsync(); // Общее количество элементов
+
+                totalItems = await db.News
+                            .Where(n => n.type_id == id /*&& n.id_dep == user.id_dep*/)
+                            .CountAsync(); // Общее количество элементов
+            }
+            else
+            {
+                listNews = await db.News
+                      .Where(n => n.type_id == id && n.id_dep == user.id_dep) // Фильтрация по type_id
+                      .OrderByDescending(n => n.date) // Сортировка по дате
+                      .Skip((page - 1) * count) // Пропустить элементы для предыдущих страниц
+                      .Take(count) // Взять только count элементов для текущей страницы
+                      .ToListAsync(); // Преобразовать в список
+
+                totalItems = await db.News
+                            .Where(n => n.type_id == id && n.id_dep == user.id_dep)
+                            .CountAsync(); // Общее количество элементов
+            }
             var totalPages = (int)Math.Ceiling((double)totalItems / count); // Общее количество страниц
+            if (totalPages < page)
+                page = totalPages;
+
             ViewBag.totalPages = totalPages;
             ViewBag.activePage = page;
             ViewBag.nameNews = await db.News_type.Where(x => x.id == id).Select(x => x.type).FirstOrDefaultAsync();
+
             return PartialView("~/Views/Admin/News/_NewsByCategory.cshtml", listNews);
         }
 
@@ -419,17 +371,34 @@ namespace rupbes.Controllers
         public async Task<ActionResult> ShowNewsById(int id)//Страница показания новости
         {
             ViewBag.newsType = await db.News_type.ToListAsync();
-            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+
+            // Получаем новость
             News news = await db.News.FindAsync(id);
+            if (news == null)
+            {
+                throw new Exception("Новость не найдена.");
+            }
+
             return PartialView("~/Views/Admin/News/_ShowNewsById.cshtml", news);
         }
-    
+
         [HttpPost]
         [Authorize(Roles = "admin, news")]
         public async Task<ActionResult> EditNews(News model, int[] img_ids)//Изменение существующей новости
         {
+            // Получаем пользователя
             Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
-            News news = await db.News.Where(x => x.id == model.id).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем новость
+            News news = await db.News.Include(n => n.Imgs).FirstOrDefaultAsync(x => x.id == model.id);
+            if (news == null)
+            {
+                return Json(new { success = false, message = "Новость не найдена." });
+            }
 
             #region Присваивание измененных значений
             if (news.title_ru != model.title_ru)
@@ -457,9 +426,12 @@ namespace rupbes.Controllers
                 news.type_id = model.type_id;
             }
 
+            // Обработка изображений
             if (img_ids != null)
             {
                 var currentImgIds = news.Imgs.Select(i => i.id).ToList();
+
+                // Удаляем изображения, которые не включены в img_ids
                 foreach (var imgId in currentImgIds)
                 {
                     if (!img_ids.Contains(imgId))
@@ -470,19 +442,26 @@ namespace rupbes.Controllers
                             news.Imgs.Remove(imgToRemove);
                         }
                     }
-                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
-                    foreach (Imgs img in ImgList)
+                }
+
+                // Добавляем новые изображения
+                var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                foreach (Imgs img in ImgList)
+                {
+                    if (!news.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
                     {
-                        if (!news.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
-                        {
-                            news.Imgs.Add(img);
-                        }
+                        news.Imgs.Add(img);
                     }
                 }
+
+            }
+            else if (news.Imgs.Count() > 0)
+            {
+                news.Imgs.Clear();
             }
             #endregion
 
-            Usage_report rep = new Usage_report { title = news.title_ru, action = "Edit", table = "News", date = DateTime.Now, id_user = user.id };            
+            Usage_report rep = new Usage_report { title = news.title_ru, action = "Edit", table = "News", date = DateTime.Now, id_user = user.id };
             db.Usage_report.Add(rep);
             await db.SaveChangesAsync();
             return Json(new { success = true, message = "Новость изменена!" });
@@ -492,1409 +471,1318 @@ namespace rupbes.Controllers
         [Authorize(Roles = "admin, news")]
         public async Task<ActionResult> DeleteNews(int id)//Удаление новости
         {
+            // Получаем пользователя
             Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
-            News news = await db.News.Where(x => x.id == id).FirstOrDefaultAsync();
-            Usage_report rep = new Usage_report { title = news.title_ru, action = "Delete", table = "News", date = DateTime.Now, id_user = user.id };
-            db.News.Remove(news);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
 
+            // Получаем новость
+            News news = await db.News.FirstOrDefaultAsync(x => x.id == id);
+            if (news == null)
+            {
+                return Json(new { success = false, message = "Новость не найдена." });
+            }
+
+            Usage_report rep = new Usage_report { title = news.title_ru, action = "Delete", table = "News", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем новость
+            db.News.Remove(news);
             await db.SaveChangesAsync();
+
             return Json(new { success = true, message = "Новость удалена!" });
         }
 
         [HttpGet]
         [Authorize(Roles = "admin,news")]
-        public ActionResult CreateNews()//Страница добавления новой новости
+        public async Task<ActionResult> AddNews()//Страница добавления новой новости
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-
-            ViewBag.Types = db.News_type.ToList();
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 1).ToList();
-
-            if (user.Roles.role == "admin")
-            {
-                ViewBag.Departments = db.Departments.ToList();
-                return View("CreateNewsAdmin");
-            }
-            else
-            {
-
-            }
-            return View();
+            ViewBag.id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            ViewBag.newsType = await db.News_type.ToListAsync();
+            var newsType = await db.News_type.ToListAsync();
+            return View("~/Views/Admin/News/AddNews.cshtml", newsType);
         }
+
         [HttpPost]
         [Authorize(Roles = "admin,news")]
-        public ActionResult AddNews(News news, int[] img_ids)//Добавление новой новости
+        public async Task<ActionResult> AddNews(News news, int[] img_ids)//Добавление новой новости
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
             Usage_report rep = new Usage_report { title = news.title_ru, action = "Add", table = "News", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
             news.date = DateTime.Now;
-            if (user.Roles.role != "admin")
-            {
-                news.id_dep = user.id_dep;
-            }
 
-            if (news != null)
+            if (img_ids != null)
             {
-
                 Imgs img = new Imgs();
-                if (img_ids != null)
+                foreach (var id in img_ids)
                 {
-                    foreach (int id in img_ids)
-                    {
-                        img = db.Imgs.Find(id);
-                        news.Imgs.Add(img);
-                    }
-                }
-
-                try
-                {
-                    db.News.Add(news);
-                    db.Usage_report.Add(rep);
-                    db.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    return RedirectToAction("Error", new { message = e.Message });
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    news.Imgs.Add(img);
                 }
             }
-            return RedirectToAction("News");
+
+            db.News.Add(news);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Новость успешна добавлена!" });
         }
 
         //ОБЪЕКТЫ
         [Authorize(Roles = "admin, obj")]
         [HttpGet]
-        public ActionResult Objects()//Главная страница меню новостей
+        public async Task<ActionResult> Objects()//Главная страница меню новостей
         {
-            return View(db.Objects.ToList());
+            var objects = await db.Objects.OrderByDescending(x => x.id).ToListAsync();
+            return View("~/Views/Admin/Objects/Objects.cshtml", objects);
         }
-        [Authorize(Roles = "admin, obj")]
-        [HttpGet]
-        public ActionResult CreateObject()//Страница добавления нового объекта
-        {
-            ViewBag.Departments = db.Departments.ToList();
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 2).ToList();
-            return View();
-        }
-        [Authorize(Roles = "admin, obj")]
+
         [HttpPost]
-        public ActionResult AddObject(string title_ru, string title_bel, string title_eng, string desc_ru, string desc_bel, string desc_eng, int[] dep_ids, int[] img_ids)//Добавление нового объекта
+        public async Task<ActionResult> ShowObjectsByPage(int page = 1, int count = 20)
         {
-            Objects obj = new Objects
+            if (page < 1)
             {
-                title_ru = title_ru,
-                title_bel = title_bel,
-                title_eng = title_eng,
-                desc_ru = desc_ru,
-                desc_bel = desc_bel,
-                desc_eng = desc_eng
-            };
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = obj.title_ru, action = "Add", table = "Objects", date = DateTime.Now, id_user = user.id };
-            if (dep_ids != null)
+                page = 1; // Убедитесь, что номер страницы не меньше 1
+            }
+
+            var listObjects = await db.Objects
+                    .OrderByDescending(n => n.id) // Сортировка по дате
+                    .Skip((page - 1) * count) // Пропустить элементы для предыдущих страниц
+                    .Take(count) // Взять только count элементов для текущей страницы
+                    .ToListAsync(); // Преобразовать в список
+
+            var totalItems = await db.Objects
+                        .CountAsync(); // Общее количество элементов
+
+            var totalPages = (int)Math.Ceiling((double)totalItems / count); // Общее количество страниц
+            if (totalPages < page)
+                page = totalPages;
+
+            ViewBag.totalPages = totalPages;
+            ViewBag.activePage = page;
+
+            return PartialView("~/Views/Admin/Objects/_Objects.cshtml", listObjects);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, obj")]
+        public async Task<ActionResult> ShowObject(int id)//Частичное представление по выбранному объекту
+        {
+            ViewBag.Departments = await db.Departments.Where(x => x.id < 42).ToListAsync();
+            var objectView = await db.Objects.Where(x => x.id == id).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Objects/_ShowObject.cshtml", objectView);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, obj")]
+        public async Task<ActionResult> AddObject()//Частичное представление по выбранному объекту
+        {
+            ViewBag.Departments = await db.Departments.Where(x => x.id < 42).ToListAsync();
+            return View("~/Views/Admin/Objects/AddObject.cshtml");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, obj")]
+        public async Task<ActionResult> AddObject(Objects objectModel, int[] dep_ids = null, int[] img_ids = null)//Добавление нового объекта
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                foreach (int id in dep_ids)
-                {
-                    Departments department = new Departments();
-                    department = db.Departments.Find(id);
-                    obj.Departments.Add(department);
-                }
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = objectModel.title_ru, action = "Add", table = "Objects", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            Departments department = new Departments();
+            foreach (var id in dep_ids)
+            {
+                department = await db.Departments.Where(x => x.id == id).FirstOrDefaultAsync();
+                objectModel.Departments.Add(department);
             }
 
             if (img_ids != null)
             {
-                foreach (int id in img_ids)
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
                 {
-                    Imgs img = new Imgs();
-                    img = db.Imgs.Find(id);
-                    obj.Imgs.Add(img);
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    objectModel.Imgs.Add(img);
                 }
             }
-            try
-            {
-                db.Objects.Add(obj);
-                db.Usage_report.Add(rep);
-                db.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
 
-            return RedirectToAction("Objects");
+            db.Objects.Add(objectModel);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Объект успешно добавлен!" });
         }
-        [Authorize(Roles = "admin, obj")]
-        [HttpGet]
-        public ActionResult DeleteObject(int id)//Удаление объекта
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Objects obj = db.Objects.Find(id);
-            Usage_report rep = new Usage_report { title = obj.title_ru, action = "Delete", table = "Objects", date = DateTime.Now, id_user = user.id };
-            db.Objects.Remove(obj);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("Objects");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-        [Authorize(Roles = "admin, obj")]
-        [HttpGet]
-        public ActionResult EditObject(int id)//Страница изменения объекта
-        {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 2).ToList();
-            ViewBag.Departments = db.Departments.ToList();
-            return View(db.Objects.Find(id));
-        }
-        [Authorize(Roles = "admin, obj")]
+
         [HttpPost]
-        public ActionResult EditObject(int id, string title_ru, string title_bel, string title_eng, string desc_ru, string desc_bel, string desc_eng, int[] dep_ids, int[] img_ids)//Изменение объекта
+        [Authorize(Roles = "admin, obj")]
+        public async Task<ActionResult> EditObject(Objects objectModel, int[] dep_ids = null, int[] img_ids = null)//Редактирование нового объекта
         {
-            Objects obj = db.Objects.Find(id);
-            obj.title_ru = title_ru;
-            obj.title_bel = title_bel;
-            obj.title_eng = title_eng;
-            obj.desc_ru = desc_ru;
-            obj.desc_bel = desc_bel;
-            obj.desc_eng = desc_eng;
-            obj.Departments.Clear();
-            obj.Imgs.Clear();
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = obj.title_ru, action = "Edit", table = "Objects", date = DateTime.Now, id_user = user.id };
-
-            if (dep_ids != null)
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                foreach (int dep_id in dep_ids)
-                {
-                    Departments department = new Departments();
-                    department = db.Departments.Find(dep_id);
-                    obj.Departments.Add(department);
-                }
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
 
+            // Получаем объект
+            Objects objects = await db.Objects.Include(o => o.Imgs).Include(o => o.Departments).FirstOrDefaultAsync(x => x.id == objectModel.id);
+            if (objects == null)
+            {
+                return Json(new { success = false, message = "Объект не найден." });
+            }
+
+            #region Присваивание измененных значений
+            if (objects.title_ru != objectModel.title_ru)
+            {
+                objects.title_ru = objectModel.title_ru;
+            }
+
+            if (objects.title_bel != objectModel.title_bel)
+            {
+                objects.title_bel = objectModel.title_bel;
+            }
+
+            if (objects.title_eng != objectModel.title_eng)
+            {
+                objects.title_eng = objectModel.title_eng;
+            }
+
+            if (objects.desc_ru != objectModel.desc_ru)
+            {
+                objects.desc_ru = objectModel.desc_ru;
+            }
+
+            if (objects.desc_bel != objectModel.desc_bel)
+            {
+                objects.desc_bel = objectModel.desc_bel;
+            }
+
+            if (objects.desc_eng != objectModel.desc_eng)
+            {
+                objects.desc_eng = objectModel.desc_eng;
+            }
+
+            // Обработка изображений
             if (img_ids != null)
             {
-                foreach (int img_id in img_ids)
+                var currentImgIds = objects.Imgs.Select(i => i.id).ToList();
+
+                // Удаляем изображения, которые не включены в img_ids
+                foreach (var imgId in currentImgIds)
                 {
-                    Imgs img = new Imgs();
-                    img = db.Imgs.Find(img_id);
-                    obj.Imgs.Add(img);
+                    if (!img_ids.Contains(imgId))
+                    {
+                        var imgToRemove = objects.Imgs.FirstOrDefault(i => i.id == imgId);
+                        if (imgToRemove != null)
+                        {
+                            objects.Imgs.Remove(imgToRemove);
+                        }
+                    }
+
+                    // Добавляем новые изображения
+                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                    foreach (var img in ImgList)
+                    {
+                        if (!objects.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
+                        {
+                            objects.Imgs.Add(img);
+                        }
+                    }
                 }
             }
-            db.Entry(obj).State = EntityState.Modified;
+
+            // Обработка организаций
+            if (dep_ids != null)
+            {
+                var currentDepIds = objects.Departments.Select(i => i.id).ToList();
+
+                // Удаляем организации, которые не включены в img_ids
+                foreach (var depId in currentDepIds)
+                {
+                    if (!dep_ids.Contains(depId))
+                    {
+                        var depToRemove = objects.Departments.FirstOrDefault(i => i.id == depId);
+                        if (depToRemove != null)
+                        {
+                            objects.Departments.Remove(depToRemove);
+                        }
+                    }
+
+                    // Добавляем новые изображения
+                    var DepList = await db.Departments.Where(x => dep_ids.Contains(x.id)).ToListAsync();
+                    foreach (var dep in DepList)
+                    {
+                        if (!objects.Departments.Any(i => i.id == dep.id)) // Проверка на дублирование
+                        {
+                            objects.Departments.Add(dep);
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            Usage_report rep = new Usage_report { title = objectModel.title_ru, action = "Add", table = "Objects", date = DateTime.Now, id_user = user.id };
             db.Usage_report.Add(rep);
-            try
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Изменения по объекту успешно сохранены!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, obj")]
+        public async Task<ActionResult> DeleteObject(int id)//Удаление новости
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                db.SaveChanges();
-                return RedirectToAction("Objects");
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
-            catch (Exception e)
+
+            // Получаем новость
+            Objects objects = await db.Objects.FirstOrDefaultAsync(x => x.id == id);
+            if (objects == null)
             {
-                return RedirectToAction("Error", new { message = e.Message });
+                return Json(new { success = false, message = "Объект не найден." });
             }
+
+            Usage_report rep = new Usage_report { title = objects.title_ru, action = "Delete", table = "Objects", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем новость
+            db.Objects.Remove(objects);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Объект удален!" });
         }
 
         //Сертификаты
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public ActionResult Certificates()//Главная страница меню сертификатов
+        public async Task<ActionResult> Certificates()//Главная страница меню сертификатов
         {
-
-            return View(db.Certificates.ToList());
+            var сertificates = await db.Certificates.OrderByDescending(x => x.id).ToListAsync();
+            return View("~/Views/Admin/Certificates/Certificates.cshtml", сertificates);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> ShowCertificatesByPage(int page = 1, int count = 20)
+        {
+            if (page < 1)
+            {
+                page = 1; // Убедитесь, что номер страницы не меньше 1
+            }
+
+            var listCertificates = await db.Certificates
+                    .OrderByDescending(n => n.id) // Сортировка по дате
+                    .Skip((page - 1) * count) // Пропустить элементы для предыдущих страниц
+                    .Take(count) // Взять только count элементов для текущей страницы
+                    .ToListAsync(); // Преобразовать в список
+
+            var totalItems = await db.Certificates
+                        .CountAsync(); // Общее количество элементов
+
+            var totalPages = (int)Math.Ceiling((double)totalItems / count); // Общее количество страниц
+            if (totalPages < page)
+                page = totalPages;
+
+            ViewBag.totalPages = totalPages;
+            ViewBag.activePage = page;
+
+            return PartialView("~/Views/Admin/Certificates/_Certificates.cshtml", listCertificates);
+        }
+
+
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public ActionResult CreateCertificate()//Страница добавления новго сертификата
+        public async Task<ActionResult> ShowCertificate(int id)//Частичное представление по выбранному сертификату
         {
-            ViewBag.Imgs = db.Imgs.Where(x => x.Img_types.id == 5).ToList();
-            ViewBag.Departments = db.Departments.ToList();
-            return View();
+            ViewBag.Departments = await db.Departments.Where(x => x.id < 42).ToListAsync();
+            var certificateView = await db.Certificates.Where(x => x.id == id).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Certificates/_ShowCertificate.cshtml", certificateView);
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> AddCertificate()//Страница добавления новго сертификата
+        {
+            ViewBag.Departments = await db.Departments.Where(x => x.id < 42).ToListAsync();
+            return View("~/Views/Admin/Certificates/AddCertificate.cshtml");
         }
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public ActionResult AddCertificate(string name, string name_bel, string name_eng, int[] img_ids, int id_dep)//Добавление новго сертификата
+        public async Task<ActionResult> AddCertificate(Certificates certificateModel, int[] img_ids)//Добавление новго сертификата
         {
-            Certificates certificate = new Certificates { name = name, name_bel = name_bel, name_eng = name_eng, id_dep = id_dep };
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = certificate.name, action = "Add", table = "Certificates", date = DateTime.Now, id_user = user.id };
-
-            foreach (int id in img_ids)
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                Imgs img = new Imgs();
-                img = db.Imgs.Find(id);
-                certificate.Imgs.Add(img);
-            }
-            db.Certificates.Add(certificate);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-            return RedirectToAction("Certificates");
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult DeleteCertificate(int id)//Удаление сертификата
-        {
-            Certificates certificate = db.Certificates.Find(id);
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = certificate.name, action = "Delete", table = "Certificates", date = DateTime.Now, id_user = user.id };
-            db.Certificates.Remove(certificate);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("Certificates");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
 
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult EditCertificate(int id)//Страница изменения сертификата
-        {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 5).ToList();
-            ViewBag.Departments = db.Departments.ToList();
-            return View(db.Certificates.Find(id));
-        }
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        public ActionResult EditCertificate(int id, string name, string name_bel, string name_eng, int[] img_ids, int id_dep)//Изменение сертификата
-        {
-            Certificates certificate = db.Certificates.Find(id);
-            certificate.name = name;
-            certificate.name_bel = name_bel;
-            certificate.name_eng = name_eng;
-            certificate.id_dep = id_dep;
-            certificate.Imgs.Clear();
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = certificate.name, action = "Edit", table = "Certificates", date = DateTime.Now, id_user = user.id };
+            if (certificateModel.id_dep == null || certificateModel.id_dep == 0)
+            {
+                return Json(new { success = false, message = "Не выбрана организация." });
+            }
+
+            Usage_report rep = new Usage_report { title = certificateModel.name, action = "Add", table = "Certificates", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
 
             if (img_ids != null)
             {
-                foreach (int img_id in img_ids)
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
                 {
-                    Imgs img = new Imgs();
-                    img = db.Imgs.Find(img_id);
-                    certificate.Imgs.Add(img);
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    certificateModel.Imgs.Add(img);
                 }
             }
-            db.Entry(certificate).State = EntityState.Modified;
+
+            db.Certificates.Add(certificateModel);
+
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Сертификат успешно добавлен!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> EditCertificate(Certificates certificateModel, int[] img_ids = null)//Редактирование объекта
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            if (certificateModel.id_dep == null || certificateModel.id_dep == 0)
+            {
+                return Json(new { success = false, message = "Не выбрана организация." });
+            }
+
+            // Получаем сертификат
+            Certificates certificates = await db.Certificates.Include(o => o.Imgs).FirstOrDefaultAsync(x => x.id == certificateModel.id);
+            if (certificates == null)
+            {
+                return Json(new { success = false, message = "Сертификат не найден." });
+            }
+
+            #region Присваивание измененных значений
+            if (certificates.name != certificateModel.name)
+            {
+                certificates.name = certificateModel.name;
+            }
+
+            if (certificates.name_bel != certificateModel.name_bel)
+            {
+                certificates.name_bel = certificateModel.name_bel;
+            }
+
+            if (certificates.name_eng != certificateModel.name_eng)
+            {
+                certificates.name_eng = certificateModel.name_eng;
+            }
+            if (certificates.id_dep != certificateModel.id_dep)
+            {
+                certificates.id_dep = certificateModel.id_dep;
+            }
+
+            // Обработка изображений
+            if (img_ids != null)
+            {
+                var currentImgIds = certificates.Imgs.Select(i => i.id).ToList();
+
+                // Удаляем изображения, которые не включены в img_ids
+                foreach (var imgId in currentImgIds)
+                {
+                    if (!img_ids.Contains(imgId))
+                    {
+                        var imgToRemove = certificates.Imgs.FirstOrDefault(i => i.id == imgId);
+                        if (imgToRemove != null)
+                        {
+                            certificates.Imgs.Remove(imgToRemove);
+                        }
+                    }
+
+                    // Добавляем новые изображения
+                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                    foreach (var img in ImgList)
+                    {
+                        if (!certificates.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
+                        {
+                            certificates.Imgs.Add(img);
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            Usage_report rep = new Usage_report { title = certificateModel.name, action = "Edit", table = "Certificates", date = DateTime.Now, id_user = user.id };
             db.Usage_report.Add(rep);
-            try
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Изменения по сертификату успешно сохранены!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> DeleteCertificate(int id)//Удаление новости
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                db.SaveChanges();
-                return RedirectToAction("Certificates");
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
-            catch (Exception e)
+
+            // Получаем новость
+            Certificates certificates = await db.Certificates.FirstOrDefaultAsync(x => x.id == id);
+            if (certificates == null)
             {
-                return RedirectToAction("Error", new { message = e.Message });
+                return Json(new { success = false, message = "Сертификат не найден." });
             }
+
+            Usage_report rep = new Usage_report { title = certificates.name, action = "Delete", table = "Certificates", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем новость
+            db.Certificates.Remove(certificates);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Сертификат удален!" });
         }
 
         //Руководители
         [HttpGet]
         [Authorize(Roles = "admin, ok_master")]
-        public ActionResult Bosses()//Главная страница меню боссов
+        public async Task<ActionResult> DepartmentsForBoss()//Страница с выбором филиала
         {
-            return View(db.Departments.ToList());
+            var departments = await db.Departments.Where(x => x.id < 21).ToListAsync();
+            return View("~/Views/Admin/Bosses/DepartmentsForBoss.cshtml", departments);
         }
+
         [HttpGet]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult DepBosses(int id)//Боссы выбранного филиала
+        [Authorize(Roles = "ok")]
+        public async Task<ActionResult> Bosses()//Главная страница меню боссов
         {
-            ViewBag.Dep = db.Departments.Find(id);
-            ViewBag.Bosses = db.Bosses.Where(x => x.id_dep == id).ToList();
-            return View();
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult AddBoss(int id)//Страница добавления нового босса
-        {
-            ViewBag.Id_dep = id;
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 6).ToList();
-            return View();
-        }
-        [HttpPost]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult AddBoss(int id_dep, string name, string name_bel, string name_eng, string post, string post_bel, string post_eng, string desc, string desc_bel, string desc_eng, int id_img, string meet_day, string meet_day_bel, string meet_day_eng, string meet_time, string phone)//Добавление нового босса
-        {
-            Bosses boss = new Bosses { id_dep = id_dep, name = name, name_bel = name_bel, name_eng = name_eng, post = post, post_bel = post_bel, post_eng = post_eng, desc = desc, desc_bel = desc_bel, desc_eng = desc_eng, id_img = id_img, meet_day = meet_day, meet_day_bel = meet_day_bel, meet_day_eng = meet_day_eng, meet_time = meet_time, phone = phone };
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = boss.name, action = "Add", table = "Bosses", date = DateTime.Now, id_user = user.id };
-            db.Bosses.Add(boss);
-            db.Usage_report.Add(rep);
-            try
+            var id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            if (id_dep == 0)
             {
-                db.SaveChanges();
-                return RedirectToAction("DepBosses", new { id = id_dep });
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
+                return HttpNotFound("Пользователь не найден.");
             }
 
+            ViewBag.IdDep = id_dep;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id_dep).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+
+            var bosses = await db.Bosses.Where(x => x.id_dep == id_dep).OrderBy(x => x.name).ToListAsync();
+            return View("~/Views/Admin/Bosses/Bosses.cshtml", bosses);
         }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, ok_master")]
+        public async Task<ActionResult> BossesByDepartment(int id)//Страница со списоком вакансий для выбранного филиала
+        {
+            ViewBag.IdDep = id;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+            var bosses = await db.Bosses.Where(x => x.id_dep == id).OrderBy(x => x.name).ToListAsync();
+            return View("~/Views/Admin/Bosses/BossesByDepartment.cshtml", bosses);
+        }
+
         [HttpGet]
         [Authorize(Roles = "admin, ok_master, ok")]
-        public ActionResult DeleteBoss(int id)//Удаление босса
+        public async Task<ActionResult> ShowBoss(int id)//Показать выбранного руководителя
         {
-            try
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
+            var bossView = await db.Bosses.Where(x => x.id == id).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Bosses/_ShowBoss.cshtml", bossView);
+        }
 
-                Bosses boss = db.Bosses.Find(id);
-                Usage_report rep = new Usage_report { title = boss.name, action = "Delete", table = "Bosses", date = DateTime.Now, id_user = user.id };
-                int id_dep = boss.id_dep;
-                if (id_dep == user.id_dep || user.Roles.role == "admin" || user.Roles.role == "ok_master")
-                {
-                    db.Bosses.Remove(db.Bosses.Find(id));
-                    db.Usage_report.Add(rep);
-                    try
-                    {
-                        db.SaveChanges();
-                        if (user.Roles.role == "admin" || user.Roles.role == "ok_master")
-                        {
-                            return RedirectToAction("DepBosses", new { id = id_dep });
-                        }
-                        else
-                        {
-                            return RedirectToAction("AllBosses");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        return RedirectToAction("Error", new { message = e.Message });
-                    }
-                }
-                else
-                {
-                    return View("Error");
-                }
-            }
-            catch
-            {
-                return View("Error");
-            }
-        }
         [HttpGet]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult EditBoss(int id)//Страница изменения босса
+        [Authorize(Roles = "admin, ok_master, ok")]
+        public async Task<ActionResult> ShowAddBoss(int id)//Страница добавления нового босса
         {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 6).ToList();
-            return View(db.Bosses.Find(id));
+            ViewBag.Id_dep = id;
+            return PartialView("~/Views/Admin/Bosses/_ShowAddBoss.cshtml");
         }
+
         [HttpPost]
-        [Authorize(Roles = "admin, ok_master")]
-        public ActionResult EditBoss(int id, int id_dep, string name, string name_bel, string name_eng, string post, string post_bel, string post_eng, string desc, string desc_bel, string desc_eng, int id_img, string meet_day, string meet_day_bel, string meet_day_eng, string meet_time, string phone)//Изменение босса
+        [Authorize(Roles = "admin, ok_master, ok")]
+        public async Task<ActionResult> AddBoss(Bosses bossModel, int img_ids = 0)//Добавление нового босса
         {
-            Bosses boss = db.Bosses.Find(id);
-            boss.name = name;
-            boss.name_bel = name_bel;
-            boss.name_eng = name_eng;
-            boss.post = post;
-            boss.post_bel = post_bel;
-            boss.post_eng = post_eng;
-            boss.desc = desc;
-            boss.desc_bel = desc_bel;
-            boss.desc_eng = desc_eng;
-            boss.id_img = id_img;
-            boss.meet_day = meet_day;
-            boss.meet_day_bel = meet_day_bel;
-            boss.meet_day_eng = meet_day_eng;
-            boss.meet_time = meet_time;
-            boss.phone = phone;
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = boss.name, action = "Edit", table = "Bosses", date = DateTime.Now, id_user = user.id };
-            db.Entry(boss).State = EntityState.Modified;
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            if (img_ids == 0)
+            {
+                return Json(new { success = false, message = "Выберите фотографию." });
+            }
+
+            Usage_report rep = new Usage_report { title = bossModel.name, action = "Add", table = "Bosses", date = DateTime.Now, id_user = user.id };
             db.Usage_report.Add(rep);
-            try
+
+            bossModel.id_img = img_ids;
+
+            db.Bosses.Add(bossModel);
+
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Руководитель успешно добавлен!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, ok_master, ok")]
+        public async Task<ActionResult> EditBoss(Bosses bossModel, int img_ids = 0)//Изменение босса
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                db.SaveChanges();
-                return RedirectToAction("DepBosses", new { id = id_dep });
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
-            catch (Exception e)
+
+            if (img_ids == 0)
             {
-                return RedirectToAction("Error", new { message = e.Message });
+                return Json(new { success = false, message = "Выберите фотографию." });
             }
+
+            // Получаем объект
+            Bosses bosses = await db.Bosses.Include(o => o.Imgs).FirstOrDefaultAsync(x => x.id == bossModel.id);
+            if (bosses == null)
+            {
+                return Json(new { success = false, message = "Руководитель не найден." });
+            }
+
+            #region Присваивание измененных значений
+            bossModel.id_img = img_ids;
+            PropertyUpdater.UpdateProperties(bosses, bossModel);
+            #endregion
+
+            Usage_report rep = new Usage_report { title = bossModel.name, action = "Add", table = "Bosses", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Информация о руководителе успешна изменена!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, ok_master, ok")]
+        public async Task<ActionResult> DeleteBoss(int id)//Удаление босса
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем руководителя
+            Bosses bosses = await db.Bosses.FirstOrDefaultAsync(x => x.id == id);
+            if (bosses == null)
+            {
+                return Json(new { success = false, message = "Руководитель не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = bosses.name, action = "Delete", table = "Bosses", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем новость
+            db.Bosses.Remove(bosses);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Руководитель удален!" });
         }
 
         //Аренда
         [HttpGet]
         [Authorize(Roles = "admin, realty_master")]
-        public ActionResult Realty()//Меню выбора филиала
+        public async Task<ActionResult> DepartmentsForRealty()//Меню выбора филиала
         {
-            return View(db.Departments.ToList());
+            var departments = await db.Departments.Where(x => x.id < 21).ToListAsync();
+            return View("~/Views/Admin/Realty/DepartmentsForRealty.cshtml", departments);
         }
-        [HttpGet]
-        [Authorize(Roles = "admin, realty_master")]
-        public ActionResult DepRealty(int id)//Аренда выбранного филиала
-        {
 
-            ViewBag.Dep = db.Departments.Find(id);
-            ViewBag.Realty = db.Realty.Where(x => x.id_dep == id).ToList();
-            return View();
-        }
         [HttpGet]
         [Authorize(Roles = "admin, realty_master")]
-        public ActionResult AddRealty(int id)//Страница добавления для выбранного филиала
+        public async Task<ActionResult> RealtyByDepartment(int id)//Аренда выбранного филиала
         {
-            ViewBag.Id_dep = id;
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 7).ToList();
-            return View();
+            ViewBag.IdDep = id;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+            var realty = await db.Realty.Where(x => x.id_dep == id).ToListAsync();
+            return View("~/Views/Admin/Realty/RealtyByDepartment.cshtml", realty);
         }
-        [HttpPost]
-        [Authorize(Roles = "admin, realty_master")]
-        public ActionResult AddRealty(int id_dep, string title, string title_bel, string adress, string adress_bel, string desc, string desc_bel, int[] img_ids)//Добавление аренды
-        {
-            Realty realty = new Realty { id_dep = id_dep, title = title, title_bel = title_bel, adress = adress, adress_bel = adress_bel, desc = desc, desc_bel = desc_bel };
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = realty.title, action = "Add", table = "Realty", date = DateTime.Now, id_user = user.id };
-            if (img_ids != null)
-            {
-                foreach (int id in img_ids)
-                {
-                    realty.Imgs.Add(db.Imgs.Find(id));
-                }
-            }
-            db.Realty.Add(realty);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("DepRealty", new { id = id_dep });
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
+
         [HttpGet]
-        [Authorize(Roles = "admin, realty_master")]
-        public ActionResult EditRealty(int id)//Изменение аренды
+        [Authorize(Roles = "realty")]
+        public async Task<ActionResult> Realty()//Аренда филиала
         {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 7).ToList();
-            return View(db.Realty.Find(id));
-        }
-        [HttpPost]
-        [Authorize(Roles = "admin, realty_master")]
-        public ActionResult EditRealty(int id, int id_dep, string title, string title_bel, string adress, string adress_bel, string desc, string desc_bel, int[] img_ids)//Изменения аренды
-        {
-            try
+            var id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            if (id_dep == 0)
             {
-                Realty realty = db.Realty.Find(id);
-                realty.id_dep = id_dep;
-                realty.title = title;
-                realty.title_bel = title_bel;
-                realty.adress = adress;
-                realty.adress_bel = adress_bel;
-                realty.desc = desc;
-                realty.desc_bel = desc_bel;
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Usage_report rep = new Usage_report { title = realty.title, action = "Edit", table = "Realty", date = DateTime.Now, id_user = user.id };
-                realty.Imgs.Clear();
-                if (img_ids != null)
-                {
-                    foreach (int img_id in img_ids)
-                    {
-                        realty.Imgs.Add(db.Imgs.Find(img_id));
-                    }
-                }
-                db.Entry(realty).State = EntityState.Modified;
-                db.Usage_report.Add(rep);
-                try
-                {
-                    db.SaveChanges();
-                    return RedirectToAction("DepRealty", new { id = id_dep });
-                }
-                catch (Exception e)
-                {
-                    return RedirectToAction("Error", new { message = e.Message });
-                }
+                return HttpNotFound("Пользователь не найден.");
             }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+
+            ViewBag.IdDep = id_dep;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id_dep).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+
+            var realty = await db.Realty.Where(x => x.id_dep == id_dep).ToListAsync();
+            return View("~/Views/Admin/Realty/RealtyForDepatment.cshtml", realty);
         }
+
         [HttpGet]
         [Authorize(Roles = "admin, realty_master, realty")]
-        public ActionResult DeleteRealty(int id)//Удаление аренды
+        public async Task<ActionResult> ShowRealty(int id)//Показать выбранного руководителя
         {
-            try
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Realty realty = db.Realty.Find(id);
-                Usage_report rep = new Usage_report { title = realty.title, action = "Delete", table = "Realty", date = DateTime.Now, id_user = user.id };
-                int id_dep = realty.id_dep;
-                if (id_dep == user.id_dep || user.Roles.role == "admin" || user.Roles.role == "realty_master")
-                {
-                    db.Realty.Remove(realty);
-                    db.Usage_report.Add(rep);
-                    try
-                    {
-                        db.SaveChanges();
-                        if (user.Roles.role == "admin" || user.Roles.role == "realty_master")
-                        {
-                            return RedirectToAction("DepRealty", new { id = id_dep });
-                        }
-                        else
-                        {
-                            return RedirectToAction("AllRealty");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        return RedirectToAction("Error", new { message = e.Message });
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Error", new { message = "Недостаночно прав доступа" });
-                }
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+            var realtyView = await db.Realty.Where(x => x.id == id).Include(x => x.Imgs).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Realty/_ShowRealty.cshtml", realtyView);
         }
 
         [HttpGet]
-        [Authorize(Roles = "realty")]
-        public ActionResult AllRealty()//Меню для филиалов
+        [Authorize(Roles = "admin, realty_master, realty")]
+        public async Task<ActionResult> ShowAddRealty(int id)//Страница добавления нового босса
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            ViewBag.Realty = db.Realty.Where(x => x.id_dep == user.id_dep).ToList();
-            return View();
+            ViewBag.Id_dep = id;
+            return PartialView("~/Views/Admin/Realty/_ShowAddRealty.cshtml");
         }
-        [HttpGet]
-        [Authorize(Roles = "realty")]
-        public ActionResult CreateRealty()//Страница добавления для филиалов
-        {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 7).ToList();
-            return View();
-        }
+
         [HttpPost]
-        [Authorize(Roles = "realty")]
-        public ActionResult CreateRealty(string title, string title_bel, string adress, string adress_bel, string desc, string desc_bel, int[] img_ids)//Добавление для филилала
+        [Authorize(Roles = "admin, realty_master, realty")]
+        public async Task<ActionResult> AddRealty(Realty realtyModel, int[] img_ids)//Добавление новой аренды
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Realty realty = new Realty { id_dep = user.id_dep, title = title, title_bel = title_bel, adress = adress, adress_bel = adress_bel, desc = desc, desc_bel = desc_bel };
-            Usage_report rep = new Usage_report { title = realty.title, action = "Add", table = "Realty", date = DateTime.Now, id_user = user.id };
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = realtyModel.title, action = "Add", table = "Realty", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
             if (img_ids != null)
             {
-                foreach (int id in img_ids)
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
                 {
-                    realty.Imgs.Add(db.Imgs.Find(id));
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    realtyModel.Imgs.Add(img);
                 }
             }
-            db.Realty.Add(realty);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("AllRealty");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+
+            db.Realty.Add(realtyModel);
+
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Аренда успешна добавлена!" });
         }
-        [HttpGet]
-        [Authorize(Roles = "realty")]
-        public ActionResult EditDepRealty(int id)//Страница изменения для филиала
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Realty realty = db.Realty.Find(id);
-            if (realty.id_dep == user.id_dep)
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 7).ToList();
-                return View(db.Realty.Find(id));
-            }
-            else
-            {
-                return View("Error");
-            }
-        }
+
         [HttpPost]
-        [Authorize(Roles = "realty")]
-        public ActionResult EditDepRealty(int id, string title, string title_bel, string adress, string adress_bel, string desc, string desc_bel, int[] img_ids)//Измененеие для филиала
+        [Authorize(Roles = "admin, realty_master, realty")]
+        public async Task<ActionResult> EditRealty(Realty realtyModel, int[] img_ids)//Изменение босса
         {
-            try
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Realty realty = db.Realty.Find(id);
-                if (realty.id_dep == user.id_dep)
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем аренду
+            Realty realty = await db.Realty.Include(o => o.Imgs).FirstOrDefaultAsync(x => x.id == realtyModel.id);
+            if (realty == null)
+            {
+                return Json(new { success = false, message = "Объект аренды не найден." });
+            }
+
+            #region Присваивание измененных значений            
+            PropertyUpdater.UpdateProperties(realty, realtyModel);
+            // Обработка изображений
+            if (img_ids != null)
+            {
+                var currentImgIds = realty.Imgs.Select(i => i.id).ToList();
+
+                // Удаляем изображения, которые не включены в img_ids
+                foreach (var imgId in currentImgIds)
                 {
-                    realty.title = title;
-                    realty.title_bel = title_bel;
-                    realty.adress = adress;
-                    realty.adress_bel = adress_bel;
-                    realty.desc = desc;
-                    realty.desc_bel = desc_bel;
-                    Usage_report rep = new Usage_report { title = realty.title, action = "Edit", table = "Realty", date = DateTime.Now, id_user = user.id };
-                    realty.Imgs.Clear();
-                    if (img_ids != null)
+                    if (!img_ids.Contains(imgId))
                     {
-                        foreach (int img_id in img_ids)
+                        var imgToRemove = realty.Imgs.FirstOrDefault(i => i.id == imgId);
+                        if (imgToRemove != null)
                         {
-                            realty.Imgs.Add(db.Imgs.Find(img_id));
+                            realty.Imgs.Remove(imgToRemove);
                         }
                     }
-                    db.Entry(realty).State = EntityState.Modified;
-                    db.Usage_report.Add(rep);
-                    try
+
+                    // Добавляем новые изображения
+                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                    foreach (var img in ImgList)
                     {
-                        db.SaveChanges();
-                        return RedirectToAction("AllRealty");
+                        if (!realty.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
+                        {
+                            realty.Imgs.Add(img);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        return RedirectToAction("Error", new { message = e.Message });
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Error", new { message = "Недостаточно прав доступа" });
                 }
             }
-            catch (Exception e)
+            #endregion
+
+            Usage_report rep = new Usage_report { title = realtyModel.title, action = "Add", table = "Realty", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Аренда успешна изменена!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, realty_master, realty")]
+        public async Task<ActionResult> DeleteRealty(int id)//Удаление босса
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                return RedirectToAction("Error", new { message = e.Message });
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
+
+            // Получаем аренду
+            Realty realty = await db.Realty.FirstOrDefaultAsync(x => x.id == id);
+            if (realty == null)
+            {
+                return Json(new { success = false, message = "Объект аренды не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = realty.title, action = "Delete", table = "Realty", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем новость
+            db.Realty.Remove(realty);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Аренда удалена!" });
         }
 
         //Продажа имущества
         [HttpGet]
         [Authorize(Roles = "admin, realty_master")]
-        public ActionResult Sale()//Меню выбора филиала
+        public async Task<ActionResult> DepartmentsForSale()//Меню выбора филиала
         {
-            return View(db.Departments.ToList());
+            var departments = await db.Departments.Where(x => x.id < 21).ToListAsync();
+            return View("~/Views/Admin/Sales/DepartmentsForSale.cshtml", departments);
         }
-        [HttpGet]
-        [Authorize(Roles = "admin, realty_master")]
-        public ActionResult DepSale(int id)//Продажа имущества выбранного филиала
-        {
 
-            ViewBag.Dep = db.Departments.Find(id);
-            ViewBag.Sale = db.Sale.Where(x => x.id_dep == id).ToList();
-            return View();
-        }
         [HttpGet]
         [Authorize(Roles = "admin, realty_master")]
-        public ActionResult AddSale(int id)//Страница добавления для выбранного филиала
+        public async Task<ActionResult> SaleByDepartment(int id)//Имущество выбранного филиала
         {
-            ViewBag.Id_dep = id;
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 10).ToList();
-            return View();
+            ViewBag.IdDep = id;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+            var sale = await db.Sale.Where(x => x.id_dep == id).ToListAsync();
+            return View("~/Views/Admin/Sales/SaleByDepartment.cshtml", sale);
         }
-        [HttpPost]
-        [Authorize(Roles = "admin, realty_master")]
-        public ActionResult AddSale(int id_dep, string title, string title_bel, string adress, string adress_bel, string desc, string desc_bel, int[] img_ids)//Добавление продоваемой имущества
-        {
-            Sale sale = new Sale { id_dep = id_dep, title = title, title_bel = title_bel, adress = adress, adress_bel = adress_bel, desc = desc, desc_bel = desc_bel };
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = sale.title, action = "Add", table = "Sale", date = DateTime.Now, id_user = user.id };
-            if (img_ids != null)
-            {
-                foreach (int id in img_ids)
-                {
-                    sale.Imgs.Add(db.Imgs.Find(id));
-                }
-            }
-            db.Sale.Add(sale);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("DepSale", new { id = id_dep });
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
+
         [HttpGet]
-        [Authorize(Roles = "admin, realty_master")]
-        public ActionResult EditSale(int id)//Изменение продоваемого имущества
+        [Authorize(Roles = "realty")]
+        public async Task<ActionResult> Sales()//Имущество филиала
         {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 10).ToList();
-            return View(db.Sale.Find(id));
-        }
-        [HttpPost]
-        [Authorize(Roles = "admin, realty_master")]
-        public ActionResult EditSale(int id, int id_dep, string title, string title_bel, string adress, string adress_bel, string desc, string desc_bel, int[] img_ids)//Изменение продоваемого имущества
-        {
-            try
+            var id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            if (id_dep == 0)
             {
-                Sale sale = db.Sale.Find(id);
-                sale.id_dep = id_dep;
-                sale.title = title;
-                sale.title_bel = title_bel;
-                sale.adress = adress;
-                sale.adress_bel = adress_bel;
-                sale.desc = desc;
-                sale.desc_bel = desc_bel;
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Usage_report rep = new Usage_report { title = sale.title, action = "Edit", table = "Sale", date = DateTime.Now, id_user = user.id };
-                sale.Imgs.Clear();
-                if (img_ids != null)
-                {
-                    foreach (int img_id in img_ids)
-                    {
-                        sale.Imgs.Add(db.Imgs.Find(img_id));
-                    }
-                }
-                db.Entry(sale).State = EntityState.Modified;
-                db.Usage_report.Add(rep);
-                try
-                {
-                    db.SaveChanges();
-                    return RedirectToAction("DepSale", new { id = id_dep });
-                }
-                catch (Exception e)
-                {
-                    return RedirectToAction("Error", new { message = e.Message });
-                }
+                return HttpNotFound("Пользователь не найден.");
             }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+
+            ViewBag.IdDep = id_dep;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id_dep).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+
+            var sales = await db.Sale.Where(x => x.id_dep == id_dep).ToListAsync();
+            return View("~/Views/Admin/Sales/Sales.cshtml", sales);
         }
+
         [HttpGet]
         [Authorize(Roles = "admin, realty_master, realty")]
-        public ActionResult DeleteSale(int id)//Удаление продоваемого имущества
+        public async Task<ActionResult> ShowSale(int id)//Показать выбранное имущество
         {
-            try
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Sale sale = db.Sale.Find(id);
-                Usage_report rep = new Usage_report { title = sale.title, action = "Delete", table = "Sale", date = DateTime.Now, id_user = user.id };
-                int id_dep = sale.id_dep;
-                if (id_dep == user.id_dep || user.Roles.role == "admin" || user.Roles.role == "realty_master")
-                {
-                    db.Sale.Remove(sale);
-                    db.Usage_report.Add(rep);
-                    try
-                    {
-                        db.SaveChanges();
-                        if (user.Roles.role == "admin" || user.Roles.role == "realty_master")
-                        {
-                            return RedirectToAction("DepSale", new { id = id_dep });
-                        }
-                        else
-                        {
-                            return RedirectToAction("AllSale");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        return RedirectToAction("Error", new { message = e.Message });
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Error", new { message = "Недостаночно прав доступа" });
-                }
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+            var saleView = await db.Sale.Where(x => x.id == id).Include(x => x.Imgs).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Sales/_ShowSale.cshtml", saleView);
         }
 
         [HttpGet]
-        [Authorize(Roles = "realty")]
-        public ActionResult AllSale()//Меню для филиалов
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            ViewBag.Sale = db.Sale.Where(x => x.id_dep == user.id_dep).ToList();
-            return View();
-        }
-        [HttpGet]
-        [Authorize(Roles = "realty")]
-        public ActionResult CreateSale()//Страница добавления для филиалов
-        {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 10).ToList();
-            return View();
-        }
-        [HttpPost]
-        [Authorize(Roles = "realty")]
-        public ActionResult CreateSale(string title, string title_bel, string adress, string adress_bel, string desc, string desc_bel, int[] img_ids)//Добавление для филилала
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Sale sale = new Sale { id_dep = user.id_dep, title = title, title_bel = title_bel, adress = adress, adress_bel = adress_bel, desc = desc, desc_bel = desc_bel };
-            Usage_report rep = new Usage_report { title = sale.title, action = "Add", table = "Sale", date = DateTime.Now, id_user = user.id };
-            if (img_ids != null)
-            {
-                foreach (int id in img_ids)
-                {
-                    sale.Imgs.Add(db.Imgs.Find(id));
-                }
-            }
-            db.Sale.Add(sale);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("AllSale");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-        [HttpGet]
-        [Authorize(Roles = "realty")]
-        public ActionResult EditDepSale(int id)//Страница изменения для филиала
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Sale sale = db.Sale.Find(id);
-            if (sale.id_dep == user.id_dep)
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 10).ToList();
-                return View(db.Sale.Find(id));
-            }
-            else
-            {
-                return View("Error");
-            }
-        }
-        [HttpPost]
-        [Authorize(Roles = "realty")]
-        public ActionResult EditDepSale(int id, string title, string title_bel, string adress, string adress_bel, string desc, string desc_bel, int[] img_ids)//Измененеие для филиала
-        {
-            try
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Sale sale = db.Sale.Find(id);
-                if (sale.id_dep == user.id_dep)
-                {
-                    sale.title = title;
-                    sale.title_bel = title_bel;
-                    sale.adress = adress;
-                    sale.adress_bel = adress_bel;
-                    sale.desc = desc;
-                    sale.desc_bel = desc_bel;
-                    Usage_report rep = new Usage_report { title = sale.title, action = "Edit", table = "Sale", date = DateTime.Now, id_user = user.id };
-                    sale.Imgs.Clear();
-                    if (img_ids != null)
-                    {
-                        foreach (int img_id in img_ids)
-                        {
-                            sale.Imgs.Add(db.Imgs.Find(img_id));
-                        }
-                    }
-                    db.Entry(sale).State = EntityState.Modified;
-                    db.Usage_report.Add(rep);
-                    try
-                    {
-                        db.SaveChanges();
-                        return RedirectToAction("AllSale");
-                    }
-                    catch (Exception e)
-                    {
-                        return RedirectToAction("Error", new { message = e.Message });
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Error", new { message = "Недостаточно прав доступа" });
-                }
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-
-        //Техника
-        [HttpGet]
-        [Authorize(Roles = "admin, mech_master")]
-        public ActionResult Mechs()//Меню выбора филиала
-        {
-            return View(db.Departments.ToList());
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, mech_master")]
-        public ActionResult DepMechs(int id)//Меню для филиала
-        {
-            ViewBag.Dep = db.Departments.Find(id);
-            ViewBag.Mechs = db.Mechanisms.Where(x => x.id_dep == id).ToList();
-            return View();
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, mech_master")]
-        public ActionResult AddMech(int id)//Страница добавления техники
+        [Authorize(Roles = "admin, realty_master, realty")]
+        public async Task<ActionResult> ShowAddSale(int id)//Страница добавления нового босса
         {
             ViewBag.Id_dep = id;
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 8).ToList();
-            return View();
+            return PartialView("~/Views/Admin/Sales/_ShowAddSale.cshtml");
         }
+
         [HttpPost]
-        [Authorize(Roles = "admin, mech_master")]
-        public ActionResult AddMech(int id_dep, string title, string title_bel, string desc, string desc_bel, int[] img_ids)//Добавление техникив
+        [Authorize(Roles = "admin, realty_master, realty")]
+        public async Task<ActionResult> AddSale(Sale saleModel, int[] img_ids)//Добавление новой аренды
         {
-            Mechanisms mech = new Mechanisms { id_dep = id_dep, title = title, title_bel = title_bel, desc = desc, desc_bel = desc_bel };
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = mech.title, action = "Add", table = "Mechanisms", date = DateTime.Now, id_user = user.id };
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = saleModel.title, action = "Add", table = "Sale", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
             if (img_ids != null)
             {
-                foreach (int id in img_ids)
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
                 {
-                    mech.Imgs.Add(db.Imgs.Find(id));
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    saleModel.Imgs.Add(img);
                 }
             }
-            db.Mechanisms.Add(mech);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("DepMechs", new { id = id_dep });
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+
+            db.Sale.Add(saleModel);
+
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Имущество успешно добавлено!" });
         }
-        [HttpGet]
-        [Authorize(Roles = "admin, mech_master")]
-        public ActionResult EditMech(int id)//Изменение техники
-        {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 8).ToList();
-            return View(db.Mechanisms.Find(id));
-        }
+
         [HttpPost]
-        [Authorize(Roles = "admin, mech_master")]
-        public ActionResult EditMech(int id, int id_dep, string title, string title_bel, string desc, string desc_bel, int[] img_ids)//Изменения техники
+        [Authorize(Roles = "admin, realty_master, realty")]
+        public async Task<ActionResult> EditSale(Sale saleModel, int[] img_ids)//Изменение босса
         {
-            try
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                Mechanisms mech = db.Mechanisms.Find(id);
-                mech.id_dep = id_dep;
-                mech.title = title;
-                mech.title_bel = title_bel;
-                mech.desc = desc;
-                mech.desc_bel = desc_bel;
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Usage_report rep = new Usage_report { title = mech.title, action = "Edit", table = "Mechanisms", date = DateTime.Now, id_user = user.id };
-                mech.Imgs.Clear();
-                if (img_ids != null)
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем аренду
+            Sale sale = await db.Sale.Include(o => o.Imgs).FirstOrDefaultAsync(x => x.id == saleModel.id);
+            if (sale == null)
+            {
+                return Json(new { success = false, message = "Имущество не найдено." });
+            }
+
+            #region Присваивание измененных значений            
+            PropertyUpdater.UpdateProperties(sale, saleModel);
+            // Обработка изображений
+            if (img_ids != null)
+            {
+                var currentImgIds = sale.Imgs.Select(i => i.id).ToList();
+
+                // Удаляем изображения, которые не включены в img_ids
+                foreach (var imgId in currentImgIds)
                 {
-                    foreach (int img_id in img_ids)
+                    if (!img_ids.Contains(imgId))
                     {
-                        mech.Imgs.Add(db.Imgs.Find(img_id));
+                        var imgToRemove = sale.Imgs.FirstOrDefault(i => i.id == imgId);
+                        if (imgToRemove != null)
+                        {
+                            sale.Imgs.Remove(imgToRemove);
+                        }
+                    }
+
+                    // Добавляем новые изображения
+                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                    foreach (var img in ImgList)
+                    {
+                        if (!sale.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
+                        {
+                            sale.Imgs.Add(img);
+                        }
                     }
                 }
-                db.Entry(mech).State = EntityState.Modified;
-                db.Usage_report.Add(rep);
-                try
-                {
-                    db.SaveChanges();
-                    return RedirectToAction("DepMechs", new { id = id_dep });
-                }
-                catch (Exception e)
-                {
-                    return RedirectToAction("Error", new { message = e.Message });
-                }
             }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+            #endregion
+
+            Usage_report rep = new Usage_report { title = saleModel.title, action = "Add", table = "Sale", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Имущество успешно изменено!" });
         }
-        [HttpGet]
-        [Authorize(Roles = "admin, mech_master, mech")]
-        public ActionResult DeleteMech(int id)//Удаление техники
+
+        [HttpPost]
+        [Authorize(Roles = "admin, realty_master, realty")]
+        public async Task<ActionResult> DeleteSale(int id)//Удаление босса
         {
-            try
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Mechanisms mech = db.Mechanisms.Find(id);
-                int id_dep = mech.id_dep;
-                Usage_report rep = new Usage_report { title = mech.title, action = "Delete", table = "Mechanisms", date = DateTime.Now, id_user = user.id };
-                if (id_dep == user.id_dep || user.Roles.role == "admin" || user.Roles.role == "mech_master")
-                {
-                    db.Mechanisms.Remove(mech);
-                    db.Usage_report.Add(rep);
-                    try
-                    {
-                        db.SaveChanges();
-                        if (user.Roles.role == "admin" || user.Roles.role == "mech_master")
-                        {
-                            return RedirectToAction("DepMechs", new { id = id_dep });
-                        }
-                        else
-                        {
-                            return RedirectToAction("AllMechs");
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        return View("Error");
-                    }
-                }
-                else
-                {
-                    return View("Error");
-                }
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
-            catch
+
+            // Получаем имущество
+            Sale sale = await db.Sale.FirstOrDefaultAsync(x => x.id == id);
+            if (sale == null)
             {
-                return View("Error");
+                return Json(new { success = false, message = "имущество не найдено." });
             }
+
+            Usage_report rep = new Usage_report { title = sale.title, action = "Delete", table = "Sale", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем имущество
+            db.Sale.Remove(sale);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Имущество удалено!" });
+        }
+
+        //Техника      
+        [HttpGet]
+        [Authorize(Roles = "admin, mech_master")]
+        public async Task<ActionResult> DepartmentsForMech()//Меню выбора филиала
+        {
+            var departments = await db.Departments.Where(x => x.id < 21).ToListAsync();
+            return View("~/Views/Admin/Mechs/DepartmentsForMech.cshtml", departments);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, mech_master")]
+        public async Task<ActionResult> MechByDepartment(int id)//Имущество выбранного филиала
+        {
+            ViewBag.IdDep = id;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+            var mech = await db.Mechanisms.Where(x => x.id_dep == id).ToListAsync();
+            return View("~/Views/Admin/Mechs/MechByDepartment.cshtml", mech);
         }
 
         [HttpGet]
         [Authorize(Roles = "mech")]
-        public ActionResult AllMechs()//Меню для филиалов
+        public async Task<ActionResult> Mechs()//Имущество филиала
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            ViewBag.Mechs = db.Mechanisms.Where(x => x.id_dep == user.id_dep).ToList();
-            return View();
+            var id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            if (id_dep == 0)
+            {
+                return HttpNotFound("Пользователь не найден.");
+            }
+
+            ViewBag.IdDep = id_dep;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id_dep).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+
+            var mechs = await db.Mechanisms.Where(x => x.id_dep == id_dep).ToListAsync();
+            return View("~/Views/Admin/Mechs/Mechs.cshtml", mechs);
         }
+
         [HttpGet]
-        [Authorize(Roles = "mech")]
-        public ActionResult CreateMech()//Страница добавления для филиалов
+        [Authorize(Roles = "admin, mech_master, mech")]
+        public async Task<ActionResult> ShowMech(int id)//Показать выбранное имущество
         {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 8).ToList();
-            return View();
+            var mechView = await db.Mechanisms.Where(x => x.id == id).Include(x => x.Imgs).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Mechs/_ShowMech.cshtml", mechView);
         }
-        [HttpPost]
-        [Authorize(Roles = "mech")]
-        public ActionResult CreateMech(string title, string title_bel, string desc, string desc_bel, int[] img_ids)//Добавление для филилала
+
+        [HttpGet]
+        [Authorize(Roles = "admin, mech_master, mech")]
+        public async Task<ActionResult> ShowAddMech(int id)//Страница добавления нового босса
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Mechanisms mech = new Mechanisms { id_dep = user.id_dep, title = title, title_bel = title_bel, desc = desc, desc_bel = desc_bel };
-            Usage_report rep = new Usage_report { title = mech.title, action = "Add", table = "Mechanisms", date = DateTime.Now, id_user = user.id };
+            ViewBag.Id_dep = id;
+            return PartialView("~/Views/Admin/Mechs/_ShowAddMech.cshtml");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, mech_master, mech")]
+        public async Task<ActionResult> AddMech(Mechanisms mechModel, int[] img_ids)//Добавление новой аренды
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = mechModel.title, action = "Add", table = "Mechanisms", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
             if (img_ids != null)
             {
-                foreach (int id in img_ids)
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
                 {
-                    mech.Imgs.Add(db.Imgs.Find(id));
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    mechModel.Imgs.Add(img);
                 }
             }
-            db.Mechanisms.Add(mech);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("AllMechs");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+
+            db.Mechanisms.Add(mechModel);
+
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Техника успешно добавлена!" });
         }
-        [HttpGet]
-        [Authorize(Roles = "mech")]
-        public ActionResult EditDepMech(int id)//Страница изменения для филиала
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Mechanisms mech = db.Mechanisms.Find(id);
-            if (mech.id_dep == user.id_dep)
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 8).ToList();
-                return View(db.Mechanisms.Find(id));
-            }
-            else
-            {
-                return View("Error");
-            }
-        }
+
         [HttpPost]
-        [Authorize(Roles = "mech")]
-        public ActionResult EditDepMech(int id, string title, string title_bel, string desc, string desc_bel, int[] img_ids)//Измененеие для филиала
+        [Authorize(Roles = "admin, mech_master, mech")]
+        public async Task<ActionResult> EditMech(Mechanisms mechModel, int[] img_ids)//Изменение босса
         {
-            try
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Mechanisms mech = db.Mechanisms.Find(id);
-                if (mech.id_dep == user.id_dep)
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем технику
+            Mechanisms mech = await db.Mechanisms.Include(o => o.Imgs).FirstOrDefaultAsync(x => x.id == mechModel.id);
+            if (mech == null)
+            {
+                return Json(new { success = false, message = "Техника не найдена." });
+            }
+
+            #region Присваивание измененных значений            
+            PropertyUpdater.UpdateProperties(mech, mechModel);
+            // Обработка изображений
+            if (img_ids != null)
+            {
+                var currentImgIds = mech.Imgs.Select(i => i.id).ToList();
+
+                // Удаляем изображения, которые не включены в img_ids
+                foreach (var imgId in currentImgIds)
                 {
-                    mech.title = title;
-                    mech.title_bel = title_bel;
-                    mech.desc = desc;
-                    mech.desc_bel = desc_bel;
-                    Usage_report rep = new Usage_report { title = mech.title, action = "Edit", table = "Mechanisms", date = DateTime.Now, id_user = user.id };
-                    mech.Imgs.Clear();
-                    if (img_ids != null)
+                    if (!img_ids.Contains(imgId))
                     {
-                        foreach (int img_id in img_ids)
+                        var imgToRemove = mech.Imgs.FirstOrDefault(i => i.id == imgId);
+                        if (imgToRemove != null)
                         {
-                            mech.Imgs.Add(db.Imgs.Find(img_id));
+                            mech.Imgs.Remove(imgToRemove);
                         }
                     }
-                    db.Entry(mech).State = EntityState.Modified;
-                    db.Usage_report.Add(rep);
-                    try
+
+                    // Добавляем новые изображения
+                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                    foreach (var img in ImgList)
                     {
-                        db.SaveChanges();
-                        return RedirectToAction("AllMechs");
+                        if (!mech.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
+                        {
+                            mech.Imgs.Add(img);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        return RedirectToAction("Error", new { message = e.Message });
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Error", new { message = "Недостаточно прав доступа" });
                 }
             }
-            catch (Exception e)
+            #endregion
+
+            Usage_report rep = new Usage_report { title = mechModel.title, action = "Edit", table = "Mechanisms", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Техника успешна изменена!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, mech_master, mech")]
+        public async Task<ActionResult> DeleteMech(int id)//Удаление техники
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                return RedirectToAction("Error", new { message = e.Message });
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
+
+            // Получаем технику
+            Mechanisms mech = await db.Mechanisms.FirstOrDefaultAsync(x => x.id == id);
+            if (mech == null)
+            {
+                return Json(new { success = false, message = "Техника не найдена." });
+            }
+
+            Usage_report rep = new Usage_report { title = mech.title, action = "Delete", table = "Mechanisms", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем имущество
+            db.Mechanisms.Remove(mech);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Техника удалена!" });
         }
 
         //УСЛУГИ
+
         [HttpGet]
         [Authorize(Roles = "admin, service_master")]
-        public ActionResult Services()//Меню выбора филиала
+        public async Task<ActionResult> DepartmentsForService()//Меню выбора филиала
         {
-            return View(db.Departments.ToList());
+            var departments = await db.Departments.Where(x => x.id < 21).ToListAsync();
+            return View("~/Views/Admin/Services/DepartmentsForService.cshtml", departments);
         }
+
         [HttpGet]
         [Authorize(Roles = "admin, service_master")]
-        public ActionResult DepServices(int id)//Меню для филиала
+        public async Task<ActionResult> ServiceByDepartment(int id)//Услуги выбранного филиала
         {
-            ViewBag.Dep = db.Departments.Find(id);
-            ViewBag.Services = db.Services.Where(x => x.id_dep == id).ToList();
-            return View();
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, service_master")]
-        public ActionResult AddService(int id)//Страница добавления услуги
-        {
-            ViewBag.Id_dep = id;
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 4).ToList();
-            return View();
-        }
-        [Authorize(Roles = "admin, service_master")]
-        public ActionResult AddService(int id_dep, string title, string title_bel, string desc, string desc_bel, int[] img_ids)//Добавление услуги
-        {
-            Services service = new Services { id_dep = id_dep, title = title, title_bel = title_bel, desc = desc, desc_bel = desc_bel };
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = service.title, action = "Add", table = "Services", date = DateTime.Now, id_user = user.id };
-            if (img_ids != null)
-            {
-                foreach (int id in img_ids)
-                {
-                    service.Imgs.Add(db.Imgs.Find(id));
-                }
-            }
-            db.Services.Add(service);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("DepServices", new { id = id_dep });
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, service_master")]
-        public ActionResult EditService(int id)//Страница Изменение услуги
-        {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 4).ToList();
-            return View(db.Services.Find(id));
-        }
-        [HttpPost]
-        [Authorize(Roles = "admin, service_master")]
-        public ActionResult EditService(int id, int id_dep, string title, string title_bel, string desc, string desc_bel, int[] img_ids)//Изменения услуги
-        {
-            try
-            {
-                Services service = db.Services.Find(id);
-                service.id_dep = id_dep;
-                service.title = title;
-                service.title_bel = title_bel;
-                service.desc = desc;
-                service.desc_bel = desc_bel;
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Usage_report rep = new Usage_report { title = service.title, action = "Edit", table = "Services", date = DateTime.Now, id_user = user.id };
-                service.Imgs.Clear();
-                if (img_ids != null)
-                {
-                    foreach (int img_id in img_ids)
-                    {
-                        service.Imgs.Add(db.Imgs.Find(img_id));
-                    }
-                }
-                db.Entry(service).State = EntityState.Modified;
-                db.Usage_report.Add(rep);
-                try
-                {
-                    db.SaveChanges();
-                    return RedirectToAction("DepServices", new { id = id_dep });
-                }
-                catch (Exception e)
-                {
-                    return RedirectToAction("Error", new { message = e.Message });
-                }
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin, service_master, service")]
-        public ActionResult DeleteService(int id)//Удаление услуги
-        {
-            try
-            {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Services service = db.Services.Find(id);
-                Usage_report rep = new Usage_report { title = service.title, action = "Delete", table = "Services", date = DateTime.Now, id_user = user.id };
-                int id_dep = service.id_dep;
-                if (id_dep == user.id_dep || user.Roles.role == "admin" || user.Roles.role == "service_master")
-                {
-                    db.Services.Remove(service);
-                    try
-                    {
-                        db.SaveChanges();
-                        if (user.Roles.role == "admin" || user.Roles.role == "service_master")
-                        {
-                            return RedirectToAction("DepServices", new { id = id_dep });
-                        }
-                        else
-                        {
-                            return RedirectToAction("AllServices");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        return RedirectToAction("Error", new { message = e.Message });
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Error", new { message = "Недостаточно прав доступа" });
-                }
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+            ViewBag.IdDep = id;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+            var service = await db.Services.Where(x => x.id_dep == id).OrderBy(x => x.title).ToListAsync();
+            return View("~/Views/Admin/Services/ServiceByDepartment.cshtml", service);
         }
 
         [HttpGet]
         [Authorize(Roles = "service")]
-        public ActionResult AllServices()//Меню для филиалов
+        public async Task<ActionResult> Services()//Услуги филиала
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            ViewBag.Services = db.Services.Where(x => x.id_dep == user.id_dep).ToList();
-            return View();
+            var id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            if (id_dep == 0)
+            {
+                return HttpNotFound("Пользователь не найден.");
+            }
+
+            ViewBag.IdDep = id_dep;
+            ViewBag.nameDep = await db.Departments.Where(x => x.id == id_dep).Select(x => x.short_name_ru).FirstOrDefaultAsync();
+
+            var service = await db.Services.Where(x => x.id_dep == id_dep).OrderBy(x => x.title).ToListAsync();
+            return View("~/Views/Admin/Services/Services.cshtml", service);
         }
+
         [HttpGet]
-        [Authorize(Roles = "service")]
-        public ActionResult CreateService()//Страница добавления для филиалов
+        [Authorize(Roles = "admin, service_master, service")]
+        public async Task<ActionResult> ShowService(int id)//Показать выбранную услугу
         {
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 4).ToList();
-            return View();
+            var serviceView = await db.Services.Where(x => x.id == id).Include(x => x.Imgs).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Services/_ShowService.cshtml", serviceView);
         }
-        [HttpPost]
-        [Authorize(Roles = "service")]
-        public ActionResult CreateService(string title, string title_bel, string desc, string desc_bel, int[] img_ids)//Добавление для филилала
+
+        [HttpGet]
+        [Authorize(Roles = "admin, service_master, service")]
+        public async Task<ActionResult> ShowAddService(int id)//Страница добавления новой услуги
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Services service = new Services { id_dep = user.id_dep, title = title, title_bel = title_bel, desc = desc, desc_bel = desc_bel };
-            Usage_report rep = new Usage_report { title = service.title, action = "Add", table = "Services", date = DateTime.Now, id_user = user.id };
+            ViewBag.Id_dep = id;
+            return PartialView("~/Views/Admin/Services/_ShowAddService.cshtml");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, service_master, service")]
+        public async Task<ActionResult> AddService(Services serviceModel, int[] img_ids)//Добавление новой услуги
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = serviceModel.title, action = "Add", table = "Services", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
             if (img_ids != null)
             {
-                foreach (int id in img_ids)
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
                 {
-                    service.Imgs.Add(db.Imgs.Find(id));
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    serviceModel.Imgs.Add(img);
                 }
             }
-            db.Services.Add(service);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("AllServices");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+
+            db.Services.Add(serviceModel);
+
+            await db.SaveChangesAsync();
+            return Json(new { success = true, message = "Услуга успешно добавлена!" });
         }
-        [HttpGet]
-        [Authorize(Roles = "service")]
-        public ActionResult EditDepService(int id)//Страница изменения для филиала
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Services service = db.Services.Find(id);
-            if (service.id_dep == user.id_dep)
-            {
-                ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 4).ToList();
-                return View(db.Services.Find(id));
-            }
-            else
-            {
-                return View("Error");
-            }
-        }
+
         [HttpPost]
-        [Authorize(Roles = "service")]
-        public ActionResult EditDepService(int id, string title, string title_bel, string desc, string desc_bel, int[] img_ids)//Измененеие для филиала
+        [Authorize(Roles = "admin, service_master, service")]
+        public async Task<ActionResult> EditService(Services serviceModel, int[] img_ids)//Изменение услуги
         {
-            try
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-                Services service = db.Services.Find(id);
-                if (service.id_dep == user.id_dep)
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем технику
+            Services service = await db.Services.Include(o => o.Imgs).FirstOrDefaultAsync(x => x.id == serviceModel.id);
+            if (service == null)
+            {
+                return Json(new { success = false, message = "Услуга не найдена." });
+            }
+
+            #region Присваивание измененных значений            
+            PropertyUpdater.UpdateProperties(service, serviceModel);
+            // Обработка изображений
+            if (img_ids != null)
+            {
+                var currentImgIds = service.Imgs.Select(i => i.id).ToList();
+
+                // Удаляем изображения, которые не включены в img_ids
+                foreach (var imgId in currentImgIds)
                 {
-                    service.title = title;
-                    service.title_bel = title_bel;
-                    service.desc = desc;
-                    service.desc_bel = desc_bel;
-                    Usage_report rep = new Usage_report { title = service.title, action = "Edit", table = "Services", date = DateTime.Now, id_user = user.id };
-                    service.Imgs.Clear();
-                    if (img_ids != null)
+                    if (!img_ids.Contains(imgId))
                     {
-                        foreach (int img_id in img_ids)
+                        var imgToRemove = service.Imgs.FirstOrDefault(i => i.id == imgId);
+                        if (imgToRemove != null)
                         {
-                            service.Imgs.Add(db.Imgs.Find(img_id));
+                            service.Imgs.Remove(imgToRemove);
                         }
                     }
-                    db.Entry(service).State = EntityState.Modified;
-                    db.Usage_report.Add(rep);
-                    try
+
+                    // Добавляем новые изображения
+                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                    foreach (var img in ImgList)
                     {
-                        db.SaveChanges();
-                        return RedirectToAction("AllServices");
+                        if (!service.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
+                        {
+                            service.Imgs.Add(img);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        return RedirectToAction("Error", new { message = e.Message });
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Error", new { message = "Недостаточно прав доступа" });
                 }
             }
-            catch (Exception e)
+            #endregion
+
+            Usage_report rep = new Usage_report { title = serviceModel.title, action = "Edit", table = "Services", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Услуга успешна изменена!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, service_master, service")]
+        public async Task<ActionResult> DeleteService(int id)//Удаление услуги
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                return RedirectToAction("Error", new { message = e.Message });
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
+
+            // Получаем услугу
+            Services service = await db.Services.FirstOrDefaultAsync(x => x.id == id);
+            if (service == null)
+            {
+                return Json(new { success = false, message = "Услуга не найдена." });
+            }
+
+            Usage_report rep = new Usage_report { title = service.title, action = "Delete", table = "Services", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем услугу
+            db.Services.Remove(service);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Услуга удалена!" });
         }
 
         //Инфа о предприятиях
@@ -2017,983 +1905,588 @@ namespace rupbes.Controllers
             return View("Report", db.Usage_report.Where(x => x.table == "Certificates"));
         }
 
-        //контакты
         [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult AllEmployees()//Страница сотрудников
+        [Authorize(Roles = "product, admin")]
+        public async Task<ActionResult> Products()
         {
-            var emp = db1.Employees.ToList();
-
-            return View(emp);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult EditEmployee(int? id)
-        {
-            if (id != null)
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                Employee emp = db1.Employees.Find(id);
-                if (emp != null)
-                {
-                    var persons = db1.Persons.ToList();
-                    var departments = db1.Departments.ToList();
-                    var posts = db1.Posts.ToList();
-
-                    ViewBag.Departments = db1.Departments.Select(d => new
-                    {
-                        id = d.Id,
-                        text = d.Name + "   |   " + d.Company.Abbreviation
-                    }).ToList();
-                    ViewBag.Persons = persons;
-                    ViewBag.Posts = posts;
-                    return View(emp);
-                }
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
-            return HttpNotFound();
-        }
 
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        public ActionResult EditEmployee(int? id, Person person, int DepartmentId, int PostId, List<string> ContactName)
-        {
-            string phone = ContactName[0].Replace(" ", "");
-            string email = ContactName[1].Replace(" ", "");
-
-            Employee emp = db1.Employees.Find(id);
-            emp.Person.LastName = person.LastName;
-            emp.Person.FirstName = person.FirstName;
-            emp.Person.FatherName = person.FatherName;
-            emp.DepartmentId = DepartmentId;
-            emp.PostId = PostId;
-
-            emp.Contacts.Remove(emp.Contacts.Where(x => x.ContactsTypeId == 2).FirstOrDefault());
-            Contact ph = db1.Contacts.Where(x => x.ContactName == phone & x.ContactsTypeId == 2).FirstOrDefault();
-            if (ph != null)
+            var id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            if (id_dep == 0)
             {
-                emp.Contacts.Add(ph);
+                return HttpNotFound("Пользователь не найден.");
             }
-            else
+
+            ViewBag.nameDep = await db.Departments.Where(d => d.id == id_dep).Select(d => d.short_name_ru).FirstOrDefaultAsync();
+
+            // Получаем группы товаров
+            var groups = await db.GroupProducts.ToListAsync();
+            if (groups == null)
             {
-                Contact contactPhone = new Contact();
-                contactPhone.ContactName = phone;
-                contactPhone.ContactsTypeId = 2; //телефон
-                emp.Contacts.Add(contactPhone);
+                return Json(new { success = false, message = "Группы товаров не найдены." });
             }
-            //emp.Contacts.Where(x => x.ContactsTypeId == 2).FirstOrDefault().ContactName = phone;
-            emp.Contacts.Where(x => x.ContactsTypeId == 1).FirstOrDefault().ContactName = email;
-            db1.Entry(emp).State = EntityState.Modified;
-            db1.SaveChanges();
-            return RedirectToAction("AllEmployees");
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult AddEmployee()
-        {
-            ViewBag.Departments = db1.Departments.Select(d => new
-            {
-                id = d.Id,
-                text = d.Name + "   |   " + d.Company.Abbreviation
-            }).ToList();
-            ViewBag.Posts = db1.Posts.ToList();
-
-            return View();
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        public ActionResult AddEmployee(Person person, Employee emp, string phone, string email)
-        {
-            phone = phone.Replace(" ", "");
-            email = email.Replace(" ", "");
-            Contact ph = db1.Contacts.Where(x => x.ContactName == phone & x.ContactsTypeId == 2).FirstOrDefault();
-            if (ph != null)
-            {
-                emp.Contacts.Add(ph);
-            }
-            else
-            {
-                Contact contactPhone = new Contact();
-                contactPhone.ContactName = phone;
-                contactPhone.ContactsTypeId = 2; //телефон
-                emp.Contacts.Add(contactPhone);
-            }
-            Contact contactEmail = new Contact();
-            contactEmail.ContactName = email;
-            contactEmail.ContactsTypeId = 1; //Email
-            emp.Contacts.Add(contactEmail);
-
-            db1.Employees.Add(emp);
-            db1.SaveChanges();
-
-            return RedirectToAction("AllEmployees");
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult DeleteEmployee(int? id)
-        {
-            if (id != null)
-            {
-                Employee emp = db1.Employees.Find(id);
-                Contact email = emp.Contacts.Where(x => x.ContactsTypeId == 1).FirstOrDefault();
-
-                if (email != null)
-                {
-                    db1.Contacts.Remove(email);
-                }
-                db1.Employees.Remove(emp);
-                db1.SaveChanges();
-            }
-            return RedirectToAction("AllEmployees");
+            return View("~/Views/Admin/Products/Products.cshtml", groups);
         }
 
         [HttpGet]
         [Authorize(Roles = "product, admin")]
-        public ActionResult Products()
+        public async Task<ActionResult> ShowSubGroupForProduct(int id)
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var productsView = new List<ProductViewModel>();
-            var products = db.Products.Where(x => x.DepartmentId == user.id_dep).ToList();
-            foreach (var item in products)
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                var itemView = new ProductViewModel();
-                itemView.id = item.id;
-                itemView.name = item.name;
-                itemView.codeTNVD = item.codeTNVD;
-                itemView.unitName = item.Unit.name;
-                itemView.note = item.note;
-                itemView.departmentName = item.Departments.short_name_ru;
-                itemView.properties = new List<PropertyViewModel>();
-                foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == item.id))
-                {
-                    var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
-                }
-                itemView.components = new List<ComponentViewModel>();
-                foreach (var components in db.ComponentProducts.Where(x => x.ProductId == item.id))
-                {
-                    var component = db.Components.Where(x => x.id == components.ComponentId).FirstOrDefault();
-                    itemView.components.Add(new ComponentViewModel { name = component.name });
-                }
-                productsView.Add(itemView);
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
-            return View(productsView);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult CreateProduct()
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var viewmodel = new ProductViewModel();
-            viewmodel.DepartmentId = user.id_dep;
-            ViewBag.units = db.Units.ToList();
-            ViewBag.groups = db.GroupProducts.ToList();
-            ViewBag.property = db.Properties.ToList();
-            ViewBag.property = db.Components.ToList();
-            return PartialView("_AddProduct", viewmodel);
+            // Получаем подгруппы товаров
+            var subGroups = await db.SubGroupProducts.Where(x => x.GroupProductId == id).ToListAsync();
+            if (subGroups == null)
+            {
+                return Json(new { success = false, message = "Подгруппа товаров не найдена." });
+            }
+            return PartialView("~/Views/Admin/Products/_ShowSubGroupForProduct.cshtml", subGroups);
         }
 
         [HttpPost]
         [Authorize(Roles = "product, admin")]
-        public ActionResult CreateProduct(ProductViewModel model, int[] img_ids)
+        public async Task<ActionResult> ShowProductByCategory(int groupId, int subGroupId, int count = 20, int page = 1)
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var subGroupAdd = new SubGroupProduct();
-            var group = db.GroupProducts.Where(x => x.name == model.groupProduct).FirstOrDefault();
-            if (group == null)
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                group = new GroupProduct { name = model.groupProduct.Trim() };
-                db.GroupProducts.Add(group);
-                var subgroup = new SubGroupProduct { name = model.subGroupProduct.Trim(), GroupProduct = group };
-                db.SubGroupProducts.Add(subgroup);
-                subGroupAdd = subgroup;
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            if (page < 1)
+            {
+                page = 1; // Убедитесь, что номер страницы не меньше 1
+            }
+            var listProduct = new List<Product>();
+            var totalItems = 0;
+            if (groupId == 0)
+            {
+                listProduct = await db.Products
+                        .Where(p => p.DepartmentId == user.id_dep)
+                        .OrderBy(p => p.name) // Сортировка по дате
+                        .Skip((page - 1) * count) // Пропустить элементы для предыдущих страниц
+                        .Take(count) // Взять только count элементов для текущей страницы
+                        .ToListAsync(); // Преобразовать в список
+
+                totalItems = await db.Products
+                            .Where(p => p.DepartmentId == user.id_dep)
+                            .CountAsync(); // Общее количество элементов
+            }
+            else if (subGroupId == 0)
+            {
+                var subGroups = await db.SubGroupProducts.Where(x => x.GroupProductId == groupId).Select(x => x.id).ToListAsync();
+                listProduct = await db.Products
+                        .Where(p => p.DepartmentId == user.id_dep && subGroups.Contains(p.SubGroupProductId))
+                        .OrderBy(p => p.name) // Сортировка по имени
+                        .Skip((page - 1) * count) // Пропустить элементы для предыдущих страниц
+                        .Take(count) // Взять только count элементов для текущей страницы
+                        .ToListAsync(); // Преобразовать в список
+
+                totalItems = await db.Products
+                            .Where(p => p.DepartmentId == user.id_dep && subGroups.Contains(p.SubGroupProductId))
+                            .CountAsync(); // Общее количество элементов
             }
             else
             {
-                SubGroupProduct subgroup = db.SubGroupProducts.Where(x => x.GroupProduct.name == group.name && x.name == model.subGroupProduct).FirstOrDefault();
-                if (subgroup == null)
-                {
-                    subgroup = new SubGroupProduct { name = model.subGroupProduct, GroupProduct = group };
-                    db.SubGroupProducts.Add(subgroup);
-                }
-                subGroupAdd = subgroup;
-            }
-            db.SaveChanges();
-            Product product = new Product
-            {
-                name = model.name.Trim(),
-                codeTNVD = model.codeTNVD.Trim(),
-                note = model.note?.Trim(),
-                UnitId = model.UnitId,
-                SubGroupProductId = subGroupAdd.id,
-                DepartmentId = model.DepartmentId
-            };
-            db.Products.Add(product);
-            db.SaveChanges();
-            if (img_ids != null && img_ids.Count() > 0)
-            {
-                foreach (int id in img_ids)
-                {
-                    var x = new Imgs_to_product();
-                    x.ProductId = product.id;
-                    x.ImgsId = id;
-                    db.ImgsProduct.Add(x);
-                }
-            }
-            if (model.properties != null && model.properties.Count() > 0)
-            {
-                foreach (var property in model.properties)
-                {
-                    if (property.value != "")
-                    {
-                        var PP = new PropertyProduct();
-                        PP.ProductId = product.id;
+                listProduct = await db.Products
+                        .Where(p => p.DepartmentId == user.id_dep && p.SubGroupProductId == subGroupId)
+                        .OrderBy(p => p.name) // Сортировка по дате
+                        .Skip((page - 1) * count) // Пропустить элементы для предыдущих страниц
+                        .Take(count) // Взять только count элементов для текущей страницы
+                        .ToListAsync(); // Преобразовать в список
 
-                        var prop = db.Properties?.Where(x => x.name == property.name)?.FirstOrDefault();
-                        if (prop == null)
-                        {
-                            var props = new Property();
-                            props.name = property.name.Trim();
-                            db.Properties.Add(props);
-                            PP.Property = props;
-                        }
-                        else PP.Property = prop;
+                totalItems = await db.Products
+                            .Where(p => p.DepartmentId == user.id_dep && p.SubGroupProductId == subGroupId)
+                            .CountAsync(); // Общее количество элементов
+            }
 
-                        PP.value = property.value.Trim();
-                        db.PropertyProducts.Add(PP);
-                    }
-                }
-            }
-            if (model.components != null && model.components.Count() > 0)
-            {
-                foreach (var component in model.components)
-                {
-                    if (component.name != "")
-                    {
-                        var CP = new ComponentProduct();
-                        CP.ProductId = product.id;
+            var totalPages = (int)Math.Ceiling((double)totalItems / count); // Общее количество страниц
+            if (totalPages < page)
+                page = totalPages;
 
-                        var comp = db.Components?.Where(x => x.name == component.name)?.FirstOrDefault();
-                        if (comp == null)
-                        {
-                            var compon = new Component();
-                            compon.name = component.name.Trim();
-                            db.Components.Add(compon);
-                            CP.Component = compon;
-                        }
-                        else CP.Component = comp;
-                        db.ComponentProducts.Add(CP);
-                    }
-                }
-            }
-            Usage_report rep = new Usage_report { title = product.name, action = "Add", table = "Product", date = DateTime.Now, id_user = user.id };
-            db.Usage_report.Add(rep);
-            db.SaveChanges();
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("Products");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
+            ViewBag.totalPages = totalPages;
+            ViewBag.activePage = page;
+            return PartialView("~/Views/Admin/Products/_ShowProductByCategory.cshtml", listProduct);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "product, admin")]
-        public ActionResult EditProduct(int id)
+        public async Task<ActionResult> ShowProductById(int id)
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var product = db.Products.Where(x => x.id == id).FirstOrDefault();
-            var viewmodel = new ProductViewModel();
+            ViewBag.groupType = await db.GroupProducts.ToListAsync();
+            ViewBag.version = await db.VersionProducts.Where(v => v.ProductId == id).ToListAsync();
+            ViewBag.units = await db.Units.ToListAsync();
+            ViewBag.properties = await db.Properties.ToListAsync();
+            ViewBag.components = await db.Components.ToListAsync();
+            var groupId = await
+                db.Products
+                .Where(p => p.id == id)
+                .Select(p => p.SubGroupProduct.GroupProductId)
+                .FirstOrDefaultAsync();
+            ViewBag.subGroupType = await db.SubGroupProducts.Where(s => s.GroupProductId == groupId).ToListAsync();
+
             #region приведение
-            viewmodel.id = product.id;
-            viewmodel.name = product.name;
-            viewmodel.groupProduct = product.SubGroupProduct.GroupProduct.name;
-            viewmodel.subGroupProduct = product.SubGroupProduct.name;
-            viewmodel.note = product.note;
-            viewmodel.codeTNVD = product.codeTNVD;
-            viewmodel.unitName = product.Unit.name;
-            viewmodel.Imgs = new List<Imgs>();
-            var imgsProduct = db.ImgsProduct.Where(x => x.ProductId == product.id).ToList();
+            var viewModel = await
+                db.Products
+                .Where(p => p.id == id)
+                .Select(p => new ProductViewModel
+                {
+                    id = p.id,
+                    DepartmentId = p.DepartmentId,
+                    name = p.name,
+                    codeTNVD = p.codeTNVD,
+                    note = p.note,
+                    unitId = p.UnitId,
+                    subGroupProduct = p.SubGroupProduct.name,
+                    groupProduct = p.SubGroupProduct.GroupProduct.name
+                }).FirstOrDefaultAsync();
+            viewModel.Imgs = new List<Imgs>();
+            var imgsProduct = await db.ImgsProduct.Where(x => x.ProductId == viewModel.id).ToListAsync();
             foreach (var img in imgsProduct)
             {
-                viewmodel.Imgs.Add(db.Imgs.Where(x => x.id == img.ImgsId).FirstOrDefault());
+                viewModel.Imgs.Add(await db.Imgs.Where(x => x.id == img.ImgsId).FirstOrDefaultAsync());
             }
-            viewmodel.properties = new List<PropertyViewModel>();
-            var propProduct = db.PropertyProducts.Where(x => x.ProductId == product.id).ToList();
+            viewModel.properties = new List<PropertyViewModel>();
+            var propProduct = await db.PropertyProducts.Where(x => x.ProductId == viewModel.id).ToListAsync();
             foreach (var prop in propProduct)
             {
                 var propView = new PropertyViewModel();
                 propView.value = prop.value;
-                propView.name = db.Properties.Where(x => x.id == prop.PropertyId).Select(x => x.name).FirstOrDefault();
-                viewmodel.properties.Add(propView);
+                propView.name = await db.Properties.Where(x => x.id == prop.PropertyId).Select(x => x.name).FirstOrDefaultAsync();
+                viewModel.properties.Add(propView);
             }
-            viewmodel.components = new List<ComponentViewModel>();
-            var compProduct = db.ComponentProducts.Where(x => x.ProductId == product.id).ToList();
+            viewModel.components = new List<ComponentViewModel>();
+            var compProduct = await db.ComponentProducts.Where(x => x.ProductId == viewModel.id).ToListAsync();
             foreach (var compP in compProduct)
             {
                 var compView = new ComponentViewModel();
-                compView.name = db.Components.Where(x => x.id == compP.ComponentId).Select(x => x.name).FirstOrDefault();
-                viewmodel.components.Add(compView);
+                compView.name = await db.Components.Where(x => x.id == compP.ComponentId).Select(x => x.name).FirstOrDefaultAsync();
+                viewModel.components.Add(compView);
+            }
+            #endregion            
+
+            return PartialView("~/Views/Admin/Products/_ShowProductById.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "product, admin")]
+        public async Task<ActionResult> ShowSubGroupSelectForProduct(string name)
+        {
+            // Получаем подгруппы товаров
+            var subGroups = await db.SubGroupProducts.Where(x => x.GroupProduct.name == name).ToListAsync();
+            if (subGroups == null)
+            {
+                throw new Exception("Ошибка при получении листа подгрупп.");
+            }
+            return PartialView("~/Views/Admin/Products/_ShowSubGroupSelectForProduct.cshtml", subGroups);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "product, admin")]
+        public async Task<ActionResult> AddProduct()
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            ViewBag.groupType = await db.GroupProducts.ToListAsync();
+            ViewBag.id_dep = await db.Users.Where(x => x.login == User.Identity.Name).Select(x => x.id_dep).FirstOrDefaultAsync();
+            ViewBag.units = await db.Units.ToListAsync();
+            ViewBag.properties = await db.Properties.ToListAsync();
+            ViewBag.components = await db.Components.ToListAsync();
+            // Получаем группы товаров
+            var groups = await db.GroupProducts.ToListAsync();
+            if (groups == null)
+            {
+                return Json(new { success = false, message = "Группы товаров не найдены." });
+            }
+            return View("~/Views/Admin/Products/AddProduct.cshtml");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> AddProduct(ProductViewModel productModel, int[] img_ids)//Добавление нового продукта
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = productModel.name, action = "Add", table = "Product", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            #region Product
+            var product = new Product();
+            var SubGroupProduct = await db.SubGroupProducts.Where(s => s.name == productModel.subGroupProduct).FirstOrDefaultAsync();
+            if (SubGroupProduct == null)
+            {
+                var GroupProduct = await db.GroupProducts.Where(s => s.name == productModel.groupProduct).FirstOrDefaultAsync();
+                if (GroupProduct == null)
+                {
+                    GroupProduct = new GroupProduct();
+                    GroupProduct.name = productModel.groupProduct.Trim();
+                    db.GroupProducts.Add(GroupProduct);
+                }
+                SubGroupProduct = new SubGroupProduct();
+                SubGroupProduct.name = productModel.subGroupProduct.Trim();
+                SubGroupProduct.GroupProduct = GroupProduct;
+                db.SubGroupProducts.Add(SubGroupProduct);
+            }
+            product.SubGroupProduct = SubGroupProduct;
+
+            product.note = productModel.note.Trim();
+            product.DepartmentId = productModel.DepartmentId;
+            product.codeTNVD = productModel.codeTNVD.Trim();
+            product.name = productModel.name.Trim();
+            product.UnitId = productModel.unitId;
+            db.Products.Add(product);
+            #endregion
+
+            #region Component
+            if (productModel.components != null && productModel.components.Count() > 0)
+            {
+                foreach (var comp in productModel.components)
+                {
+                    var component = await db.Components.Where(c => c.name == comp.name).FirstOrDefaultAsync();
+                    if (component == null)
+                    {
+                        component = new Component();
+                        component.name = comp.name.Trim();
+                        db.Components.Add(component);
+                    }
+                    db.ComponentProducts.Add(new ComponentProduct
+                    {
+                        Component = component,
+                        Product = product
+                    });
+                }
             }
             #endregion
-            ViewBag.units = db.Units.ToList();
-            ViewBag.groups = db.GroupProducts.ToList();
-            ViewBag.properties = db.Properties.ToList();
-            ViewBag.components = db.Components.ToList();
-            return PartialView("_EditProduct", viewmodel);
-        }
 
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult EditProduct(ProductViewModel model, int[] img_ids)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var subGroupAdd = new SubGroupProduct();
-            var group = db.GroupProducts.Where(x => x.name == model.groupProduct).FirstOrDefault();
-            if (group == null)
+            #region Property
+            if (productModel.properties != null && productModel.properties.Count() > 0)
             {
-                group = new GroupProduct { name = model.groupProduct.Trim() };
-                db.GroupProducts.Add(group);
-                var subgroup = new SubGroupProduct { name = model.subGroupProduct.Trim(), GroupProduct = group };
-                db.SubGroupProducts.Add(subgroup);
-                subGroupAdd = subgroup;
-            }
-            else
-            {
-                SubGroupProduct subgroup = db.SubGroupProducts.Where(x => x.GroupProduct.name == group.name && x.name == model.subGroupProduct).FirstOrDefault();
-                if (subgroup == null)
+                foreach (var prop in productModel.properties)
                 {
-                    subgroup = new SubGroupProduct { name = model.subGroupProduct.Trim(), GroupProduct = group };
-                    db.SubGroupProducts.Add(subgroup);
-                }
-                subGroupAdd = subgroup;
-            }
-            db.SaveChanges();
-            var product = db.Products.Where(x => x.id == model.id).FirstOrDefault();
-            product.name = model.name.Trim();
-            product.codeTNVD = model.codeTNVD.Trim();
-            product.note = model.note?.Trim();
-            product.UnitId = model.UnitId;
-            product.SubGroupProductId = subGroupAdd.id;
-            if (img_ids != null && img_ids.Count() > 0)
-            {
-
-                List<int> list = new List<int>(img_ids);
-                if (list != null && list.Count() > 0)
-                {
-                    var imgsProduct = db.ImgsProduct.Where(x => x.ProductId == product.id).ToList();
-                    foreach (var imgProduct in imgsProduct)
+                    if (prop.value != null && prop.value != "")
                     {
-                        var imgId = list.Where(x => x == imgProduct.ImgsId).FirstOrDefault();
-                        if (imgId == 0)
+                        var property = await db.Properties.Where(p => p.name == prop.name).FirstOrDefaultAsync();
+                        if (property == null)
                         {
-                            db.ImgsProduct.Remove(imgProduct);
+                            property = new Property();
+                            property.name = prop.name.Trim();
+                            db.Properties.Add(property);
                         }
-                        else
+                        db.PropertyProducts.Add(new PropertyProduct
                         {
-                            list.Remove(imgId);
-                        }
-                    }
-                    foreach (int id in list)
-                    {
-                        var y = db.ImgsProduct.Where(x => x.ImgsId == id && x.ProductId == model.id).FirstOrDefault();
-                        if (y == null)
-                        {
-                            var x = new Imgs_to_product();
-                            x.Product = product;
-                            x.ImgsId = id;
-                            db.ImgsProduct.Add(x);
-                        }
+                            Property = property,
+                            Product = product,
+                            value = prop.value.Trim()
+                        });
                     }
                 }
             }
-            if (model.properties == null)
-                model.properties = new List<PropertyViewModel>();
-            var props = db.PropertyProducts.Where(x => x.ProductId == product.id).ToList();
-            if (props != null && props.Count() > 0)
-            {
-                foreach (var property in props)
-                {
-                    var propName = db.Properties?.Where(x => x.id == property.PropertyId)?.FirstOrDefault();
-                    var propLocal = model.properties.Where(x => x.name == propName.name).FirstOrDefault();
-                    if (propLocal == null)
-                    {
-                        db.PropertyProducts.Remove(property);
-                    }
-                    else
-                    {
-                        if (property.value != propLocal.value)
-                            property.value = propLocal.value;
-                        model.properties.Remove(propLocal);
-                    }
-                }
-            }
-            if (model.properties != null && model.properties.Count() > 0)
-            {
-                foreach (var property in model.properties)
-                {
-                    if (property.value != "")
-                    {
-                        var PP = new PropertyProduct();
-                        PP.ProductId = product.id;
+            #endregion
 
-                        var propName = db.Properties?.Where(x => x.name == property.name)?.FirstOrDefault();
-                        if (propName == null)
-                        {
-                            var prop = new Property();
-                            prop.name = property.name.Trim();
-                            db.Properties.Add(prop);
-                            PP.Property = prop;
-                        }
-                        else PP.Property = propName;
-
-                        PP.value = property.value.Trim();
-                        db.PropertyProducts.Add(PP);
-                    }
-                }
-            }
-            var components = db.ComponentProducts.Where(x => x.ProductId == product.id).ToList();
-            if (components != null && components.Count() > 0)
-            {
-                foreach (var component in components)
-                {
-                    var compName = db.Components?.Where(x => x.id == component.ComponentId)?.FirstOrDefault();
-                    var compLocal = model.components.Where(x => x.name == compName.name).FirstOrDefault();
-                    if (compLocal == null)
-                    {
-                        db.ComponentProducts.Remove(component);
-                    }
-                    else
-                    {
-                        model.components.Remove(compLocal);
-                    }
-                }
-            }
-            if (model.components != null && model.components.Count() > 0)
-            {
-                foreach (var component in model.components)
-                {
-                    if (component.name != "")
-                    {
-                        var CP = new ComponentProduct();
-                        CP.ProductId = product.id;
-
-                        var compName = db.Components?.Where(x => x.name == component.name)?.FirstOrDefault();
-                        if (compName == null)
-                        {
-                            var comp = new Component();
-                            comp.name = component.name.Trim();
-                            db.Components.Add(comp);
-                            CP.Component = comp;
-                        }
-                        else CP.Component = compName;
-
-                        db.ComponentProducts.Add(CP);
-                    }
-                }
-            }
-            Usage_report rep = new Usage_report { title = product.name, action = "Edit", table = "Product", date = DateTime.Now, id_user = user.id };
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("Products");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult ShowVersionProduct(int productId)
-        {
-            var modelView = new List<VersionProductViewModel>();
-            var model = db.VersionProducts.Where(x => x.ProductId == productId).ToList();
-            foreach (var item in model)
-            {
-                var itemView = new VersionProductViewModel();
-                itemView.id = item.id;
-                itemView.name = item.name;
-                itemView.note = item.note;
-                itemView.isSale = item.isSale;
-                itemView.properties = new List<PropertyViewModel>();
-                foreach (var prop in db.PropertyVersions.Where(x => x.VersionId == item.id))
-                {
-                    var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                    itemView.properties.Add(new PropertyViewModel { name = property.name, value = prop.value });
-                }
-                itemView.Imgs = new List<Imgs>();
-                foreach (var imgToVersion in db.ImgsVersionProduct.Where(x => x.VersionProductId == item.id))
-                {
-                    var img = db.Imgs.Where(x => x.id == imgToVersion.ImgsId).FirstOrDefault();
-                    itemView.Imgs.Add(img);
-                }
-                modelView.Add(itemView);
-            }
-            var product = db.Products.Where(x => x.id == productId).FirstOrDefault();
-            var imgs = new List<Imgs>();
-            foreach (var imgsToProduct in db.ImgsProduct.Where(x => x.ProductId == product.id))
-            {
-                var img = db.Imgs.Where(x => x.id == imgsToProduct.ImgsId).FirstOrDefault();
-                imgs.Add(img);
-            }
-            ViewBag.imgs = imgs;
-            ViewData["productName"] = product.name;
-            ViewData["codeTNVED"] = product.codeTNVD;
-            ViewData["unitName"] = product.Unit.name;
-            ViewData["departmentName"] = product.Departments.short_name_ru;
-            ViewData["productId"] = product.id;
-            var productProperties = new List<PropertyViewModel>();
-            foreach (var prop in db.PropertyProducts.Where(x => x.ProductId == product.id))
-            {
-                var property = db.Properties.Where(x => x.id == prop.PropertyId).FirstOrDefault();
-                productProperties.Add(new PropertyViewModel { name = property.name, value = prop.value });
-            }
-            ViewBag.properties = productProperties;
-            var components = new List<Component>();
-            foreach (var compProduct in db.ComponentProducts.Where(x => x.ProductId == product.id))
-            {
-                var comp = db.Components.Where(x => x.id == compProduct.ComponentId).FirstOrDefault();
-                components.Add(new Component { name = comp.name });
-            }
-            ViewBag.components = components;
-            return View("ShowVersionProduct", modelView);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult ShowGroup()
-        {
-            var model = db.GroupProducts.ToList();
-            return View("ShowGroup", model);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult ShowSubGroup(int id)
-        {
-            var model = db.SubGroupProducts.Where(x => x.GroupProductId == id).ToList();
-            ViewBag.ProductId = id;
-            return PartialView("_ShowSubGroup", model);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult ShowProduct()
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var model = db.Products.Where(x => x.DepartmentId == user.id_dep).ToList();
-            return PartialView("_ShowProduct", model);
-        }
-
-
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult ShowSubGroupSelect(string name, string subGroupName = "")
-        {
-            var model = db.SubGroupProducts.Where(x => x.GroupProduct.name == name).ToList();
-            if (subGroupName != "")
-                ViewData["subGroupName"] = subGroupName;
-            return PartialView("_ShowSubGroupSelect", model);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult CreateVersionProduct(int productId)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var model = new VersionProductViewModel();
-            model.ProductId = productId;
-            var nameProduct = db.Products.Where(x => x.id == productId).Select(x => x.name).FirstOrDefault();
-            model.name = nameProduct;
-            ViewBag.groups = db.GroupProducts.ToList();
-            return PartialView("_AddVersionProduct", model);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult CreateVersionProduct(VersionProductViewModel model, int[] img_ids, int productId)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var versionProduct = new VersionProduct
-            {
-                name = model.name.Trim(),
-                isSale = model.isSale,
-                note = model.note?.Trim(),
-                ProductId = productId
-            };
+            #region Image
             if (img_ids != null)
             {
-                foreach (int id in img_ids)
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
                 {
-                    var x = new Imgs_to_versionProduct();
-                    x.VersionProduct = versionProduct;
-                    x.ImgsId = id;
-                    db.ImgsVersionProduct.Add(x);
-                }
-            }
-            Usage_report rep = new Usage_report { title = versionProduct.name, action = "Add", table = "VersionProduct", date = DateTime.Now, id_user = user.id };
-            db.VersionProducts.Add(versionProduct);
-            db.Usage_report.Add(rep);
-            if (model.properties.Count() > 0)
-            {
-                foreach (var property in model.properties)
-                {
-                    if (property.value != "")
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    db.ImgsProduct.Add(new Imgs_to_product
                     {
-                        var PV = new PropertyVersion();
-                        PV.VersionProduct = versionProduct;
-                        var prop = db.Properties.Where(x => x.name == property.name).FirstOrDefault();
-                        if (prop == null)
-                        {
-                            prop = new Property();
-                            prop.name = property.name.Trim();
-                            db.Properties.Add(prop);
-                        }
-                        PV.Property = prop;
-                        PV.value = property.value.Trim();
-                        db.PropertyVersions.Add(PV);
-                    }
+                        Product = product,
+                        Imgs = img
+                    });
                 }
-            }
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("ShowVersionProduct", new { productId = productId });
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult CreateGroup()
-        {
-            return PartialView("_AddGroup");
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult CreateGroup(GroupProduct model)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = model.name, action = "Add", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
-            model.name = model.name.Trim();
-            db.GroupProducts.Add(model);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("ShowGroup");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult CreateSubGroup(int id)
-        {
-            ViewBag.GroupName = db.GroupProducts.Where(x => x.id == id).Select(x => x.name).FirstOrDefault();
-            ViewBag.GroupId = id;
-            return PartialView("_AddSubGroup");
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult CreateSubGroup(SubGroupProduct model)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = model.name, action = "Add", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
-            model.name = model.name.Trim();
-            db.SubGroupProducts.Add(model);
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("ShowGroup");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult AddPropertySelectGroup(int count)
-        {
-            ViewBag.iterator = count;
-            return PartialView("_AddPropertySelectGroup", db.Properties.ToList());
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult AddComponent(int count)
-        {
-            ViewBag.iterator = count;
-            return PartialView("_AddComponent", db.Components.ToList());
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult EditVersion(int id)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var version = db.VersionProducts.Where(x => x.id == id).FirstOrDefault();
-            var viewmodel = new VersionProductViewModel();
-            #region приведение
-            viewmodel.id = version.id;
-            viewmodel.ProductId = version.ProductId;
-            viewmodel.name = version.name;
-            viewmodel.note = version.note;
-            viewmodel.isSale = version.isSale;
-            viewmodel.Imgs = new List<Imgs>();
-
-            var imgsProduct = db.ImgsVersionProduct.Where(x => x.VersionProductId == version.id).ToList();
-            foreach (var img in imgsProduct)
-            {
-                viewmodel.Imgs.Add(db.Imgs.Where(x => x.id == img.ImgsId).FirstOrDefault());
-            }
-            viewmodel.properties = new List<PropertyViewModel>();
-            var propVersion = db.PropertyVersions.Where(x => x.VersionId == version.id).ToList();
-            foreach (var prop in propVersion)
-            {
-                var propView = new PropertyViewModel();
-                propView.value = prop.value;
-                propView.name = db.Properties.Where(x => x.id == prop.PropertyId).Select(x => x.name).FirstOrDefault();
-                viewmodel.properties.Add(propView);
             }
             #endregion
-            ViewBag.properties = db.Properties.ToList();
-            return PartialView("_EditVersionProduct", viewmodel);
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Товар успешно добавлен!" });
         }
 
         [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult EditVersion(VersionProductViewModel model, int[] img_ids)
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> EditProduct(ProductViewModel productModel, int[] img_ids)//редактирование продукта
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var version = db.VersionProducts.Where(x => x.id == model.id).FirstOrDefault();
-            version.name = model.name.Trim();
-            version.note = model.note?.Trim();
-            version.isSale = model.isSale;
-            List<int> list;
-            if (img_ids != null && img_ids.Count() > 0)
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                list = new List<int>(img_ids);
-            }
-            else
-            {
-                list = new List<int>();
-            }
-            if (list != null && list.Count() > 0)
-            {
-                var imgsVersion = db.ImgsVersionProduct.Where(x => x.VersionProductId == version.id).ToList();
-                foreach (var imgVersion in imgsVersion)
-                {
-                    var imgId = list.Where(x => x == imgVersion.ImgsId).FirstOrDefault();
-                    if (imgId == 0)
-                    {
-                        db.ImgsVersionProduct.Remove(imgVersion);
-                    }
-                    else
-                    {
-                        list.Remove(imgId);
-                    }
-                }
-                foreach (int id in list)
-                {
-                    var y = db.ImgsVersionProduct.Where(x => x.ImgsId == id && x.VersionProductId == model.id).FirstOrDefault();
-                    if (y == null)
-                    {
-                        var x = new Imgs_to_versionProduct();
-                        x.VersionProductId = model.id;
-                        x.ImgsId = id;
-                        db.ImgsVersionProduct.Add(x);
-                    }
-                }
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
 
-            if (model.properties == null)
-                model.properties = new List<PropertyViewModel>();
-            var props = db.PropertyVersions.Where(x => x.VersionId == version.id).ToList();
-            if (props != null && props.Count() > 0)
+            Usage_report rep = new Usage_report { title = productModel.name, action = "Edit", table = "Product", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            var product = new Product();
+            #region Product
+            var SubGroupProduct = await db.SubGroupProducts.Where(s => s.name == productModel.subGroupProduct).FirstOrDefaultAsync();
+            if (SubGroupProduct == null)
             {
-                foreach (var property in props)
+                var GroupProduct = await db.GroupProducts.Where(s => s.name == productModel.groupProduct).FirstOrDefaultAsync();
+                if (GroupProduct == null)
                 {
-                    var propName = db.Properties?.Where(x => x.id == property.PropertyId)?.FirstOrDefault();
-                    var propLocal = model.properties.Where(x => x.name == propName.name).FirstOrDefault();
-                    if (propLocal == null)
+                    GroupProduct = new GroupProduct();
+                    GroupProduct.name = productModel.groupProduct.Trim();
+                    db.GroupProducts.Add(GroupProduct);
+                }
+                SubGroupProduct = new SubGroupProduct();
+                SubGroupProduct.name = productModel.subGroupProduct.Trim();
+                SubGroupProduct.GroupProduct = GroupProduct;
+                db.SubGroupProducts.Add(SubGroupProduct);
+                await db.SaveChangesAsync();
+            }
+
+            product.SubGroupProduct = SubGroupProduct;
+            product.SubGroupProductId = SubGroupProduct.id;
+            product.note = productModel.note.Trim();
+            product.id = productModel.id;
+            product.DepartmentId = productModel.DepartmentId;
+            product.codeTNVD = productModel.codeTNVD.Trim();
+            product.name = productModel.name.Trim();
+            product.UnitId = productModel.unitId;
+            var productDB = await db.Products.Where(s => s.id == productModel.id).FirstOrDefaultAsync();
+            PropertyUpdater.UpdateProperties(productDB, product);
+            productDB.SubGroupProduct = product.SubGroupProduct;
+            #endregion            
+
+            #region Component
+            // Получаем существующие связи
+            var existingComponentProducts = await db.ComponentProducts
+                .Include(cp => cp.Component)
+                .Where(x => x.ProductId == productModel.id)
+                .ToListAsync();
+            if (productModel.components != null && productModel.components.Count() > 0)
+            {
+                // Получаем имена компонентов из модели (нормализованные)
+                var newComponentNames = productModel.components
+                    .Select(c => c.name.Trim().ToLower())
+                    .ToList();
+
+                // Находим связи для удаления: те, которых нет в новой модели
+                var toRemove = existingComponentProducts
+                    .Where(cp => !newComponentNames.Contains(cp.Component.name.Trim().ToLower()))
+                    .ToList();
+                db.ComponentProducts.RemoveRange(toRemove);
+
+                var existingComponentNamesAfterRemove = existingComponentProducts
+                        .Except(toRemove)
+                        .Select(cp => cp.Component.name.Trim().ToLower())
+                        .ToList();
+                // Добавляем новые компоненты из модели
+                foreach (var comp in productModel.components)
+                {
+                    // Нормализуем имя+		existingComponentProducts	Count = 2	System.Collections.Generic.List<rupbes.Models.Products.ComponentProduct>
+
+                    var normalizedName = comp.name.Trim().ToLower();
+
+                    if (existingComponentNamesAfterRemove.Contains(normalizedName))
+                        continue;
+
+                    // Ищем компонент по нормализованному имени
+                    var component = await db.Components
+                        .FirstOrDefaultAsync(c => c.name.ToLower() == normalizedName);
+
+                    if (component == null)
                     {
-                        db.PropertyVersions.Remove(property);
+                        component = new Component { name = comp.name.Trim() }; // Сохраняем без лишних пробелов
+                        db.Components.Add(component);
                     }
-                    else
+
+                    db.ComponentProducts.Add(new ComponentProduct
                     {
-                        if (property.value != propLocal.value.Trim())
-                            property.value = propLocal.value.Trim();
-                        model.properties.Remove(propLocal);
-                    }
+                        Component = component,
+                        ProductId = productModel.id
+                    });
                 }
             }
-            if (model.properties != null && model.properties.Count() > 0)
+            else if (existingComponentProducts.Count() > 0)
             {
-                foreach (var property in model.properties)
-                {
-                    if (property.value != "")
-                    {
-                        var PP = new PropertyVersion();
-                        PP.VersionId = version.id;
+                db.ComponentProducts.RemoveRange(existingComponentProducts);
+            }
+            #endregion
 
-                        var propName = db.Properties?.Where(x => x.name == property.name)?.FirstOrDefault();
-                        if (propName == null)
+            #region Property          
+            // Загрузка существующих связей
+            var existingPropertyProducts = await db.PropertyProducts
+                .Include(pp => pp.Property)
+                .Where(pp => pp.ProductId == productModel.id)
+                .ToListAsync();
+
+            // Словарь существующих связей по нормализованному имени
+            var existingDict = existingPropertyProducts
+                .ToDictionary(pp => pp.Property.name.Trim().ToLower());
+            if (productModel.properties != null && productModel.properties.Count() > 0)
+            {
+                // Нормализованные имена из модели
+                var modelPropertyNames = new HashSet<string>(
+                    productModel.properties?.Select(p => p.name.Trim().ToLower()) ?? Enumerable.Empty<string>()
+                );
+
+                // Загрузка существующих свойств из базы, которые есть в модели
+                var existingProperties = await db.Properties
+                    .Where(p => modelPropertyNames.Contains(p.name.Trim().ToLower()))
+                    .ToListAsync();
+
+                var existingPropertiesDict = existingProperties
+                    .ToDictionary(p => p.name.Trim().ToLower());
+
+                // Удаляем связи, которых нет в модели
+                foreach (var existing in existingPropertyProducts)
+                {
+                    var normalizedName = existing.Property.name.Trim().ToLower();
+                    if (!modelPropertyNames.Contains(normalizedName))
+                    {
+                        db.PropertyProducts.Remove(existing);
+                    }
+                }
+
+                // Теперь обрабатываем каждое свойство в модели
+                foreach (var propModel in productModel.properties)
+                {
+                    var normalizedName = propModel.name.Trim().ToLower();
+
+                    // Ищем свойство в загруженных свойствах
+                    if (!existingPropertiesDict.TryGetValue(normalizedName, out var property))
+                    {
+                        property = new Property { name = propModel.name.Trim() };
+                        db.Properties.Add(property);
+                        existingPropertiesDict[normalizedName] = property;
+                    }                    
+
+                    // Проверяем, есть ли уже связь для этого свойства и продукта
+                    if (existingDict.TryGetValue(normalizedName, out var existingLink))
+                    {
+                        // Если значение изменилось, обновляем
+                        if (existingLink.value != propModel.value)
                         {
-                            var prop = new Property();
-                            prop.name = property.name.Trim();
-                            db.Properties.Add(prop);
-                            PP.Property = prop;
+                            existingLink.value = propModel.value;
                         }
-                        else PP.Property = propName;
-
-                        PP.value = property.value.Trim();
-                        db.PropertyVersions.Add(PP);
+                    }
+                    else
+                    {
+                        // Создаем новую связь
+                        db.PropertyProducts.Add(new PropertyProduct
+                        {
+                            ProductId = productModel.id,
+                            Property = property, // используем объект property
+                            value = propModel.value
+                        });
                     }
                 }
             }
+            else if (existingPropertyProducts.Count() > 0)
+            {
+                db.PropertyProducts.RemoveRange(existingPropertyProducts);
+            }
+            #endregion
 
-            Usage_report rep = new Usage_report { title = version.name, action = "Edit", table = "VersionProduct", date = DateTime.Now, id_user = user.id };
+            #region Image
+            if (img_ids != null && img_ids.Any())
+            {
+                // Получим существующие связи продукта с изображениями
+                var existingImgLinks = await db.ImgsProduct
+                    .Where(ip => ip.ProductId == product.id) // Используем product.id
+                    .Select(ip => ip.ImgsId)
+                    .ToListAsync();
+
+                // Список для новых связей
+                var newLinks = new List<Imgs_to_product>();
+
+                foreach (var id in img_ids)
+                {
+                    // Проверяем, существует ли уже такая связь
+                    if (!existingImgLinks.Contains(id))
+                    {
+                        // Проверяем существование самого изображения
+                        var img = await db.Imgs.FindAsync(id);
+                        if (img != null)
+                        {
+                            newLinks.Add(new Imgs_to_product
+                            {
+                                ProductId = product.id, // Используем Id вместо объекта
+                                ImgsId = id
+                            });
+                        }
+                    }
+                }
+
+                // Добавляем все новые связи разом
+                db.ImgsProduct.AddRange(newLinks);
+            }
+            #endregion
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Товар успешно сохранен!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, service_master, service")]
+        public async Task<ActionResult> DeleteProduct(int id)//Удаление товара
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем товар
+            Product product = await db.Products.FirstOrDefaultAsync(x => x.id == id);
+            if (product == null)
+            {
+                return Json(new { success = false, message = "Товар не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = product.name, action = "Delete", table = "Product", date = DateTime.Now, id_user = user.id };
             db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("ShowVersionProduct", new { model.ProductId });
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
 
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult EditGroup(int id)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var group = db.GroupProducts.Where(x => x.id == id).FirstOrDefault();
-            return PartialView("_EditGroupProduct", group);
-        }
+            // Удаляем услугу
+            db.Products.Remove(product);
+            await db.SaveChangesAsync();
 
-        [HttpGet]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult EditSubGroup(int id)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var subGroup = db.SubGroupProducts.Where(x => x.id == id).FirstOrDefault();
-            return PartialView("_EditSubGroupProduct", subGroup);
+            return Json(new { success = true, message = "Товар удален!" });
         }
-
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult EditGroupProduct(GroupProduct model)
+                
+        [Authorize(Roles = "admin, service_master, service")]
+        public async Task<ActionResult> GroupProducts()//Группы товаров
         {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = model.name, action = "Edit", table = "GroupProduct", date = DateTime.Now, id_user = user.id };
-            var group = db.GroupProducts.Where(x => x.id == model.id).FirstOrDefault();
-            group.name = model.name.Trim();
-            db.Usage_report.Add(rep);
-            try
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
             {
-                db.SaveChanges();
-                return RedirectToAction("ShowGroup");
+                return Json(new { success = false, message = "Пользователь не найден." });
             }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
 
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult EditSubGroupProduct(SubGroupProduct model)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = model.name, action = "Edit", table = "SubGroupProduct", date = DateTime.Now, id_user = user.id };
-            var group = db.SubGroupProducts.Where(x => x.id == model.id).FirstOrDefault();
-            group.name = model.name.Trim();
-            db.Usage_report.Add(rep);
-            try
+            // Получаем товар
+            var groupProducts = await db.GroupProducts.OrderBy(x => x.name.Length).ToListAsync();
+            if (groupProducts == null)
             {
-                db.SaveChanges();
-                return RedirectToAction("ShowGroup");
+                return Json(new { success = false, message = "Товар не найден." });
             }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
 
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult DeleteProduct(int id)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var product = db.Products.Where(x => x.id == id).FirstOrDefault();
-            string message, header, textButton;
-            try
-            {
-                db.Products.Remove(product);
-                db.SaveChanges();
-                ViewData["reload"] = "Yes";
-                message = "Товар успешно удален.";
-                header = "Успешно";
-                textButton = "Хорошо";
-                return PartialView("_Message", new ModalViewModel(message, header, textButton));
-            }
-            catch (Exception e)
-            {
-                message = "Во время удаления произошла ошибка.";
-                header = "Ошибка";
-                textButton = "Понятно";
-                return PartialView("_Message", new ModalViewModel(message, header, textButton));
-            }
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "product, admin")]
-        public ActionResult DeleteVersionProduct(int id)
-        {
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            var versionProduct = db.VersionProducts.Where(x => x.id == id).FirstOrDefault();
-            string message, header, textButton;
-            try
-            {
-                db.VersionProducts.Remove(versionProduct);
-                db.SaveChanges();
-                ViewData["reload"] = "Yes";
-                message = "Версия товара успешно удалена.";
-                header = "Успешно";
-                textButton = "Хорошо";
-                return PartialView("_Message", new ModalViewModel(message, header, textButton));
-            }
-            catch (Exception e)
-            {
-                message = "Во время удаления произошла ошибка.";
-                header = "Ошибка";
-                textButton = "Понятно";
-                return PartialView("_Message", new ModalViewModel(message, header, textButton));
-            }
+            return View("~/Views/Admin/Products/GroupProducts.cshtml", groupProducts);
         }
 
         public ActionResult Message(string message, string header, string textButton)

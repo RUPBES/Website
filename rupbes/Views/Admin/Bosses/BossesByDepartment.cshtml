@@ -1,0 +1,106 @@
+﻿@using rupbes.Models
+@model List<Bosses>
+@{
+    ViewBag.Title = "Вакансии " + ViewBag.nameDep;
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@Html.AntiForgeryToken()
+@section breadcrumb{
+    <ol class="breadcrumb float-sm-end">
+        <li class="breadcrumb-item">
+            @Html.ActionLink("Администрование", "Index", "Admin")
+        </li>
+        <li class="breadcrumb-item">
+            @Html.ActionLink("Подразделения (Руководство)", "DepartmentsForBoss", "Admin")
+        </li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+}
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card card-primary card-outline mb-4">
+            <div class="card-header">
+                <div class="card-title">Руководители</div>
+            </div>
+            <div class="card-body">
+                @if (Model.Count > 0)
+                {
+
+                    foreach (var item in Model)
+                    {
+                        <button type="button" onclick="ShowBoss(@item.id)" class="btn btn-outline-primary">
+                            @item.name
+                        </button>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-info" role="alert">
+                        Пока нет добавленных руководителей.
+                    </div>
+                }
+                <hr>
+                <button class="btn btn-success" onclick="ShowAddBoss(@ViewBag.IdDep)">Добавить руководителя</button>
+            </div>
+        </div>
+    </div>
+    <div id="bossDisplay" class="col-md-9" style="display:none">
+        <!--область для карточки вакансии-->
+    </div>
+</div>
+@section ActiveClassSideBar{
+    <script>
+        const path = "/Admin/DepartmentsForBoss"; // Ваша константа
+        const baseUrl = window.location.origin;
+        const url = baseUrl + path; // Соединяем базовый URL и путь
+        // Перебираем все ссылки в меню
+        $('ul.sidebar-menu a').each(function () {
+            // Проверяем, совпадает ли URL ссылки с текущим URL
+            if (this.href === url) {
+                // Добавляем класс `active` к элементу <li>
+                $(this).addClass('active');
+                // Добавляем класс `active` к родительскому элементу <ul>, если он есть
+                $(this).closest('ul.nav-treeview').closest('li').addClass('menu-open');
+            }
+        });
+    </script>
+}
+@section scripts{
+    <script>
+        function ShowBoss(id) {
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("ShowBoss", "Admin")',
+            data: { id: id },      
+            success: function (data) {
+                $('#bossDisplay').html(data);
+                $('#bossDisplay').show();
+            },
+            error: function (xhr, status, error) {
+                var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                $('#toast-body-danger').html("Произошла ошибка при получении информации о руководителе.");
+                toastDanger.show();
+                console.error("Ошибка при выполнении AJAX-запроса:", error);
+            }
+        });
+    }
+
+    function ShowAddBoss(id) {
+        $.ajax({
+            type: "get",
+            url: '@Url.Action("ShowAddBoss", "Admin")',
+            data: { id: id },     
+            success: function (data) {
+                $('#bossDisplay').html(data);
+                $('#bossDisplay').show();
+            },
+            error: function (xhr, status, error) {
+                var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                $('#toast-body-danger').html("Произошла ошибка при отображении страницы для добавления руководителя.");
+                toastDanger.show();
+                console.error("Ошибка при выполнении AJAX-запроса:", error);
+            }
+        });
+    }
+    </script>
+}

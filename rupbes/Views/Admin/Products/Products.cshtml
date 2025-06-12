@@ -1,0 +1,117 @@
+﻿@using rupbes.Models.Products
+@using rupbes.Models.ViewModels
+@model List<GroupProduct>
+
+@{
+    ViewBag.Title = "Список товаров " + ViewBag.nameDep;
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-8">
+                <select id="CategoryProduct" class="form-select">
+                    <option selected="" value="0">Все категории</option>
+                    @{
+                        foreach (var iterator in Model)
+                        {
+                            <option value="@iterator.id">@iterator.name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="button" value="20" class="btn btn-outline-info mb-2 active">20</button>
+                <button type="button" value="50" class="btn btn-outline-info mb-2">50</button>
+                <button type="button" value="100" class="btn btn-outline-info mb-2">100</button>
+            </div>
+        </div>
+        <div id="subGroupDiv" class="row">
+
+        </div>
+        <div id="containerProduct">
+        </div>
+    </div>
+    <div id="productById" class="col-md-8">
+
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Вызываем функцию loadProductByCategory
+            loadProductByCategory();
+        });        
+
+        $('.btn-outline-info').on('click', function () {
+            // Снять класс active со всех кнопок
+            $('.btn-outline-info').removeClass('active');
+            // Добавить класс active на нажатую кнопку
+            $(this).addClass('active');
+            loadNewsByCategory(); // Вызов отдельной функции
+        });
+
+        $('#CategoryProduct').change(function () {
+            ShowSubGroupForProduct();
+            loadProductByCategory();
+        });
+
+        function ShowSubGroupForProduct() {
+
+            var id = $('#CategoryProduct').val(); // Получаем значение Select
+            if (id == 0) { }
+            else {
+                $.ajax({
+                    type: "get",
+                    url: '@Url.Action("ShowSubGroupForProduct", "Admin")',
+                    data: { id: id },
+                    success: function (data) {
+                        $('#subGroupDiv').html(data);
+                    },
+                    error: function (xhr, status, error) {
+                        var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                        $('#toast-body-danger').html("Произошла ошибка при получении списка подгруппы товара.");
+                        toastDanger.show();
+                        console.error("Ошибка при выполнении AJAX-запроса:", error);
+                    }
+                });
+            }
+        }
+
+        function loadProductByCategory() {
+            var count = 20;
+            // Найти все элементы с классами btn-outline-info и active
+            var activeButtons = $('.btn-outline-info.active');
+            // Пройтись по каждому найденному элементу
+            activeButtons.each(function () {
+                count = $(this).val(); // Получить значение атрибута value
+            });
+
+            var groupId = $('#CategoryProduct').val(); // Получаем значение Select
+
+            // Проверяем, существует ли элемент SubCategoryProduct на странице
+            var subCategoryId = 0; // Устанавливаем значение по умолчанию в 0
+
+            if ($('#SubCategoryProduct').length) {
+                // Если элемент существует, получаем его значение
+                subCategoryId = $('#SubCategoryProduct').val();
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ShowProductByCategory", "Admin")',
+                data: { groupId: groupId, subGroupId: subCategoryId, page: 1, count: count },
+                success: function (data) {
+                    $('#containerProduct').html(data);
+                },
+                error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при получении товаров.");
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        }
+    </script>
+}

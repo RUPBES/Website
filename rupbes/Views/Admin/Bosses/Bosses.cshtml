@@ -1,15 +1,15 @@
 ﻿@using rupbes.Models
-@model List<Vacancies>
+@model List<Bosses>
 @{
-    ViewBag.Title = "Вакансии" + ViewBag.nameDep;
+    ViewBag.Title = "Руководство " + ViewBag.nameDep;
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 <div class="row g-4">
-    <div class="col-md-6">
+    <div class="col-md-3">
         <div class="card card-primary card-outline mb-4">
             <div class="card-header">
-                <div class="card-title">Вакансии</div>
+                <div class="card-title">Руководители</div>
             </div>
             <div class="card-body">
                 @if (Model.Count > 0)
@@ -17,64 +17,62 @@
 
                     foreach (var item in Model)
                     {
-                        <button type="button" onclick="ShowVacancy(@item.id)" class="btn btn-outline-primary">
-                            @item.vacancy_ru
+                        <button type="button" onclick="ShowBoss(@item.id)" class="btn btn-outline-primary">
+                            @item.name
                         </button>
                     }
                 }
                 else
                 {
                     <div class="alert alert-info" role="alert">
-                        Пока нет добавленных вакансий.
+                        Пока нет добавленных руководителей.
                     </div>
                 }
                 <hr>
-                <button class="btn btn-success" onclick="ShowAddVacancy(@ViewBag.IdDep)">Добавить вакансию</button>
+                <button class="btn btn-success" onclick="ShowAddBoss(@ViewBag.IdDep)">Добавить руководителя</button>
             </div>
         </div>
     </div>
-    <div id="vacancyDisplay" class="col-md-6" style="display:none">
+    <div id="bossDisplay" class="col-md-9" style="display:none">
         <!--область для карточки вакансии-->
-    </div> 
+    </div>
 </div>
 @section scripts{
     <script>
-        // Получаем токен антифрода
-        var token = $('input[name="__RequestVerificationToken"]').val();
-        function ShowVacancy(id) {
+        function ShowBoss(id) {
             $.ajax({
                 type: "get",
-                url: '@Url.Action("ShowVacancy", "Admin")',
-                data: { id: id },
+                url: '@Url.Action("ShowBoss", "Admin")',
+                data: { id: id },          
                 success: function (data) {
-                    $('#vacancyDisplay').html(data);
-                    $('#vacancyDisplay').show();
+                    $('#bossDisplay').html(data);
+                    $('#bossDisplay').show();
                 },
                 error: function (xhr, status, error) {
                     var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
-                    $('#toast-body-danger').html("Произошла ошибка при получении вакансии.");
+                    $('#toast-body-danger').html("Произошла ошибка при получении информации о руководителе.");
                     toastDanger.show();
                     console.error("Ошибка при выполнении AJAX-запроса:", error);
                 }
             });
         }
 
-        function ShowAddVacancy(id) {
+        function ShowAddBoss(id) {
             $.ajax({
                 type: "get",
-                url: '@Url.Action("ShowAddVacancy", "Admin")',
-                data: { departmentId: id },
+                url: '@Url.Action("ShowAddBoss", "Admin")',
+                data: { id: id },
                 success: function (data) {
-                    $('#vacancyDisplay').html(data);
-                    $('#vacancyDisplay').show();
+                    $('#bossDisplay').html(data);
+                    $('#bossDisplay').show();
                 },
                 error: function (xhr, status, error) {
                     var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
-                    $('#toast-body-danger').html("Произошла ошибка при отображении страницы для добавления.");
+                    $('#toast-body-danger').html("Произошла ошибка при отображении страницы для добавления руководителя.");
                     toastDanger.show();
                     console.error("Ошибка при выполнении AJAX-запроса:", error);
                 }
             });
-        }       
+        }
     </script>
 }

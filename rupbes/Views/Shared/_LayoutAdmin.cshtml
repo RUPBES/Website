@@ -10,7 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>'БЕЛЭНЕРГОСТРОЙ' ХОЛДИНГ</title>
     <link href="~/Content/favicon.ico" rel="icon" runat="server" type="image/ico">
-    <link rel="stylesheet" href="~/adminlte/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    @*<link rel="stylesheet" href="~/adminlte/bootstrap-5.3.5-dist/css/bootstrap.min.css">*@
     @Styles.Render("~/Content/css")
     <link rel="stylesheet" href="@Url.Content("https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css")" integrity="sha256-..." crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css" integrity="sha256-tZHrRjVqNSRyWg2wbppGnT833E/Ys0DHWGwT04GiqQg=" crossorigin="anonymous">
@@ -19,6 +19,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="~/Content/Styles/ImageCheckbox/css/bootstrap-image-checkbox.css">
+    <link rel="stylesheet" href="~/Content/Styles/select2.min.css">
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
@@ -41,13 +42,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a href="@Url.Action("Contacts", "Home")" class="nav-link">Контакты</a>
                     </li>
                     <li class="nav-item d-none d-md-block">
-                        <a href="@Url.Action("News", "Home")" class="nav-link">Новости</a>
-                    </li>
-                    <li class="nav-item d-none d-md-block">
                         <a href="@Url.Action("Objects", "Home")" class="nav-link">Объекты</a>
                     </li>
                     <li class="nav-item d-none d-md-block">
-                        <a href="@Url.Action("Service", "Home")" class="nav-link">Услуги</a>
+                        <a href="@Url.Action("Index", "Service")" class="nav-link">Услуги</a>
                     </li>
                     <li class="nav-item d-none d-md-block">
                         <a href="@Url.Action("Products", "Service")" class="nav-link">Продукция собственного производства</a>
@@ -128,14 +126,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <img src="~/Content/Styles/images/productLogo.png" class="rounded-circle shadow" alt="User Image">
                                 }
                                 <p>
-                                    @User.Identity.Name - @User.
-                                    <small>Member since Nov. 2023</small>
+                                    @User.Identity.Name
+                                    <small>
+                                        <i class="nav-icon bi bi-alarm"></i>
+                                        <i class="nav-icon bi bi-backpack"></i>
+                                    </small>
                                 </p>
                             </li>
                             <!--end::User Image-->
                             <!--begin::Menu Footer-->
                             <li class="user-footer">
-                                <a href="#" class="btn btn-default btn-flat float-end">Выйти</a>
+                                <a href="@Url.Action("Logoff", "Admin")" class="btn btn-default btn-flat float-end">Выйти</a>
                             </li>
                             <!--end::Menu Footer-->
                         </ul>
@@ -207,6 +208,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </li>
 
                         <li class="nav-item">
+                            @if (User.IsInRole("admin") || User.IsInRole("ok_master"))
+                            {
+                                <a href="@Url.Action("DepartmentsForBoss", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-boss"></i>
+                                    <p>
+                                        Руководство
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else if (User.IsInRole("ok"))
+                            {
+                                <a href="@Url.Action("Boss", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-boss"></i>
+                                    <p>
+                                        Руководство
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-boss"></i>
+                                    <p>
+                                        Руководство
+                                    </p>
+                                </a>
+                            }
+                        </li>
+
+                        <li class="nav-item">
                             @if (User.IsInRole("admin") || User.IsInRole("news"))
                             {
                                 <a href="#" class="nav-link">
@@ -248,35 +281,285 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-speedometer"></i>
-                                <p>
-                                    Дерево
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./index.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Dashboard v1</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index2.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Dashboard v2</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Dashboard v3</p>
-                                    </a>
-                                </li>
-                            </ul>
+                            @if (User.IsInRole("admin") || User.IsInRole("obj"))
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa fa-building"></i>
+                                    <p>
+                                        Стройки
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                        <i class="nav-arrow bi bi-chevron-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Objects", "Admin")" class="nav-link">
+                                            <i class="nav-icon bi bi-card-list"></i>
+                                            <p>
+                                                Список
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("AddObject", "Admin")" class="nav-link">
+                                            <i class="nav-icon fa fa-plus-circle"></i>
+                                            <p>
+                                                Добавить объект
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-id-badge"></i>
+                                    <p>
+                                        Стройки
+                                    </p>
+                                </a>
+                            }
                         </li>
 
+                        <li class="nav-item">
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa fa-certificate"></i>
+                                    <p>
+                                        Сертификаты
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                        <i class="nav-arrow bi bi-chevron-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Certificates", "Admin")" class="nav-link">
+                                            <i class="nav-icon bi bi-card-list"></i>
+                                            <p>
+                                                Список
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("AddCertificate", "Admin")" class="nav-link">
+                                            <i class="nav-icon fa fa-plus-circle"></i>
+                                            <p>
+                                                Добавить сертификат
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-id-badge"></i>
+                                    <p>
+                                        Сертификаты
+                                    </p>
+                                </a>
+                            }
+                        </li>
+
+                        <li class="nav-item">
+                            @if (User.IsInRole("admin") || User.IsInRole("realty_master"))
+                            {
+                                <a href="@Url.Action("DepartmentsForRealty", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-coin"></i>
+                                    <p>
+                                        Аренда
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else if (User.IsInRole("realty"))
+                            {
+                                <a href="@Url.Action("Realty", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-coin"></i>
+                                    <p>
+                                        Аренда
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-coin"></i>
+                                    <p>
+                                        Аренда
+                                    </p>
+                                </a>
+                            }
+                        </li>
+
+                        <li class="nav-item">
+                            @if (User.IsInRole("admin") || User.IsInRole("realty_master"))
+                            {
+                                <a href="@Url.Action("DepartmentsForSale", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-stack"></i>
+                                    <p>
+                                        Имущество
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else if (User.IsInRole("realty"))
+                            {
+                                <a href="@Url.Action("Sales", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-stack"></i>
+                                    <p>
+                                        Имущество
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-stack"></i>
+                                    <p>
+                                        Имущество
+                                    </p>
+                                </a>
+                            }
+                        </li>
+
+                        <li class="nav-item">
+                            @if (User.IsInRole("admin") || User.IsInRole("mech_master"))
+                            {
+                                <a href="@Url.Action("DepartmentsForMech", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-truck"></i>
+                                    <p>
+                                        Техника
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else if (User.IsInRole("mech"))
+                            {
+                                <a href="@Url.Action("Mechs", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-truck"></i>
+                                    <p>
+                                        Техника
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-truck"></i>
+                                    <p>
+                                        Техника
+                                    </p>
+                                </a>
+                            }
+                        </li>
+
+                        <li class="nav-item">
+                            @if (User.IsInRole("admin") || User.IsInRole("service_master"))
+                            {
+                                <a href="@Url.Action("DepartmentsForService", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-shop"></i>
+                                    <p>
+                                        Услуги
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else if (User.IsInRole("service"))
+                            {
+                                <a href="@Url.Action("Services", "Admin")" class="nav-link">
+                                    <i class="nav-icon bi bi-shop"></i>
+                                    <p>
+                                        Услуги
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-shop"></i>
+                                    <p>
+                                        Услуги
+                                    </p>
+                                </a>
+                            }
+                        </li>
+
+                        <li class="nav-item">
+                            @if (User.IsInRole("admin") || User.IsInRole("product"))
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-box-seam"></i>
+                                    <p>
+                                        Продукция
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                        <i class="nav-arrow bi bi-chevron-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Products", "Admin")" class="nav-link">
+                                            <i class="nav-icon bi bi-card-list"></i>
+                                            <p>
+                                                Список товаров
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("AddProduct", "Admin")" class="nav-link">
+                                            <i class="nav-icon fa fa-plus-circle"></i>
+                                            <p>
+                                                Добавить товар
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("GroupProducts", "Admin")" class="nav-link">
+                                            <i class="nav-icon bi bi-box"></i>
+                                            <p>
+                                                Список групп товаров
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-box-seam"></i>
+                                    <p>
+                                        Продукция
+                                    </p>
+                                </a>
+                            }
+                        </li>
+                        <li class="nav-item">
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-shield-lock"></i>
+                                    <p>
+                                        Управление
+                                        <span class="nav-badge badge text-bg-secondary me-3">Доступ</span>
+                                    </p>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-shield-lock"></i>
+                                    <p>
+                                        Управление
+                                    </p>
+                                </a>
+                            }
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -331,7 +614,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                             <div id="toast-body-success" class="toast-body"></div>
                         </div>
-                        <div id="toastDanger" class="toast-danger toast fade hide" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div id="toastDanger" class="toast toast-danger fade hide" role="alert" aria-live="assertive" aria-atomic="true">
                             <div class="toast-header">
                                 <i class="bi bi-megaphone me-2"></i>
                                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -355,7 +638,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js" integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ=" crossorigin="anonymous"></script>
     <script src="@Url.Content("https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js")" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="~/adminlte/bootstrap-5.3.5-dist/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>    
     @Scripts.Render("~/adminlte/js")
     <script>
         const toastTriggerList = document.querySelectorAll('[data-bs-toggle="toast"]');

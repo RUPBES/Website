@@ -1,0 +1,483 @@
+﻿@using rupbes.Models.ViewModels
+@using rupbes.Models.Products
+
+@{
+    ViewBag.Title = "Добавить продукт собственного производства";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .file-icon {
+        width: 64px; /* Фиксированный размер иконки */
+        height: 64px;
+        margin-bottom: 8px; /* Отступ между иконкой и текстом */
+    }
+
+    .file-name {
+        font-family: Arial, sans-serif;
+        font-size: 0.9em;
+        text-align: center;
+        word-break: break-word; /* Перенос длинных слов */
+        max-width: 100%; /* Ограничение ширины текста */
+        color: #333;
+    }
+</style>
+
+<div class="card card-success card-outline mb-4">
+    <!--begin::Header-->
+    <div class="card-header">
+        <div class="card-title">
+            <i class="fa fa-tags"></i>Добавить товар
+        </div>
+    </div>
+    <!--end::Header-->
+    <form id="addProduct" action="/Admin/AddProduct" method="post">
+        <!--begin::Body-->
+        <div class="card-body">
+            <div class="g-3">
+                <input name="DepartmentId" value="@ViewBag.id_dep" hidden />
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="validationCustom00" class="form-label">Категория товара</label>
+                        <select class="form-select" name="groupProduct" id="validationCustom00" required="">
+                            @foreach (GroupProduct item in ViewBag.groupType)
+                            {
+                                <option value="@item.name">@item.name</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback">Выберите категорию</div>
+                    </div>
+                    <div class="col-md-12" id="divSelectSubGroupProduct">
+                        <label for="validationCustom01" class="form-label">Подкатегория товара</label>
+                        <select class="form-select" name="subGroupProduct" id="validationCustom01" required="">
+                        </select>
+                        <div class="invalid-feedback">Выберите подкатегорию</div>
+                    </div>
+                    <!--begin::Col-->
+                    <div class="col-md-12">
+                        <label for="validationCustom02" class="form-label">Название</label>
+                        <textarea class="form-control" id="validationCustom02" name="name" rows="2" required=""></textarea>
+                        <div class="invalid-feedback">Заполните название</div>
+                    </div>
+                    <!--end::Col-->
+                    <!--begin::Col-->
+                    <div class="col-md-12">
+                        <label for="validationCustom03" class="form-label">Код ТН ВЭД</label>
+                        <input type="text" class="form-control" id="validationCustom03" name="codeTNVD">
+                    </div>
+                    <!--end::Col-->
+                    <div class="col-md-12">
+                        <label for="validationCustom04" class="form-label">Единица измерения</label>
+                        <select class="form-select" name="unitId" id="validationCustom04" required="">
+                            @foreach (Unit item in ViewBag.units)
+                            {
+                                <option value="@item.Id">@item.name</option>
+                            }
+                        </select>
+                        <div class="invalid-feedback">Выберите единицу измерения</div>
+                    </div>
+                    <!--begin::Col-->
+                    <div class="col-md-12">
+                        <label for="validationCustom05" class="form-label">Примечание</label>
+                        <textarea class="form-control" id="validationCustom05" name="note" rows="4"></textarea>
+                    </div>
+                    <div class="card card-warning card-outline mb-4 mt-1">
+                        <!--begin::Header-->
+                        <div class="card-header">
+                            <div class="card-title">Характеристики</div>
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <div id="containerProperties">
+                                <div class="alert alert-info" id="noProperties" role="alert">
+                                    Пока нет добавленных характеристик.
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                        <!--begin::Footer-->
+                        <div class="card-footer">
+                            <button type="button" id="addProperty" class="btn btn-success mb-3">
+                                <i class="fa fa-plus"></i> Добавить характеристику
+                            </button>
+                        </div>
+                        <!--end::Footer-->
+                    </div>
+
+                    <div class="card card-danger card-outline mb-4 mt-1">
+                        <!--begin::Header-->
+                        <div class="card-header">
+                            <div class="card-title">Компоненты</div>
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body">
+
+                            <div id="containerComponents">
+                                <div class="alert alert-info" id="noСomponents" role="alert">
+                                    Пока нет добавленных компонентов.
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Body-->
+                        <!--begin::Footer-->
+                        <div class="card-footer">
+                            <button type="button" id="addComponent" class="btn btn-success mb-3">
+                                <i class="fa fa-plus"></i> Добавить компонент
+                            </button>
+                        </div>
+                        <!--end::Footer-->
+                    </div>
+                    <!--end::Col-->
+                    <div class="col-md-12">
+                        <label class="form-label" for="inputGroupFile01">Загрузить изображение/документ</label>
+                        <input type="file" class="form-control" id="inputGroupFile01">
+                    </div>
+                    <div id="loadingSpinner" style="text-align: center;">
+                        <div class="spinner-border text-info" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <label for="ImgsBlock" class="form-label">Загруженные изображения</label>
+                    <div class="alert alert-info" id="noFiles" role="alert">
+                        Пока нет добавленных фотографий.
+                    </div>
+                    <div id="messageContainer"></div>
+                </div>
+
+            </div>
+        </div>
+        <!--end::Body-->
+        <div class="card-footer">
+            <div class="button-container">
+                <button type="submit" class="btn btn-warning">Сохранить</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div style="display:none">
+    <template id="propertyTemplate">
+        <div class="row h-100">
+            <div class="col-md-5">
+                <label class="form-label">Параметр</label>
+                <select class="form-select" name="properties[$$index].name" id="properties-$$index" required>
+                    @foreach (Property property in ViewBag.properties)
+                    {
+                        <option value="@property.name">@property.name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Значение</label>
+                <textarea class="form-control" name="properties[$$index].value" rows="3"></textarea>
+            </div>
+            <div class="col-md-1 d-flex align-items-center justify-content-center">
+                <i class="fa fa-times fa-3 text-danger cursor-pointer" aria-hidden="true"></i>
+            </div>
+        </div>
+    </template>
+    <template id="componentTemplate">
+        <div class="row h-100">
+            <div class="col-md-11">
+                <label class="form-label">Компонент</label>
+                <select class="form-select" name="components[$$index].name" id="components-$$index" required>
+                    @foreach (Component component in ViewBag.components)
+                    {
+                        <option value="@component.name">@component.name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-1 d-flex align-items-center justify-content-center">
+                <i class="fa fa-times fa-3 text-danger cursor-pointer" aria-hidden="true"></i>
+            </div>
+        </div>
+    </template>
+</div>
+
+@section scripts {
+    <script>
+        $('#loadingSpinner').hide();
+        $('#inputGroupFile01').on('change', function () {
+            // Показываем значок загрузки
+            $('#loadingSpinner').show();
+
+            // Блокируем input
+            $('#inputGroupFile01').prop('disabled', true);
+
+            var files = $(this).prop('files'); // Получаем выбранные файлы
+
+            if (files.length > 0) {
+                if (window.FormData) {
+                    var data = new FormData();
+                    for (var i = 0; i < files.length; i++) {
+                        data.append("file" + i, files[i]);
+                    }
+
+                    // Добавляем переменную path
+                    var path = 'Product';
+                    data.append("path", path);
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/Admin/UploadAjax',
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        success: function (result) {
+                            // Проверяем, существует ли div с id="containerFiles"
+                            if ($('#containerFiles').length === 0) {
+                                // Если не существует, находим div с id="noFiles"
+                                var noFilesDiv = $('#noFiles');
+
+                                // Если найден div с id="noFiles", выполняем действия
+                                if (noFilesDiv.length > 0) {
+                                    // Добавляем новый div с классом "row g-3" и id="containerFiles" внутрь noFilesDiv
+                                    noFilesDiv.before($('<div>').addClass('row g-3').attr('id', 'containerFiles'));
+
+                                    // Удаляем div с id="noFiles"
+                                    noFilesDiv.remove();
+                                }
+                            }
+                            $('#containerFiles').append(result);
+                        },
+                        error: function (xhr, status, p3) {
+                            var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                            $('#toast-body-danger').html("Произошла ошибка при загрузке файла.");
+                            toastDanger.show();
+                            console.error("Ошибка при выполнении AJAX-запроса:", p3);
+                        },
+                        complete: function () {
+                            // Скрываем значок загрузки
+                            $('#loadingSpinner').hide();
+                            // Разблокируем input
+                            $('#inputGroupFile01').prop('disabled', false);
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+    <script>
+        // Находим контейнер с id=messageContainer
+        var messageContainer = document.getElementById('messageContainer');
+
+        function handleInput() {
+            // HTML-код, который вы хотите добавить
+            var newHtml = '<hr><div class="alert alert-warning" role="alert">Для сохранения данных нажмите на кнопку "Сохранить".</div>';
+
+            // Заменяем содержимое messageContainer на alertDiv
+            messageContainer.innerHTML = newHtml;
+
+            // Удаление обработчика события после первого срабатывания
+            $('input').off('input', handleInput); // Удаляем обработчик события
+            $('textarea').off('input', handleInput); // Удаляем обработчик события
+        }
+
+        // Назначение обработчика события на input
+        $('input').on('input', handleInput);
+        $('textarea').on('input', handleInput);
+
+        $('#addProduct').on('submit', function (event) {
+            event.preventDefault(); // Отменяем стандартное поведение отправки формы
+
+            // Собираем данные формы в объект
+            var formData = $(this).serialize();
+
+            // Отправляем данные через AJAX
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'), // URL для отправки данных
+                data: formData,
+                dataType: "json", // Указываем, что ожидаем JSON-ответ
+                success: function (response) {
+                    if (response.success) {
+                        // Показ сообщения об успехе
+                        var toastSuccess = new bootstrap.Toast(document.getElementById('toastSuccess'));
+                        $('#toast-body-success').html(response.message); // Используем .html() для обновления содержимого
+                        toastSuccess.show();
+
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }
+                    else {
+                        var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                        $('#toast-body-danger').html("Произошла ошибка при добавлении товара.")
+                        toastDanger.show();
+                        console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при добавлении товара.")
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        });
+    </script>
+    <script>
+        $('#validationCustom00').select2({
+            placeholder: 'Группа товара',
+            tags: true,
+            dropdownAutoWidth: true,
+            width: '100%'
+        });
+
+        $('#validationCustom01').select2({
+            placeholder: 'Подгруппа товара',
+            tags: true,
+            dropdownAutoWidth: true,
+            width: '100%'
+        });
+
+        $('#validationCustom04').select2({
+            placeholder: 'Единица измерения',
+            dropdownAutoWidth: true,
+            width: '100%'
+        });
+
+
+        $('#validationCustom00').on('select2:select', function (e) {
+            var name = e.params.data.text;
+            showSubGroupSelectForProduct(name);
+        });
+
+    showSubGroupSelectForProduct($('#validationCustom00').select2('data')[0].text);
+
+    function showSubGroupSelectForProduct(name) {
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("ShowSubGroupSelectForProduct", "Admin")',
+            data: { name: name },
+            success: function (data) {
+                $('#divSelectSubGroupProduct').html(data);
+            },
+            error: function (xhr, status, error) {
+                var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                $('#toast-body-danger').html("Произошла ошибка при получении подгруппы.");
+                toastDanger.show();
+                console.error("Ошибка при выполнении AJAX-запроса:", error);
+            }
+        })
+    }
+    </script>
+    <script>
+        var containerProp = document.getElementById('containerProperties');
+        var template = document.getElementById('propertyTemplate').innerHTML;
+        var index = 0;
+        updateIndexesProp();
+
+        document.getElementById('addProperty').addEventListener('click', function () {
+            var noPropertiesElement = document.getElementById('noProperties');
+            if (noPropertiesElement) {
+                noPropertiesElement.remove();
+            }
+
+            var newElement = template.replaceAll('$$index', index);
+            var wrapper = document.createElement('div');
+            wrapper.innerHTML = newElement;
+
+            if (wrapper.firstElementChild) {
+                containerProp.appendChild(wrapper.firstElementChild);
+                var selectId = `properties-${index}`;
+
+                // Находим элемент и инициализируем Select2
+                var newSelect = document.getElementById(selectId);
+                if (newSelect) {
+                    $(newSelect).select2({
+                        placeholder: 'Параметр',
+                        tags: true,
+                        dropdownAutoWidth: true,
+                        width: '100%'
+                    });
+                }
+                index++;
+
+            } else {
+                console.error('Шаблон пустой или содержит ошибки');
+            }
+        });
+
+        // Удаление элемента
+        containerProp.addEventListener('click', function (e) {
+            if (e.target.closest('.fa-times')) {
+                e.target.closest('.row').remove();
+                updateIndexesProp();
+            }
+        });
+
+        // Обновление индексов
+        function updateIndexesProp() {
+            var rows = containerProp.querySelectorAll('.row');
+            rows.forEach((row, i) => {
+                row.querySelectorAll('[name^="properties["]').forEach(input => {
+                    input.name = input.name.replace(/\[.*?\]/, `[${i}]`);
+                });
+            });
+            index = rows.length;
+        }
+    </script>
+    <script>
+        var containerComp = document.getElementById('containerComponents');
+        var templateComp = document.getElementById('componentTemplate').innerHTML;
+        var indexComp = 0;
+        updateIndexesComp();
+
+        document.getElementById('addComponent').addEventListener('click', function () {
+            var noComponentsElement = document.getElementById('noСomponents');
+            if (noComponentsElement) {
+                noComponentsElement.remove();
+            }
+
+            var newElement = templateComp.replaceAll('$$index', indexComp);
+            var wrapper = document.createElement('div');
+            wrapper.innerHTML = newElement;
+
+            if (wrapper.firstElementChild) {
+                // Добавляем в DOM
+                containerComp.appendChild(wrapper.firstElementChild);
+                var selectId = `components-${indexComp}`;                
+
+                // Находим элемент и инициализируем Select2
+                var newSelect = document.getElementById(selectId);                
+                if (newSelect) {
+                    // Инициализируем Select2
+                    $(newSelect).select2({
+                        placeholder: 'Наименование', // Измените на нужный текст
+                        tags: true,
+                        dropdownAutoWidth: true,
+                        width: '100%'
+                    });
+                } else {
+                    console.error('Не удалось найти select с id=', selectId);
+                }
+
+                indexComp++;
+            } else {
+                console.error('Шаблон пустой или содержит ошибки');
+            }
+        });
+
+        // Удаление элемента
+        containerComp.addEventListener('click', function (e) {
+            if (e.target.closest('.fa-times')) {
+                e.target.closest('.row').remove();
+                updateIndexesComp();
+            }
+        });
+
+        // Обновление индексов
+        function updateIndexesComp() {
+            var rowsComp = containerComp.querySelectorAll('.row');
+            rowsComp.forEach((rowsComp, i) => {
+                rowsComp.querySelectorAll('[name^="components["]').forEach(input => {
+                    input.name = input.name.replace(/\[.*?\]/, `[${i}]`);
+                });
+            });
+            indexComp = rowsComp.length;
+        }
+    </script>
+}

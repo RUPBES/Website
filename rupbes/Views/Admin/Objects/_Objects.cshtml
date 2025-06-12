@@ -1,31 +1,26 @@
-﻿@model List<rupbes.Models.News>
-<div class="card card-primary card-outline mb-4">
-    <!--begin::Header-->
-    <div class="card-header"><div class="card-title">@ViewBag.nameNews</div></div>
-    <!--end::Header-->
-    <!--begin::Body-->
-    <div class="card-body">
-        <div class="list-group">
-            @foreach (rupbes.Models.News item in Model)
-            {
-                <button class="list-group-item list-group-item-action" onclick="ShowNewsById(@item.id)">
-                    <i class="bi bi-calendar2-range"></i>@item.date.ToShortDateString()
-                    &nbsp;
-                    <i class="fa fa-tags"></i>@item.title_ru
-                </button>
-            }
-        </div>
-    </div>
-    <!--end::Body-->
-    <div class="card-footer">
-        <nav aria-label="News">
-            <ul class="pagination" id="pagination">
-                <li class="page-item"><a class="page-link" href="#" id="prevPage">Предыдущая</a></li>
-                <li class="page-item"><a class="page-link" href="#" id="nextPage">Следующая</a></li>
-            </ul>
-        </nav>
+﻿@using rupbes.Models
+@model List<Objects>
+<!--begin::Body-->
+<div class="card-body">
+    <div class="list-group">
+        @foreach (var item in Model)
+        {
+            <button class="list-group-item list-group-item-action" onclick="ShowObject(@item.id)">
+                <i class="fa fa-building"></i>@item.title_ru
+            </button>
+        }
     </div>
 </div>
+<!--end::Body-->
+<div class="card-footer">
+    <nav aria-label="Objects">
+        <ul class="pagination" id="pagination">
+            <li class="page-item"><a class="page-link" href="#" id="prevPage">Предыдущая</a></li>
+            <li class="page-item"><a class="page-link" href="#" id="nextPage">Следующая</a></li>
+        </ul>
+    </nav>
+</div>
+
 <script>
     function createPagination(totalPages, currentPage) {
         const pagination = document.getElementById('pagination');
@@ -98,42 +93,40 @@
             count = $(this).val(); // Получить значение атрибута value
         });
 
-        var id = $('#CategoryNews').val(); // Получаем значение Select
-        if (id != null) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("ShowNewsByCategory", "Admin")',
-                data: { id: id, page: page, count: count },
-                success: function (data) {
-                    $('#containerNews').html(data);
-                },
-                error: function (xhr, status, error) {
-                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
-                    $('#toast-body-danger').html("Произошла ошибка при получении новостей.");
-                    toastDanger.show();
-                    console.error("Ошибка при выполнении AJAX-запроса:", error);
-                }
-            });
-        }
-    }
-</script>
-<script>
-    createPagination(@ViewBag.totalPages, @ViewBag.activePage);
-
-    function ShowNewsById(id) {
         $.ajax({
             type: "POST",
-            url: '@Url.Action("ShowNewsById", "Admin")',
-            data: { id: id },
+            url: '@Url.Action("ShowObjectsByPage", "Admin")',
+            data: { page: page, count: count },
             success: function (data) {
-                $('#NewsById').html(data);
+                $('#containerObjects').html(data);
             },
             error: function (xhr, status, error) {
                 var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
-                $('#toast-body-danger').html("Произошла ошибка при получении новостей.");
+                $('#toast-body-danger').html("Произошла ошибка при получении объектов.");
                 toastDanger.show();
                 console.error("Ошибка при выполнении AJAX-запроса:", error);
             }
         });
     }
+</script>
+<script>
+    createPagination(@ViewBag.totalPages, @ViewBag.activePage);
+
+     function ShowObject(id) {
+         $.ajax({
+             type: "get",
+             url: '@Url.Action("ShowObject", "Admin")',
+             data: { id: id },
+             success: function (data) {
+                 $('#objectDisplay').html(data);
+                 $('#objectDisplay').show();
+             },
+             error: function (xhr, status, error) {
+                 var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                 $('#toast-body-danger').html("Произошла ошибка при отображении объекта.");
+                 toastDanger.show();
+                 console.error("Ошибка при выполнении AJAX-запроса:", error);
+             }
+         })
+     }
 </script>

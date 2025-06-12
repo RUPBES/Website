@@ -1,0 +1,51 @@
+﻿@using rupbes.Models
+@model List<Certificates>
+@{
+    ViewBag.Title = "Сертификаты";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card card-primary card-outline mb-4">
+            <div class="card-header">
+                <div class="row">
+                    <div class="card-title col-md-8">Сертификаты</div>
+                    <div class="col-md-4">
+                        <button type="button" value="20" class="btn btn-outline-info mb-2 active">20</button>
+                        <button type="button" value="50" class="btn btn-outline-info mb-2">50</button>
+                        <button type="button" value="100" class="btn btn-outline-info mb-2">100</button>
+                    </div>
+                </div>
+            </div>
+            <div id="containerCertificates">
+            </div>
+        </div>
+    </div>
+    <div id="сertificateDisplay" class="col-md-8" style="display:none">
+        <!--область для карточки объекта-->
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var page = 1; // Укажите нужный номер страницы
+            var count = 10; // Укажите нужное количество объектов на странице
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ShowCertificatesByPage", "Admin")',
+                success: function (data) {
+                    $('#containerCertificates').html(data);
+                },
+                error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при получении сертификатов.");
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        });
+    </script>
+}

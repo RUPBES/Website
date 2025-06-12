@@ -20,7 +20,7 @@ namespace rupbes.Models.ViewModels
         public string note { get; set; }
         public string groupProduct { get; set; }
         public string subGroupProduct { get; set; }
-        public int UnitId { get; set; }
+        public int unitId { get; set; }
         public string unitName { get; set; }
         public int DepartmentId { get; set; }
         public string departmentName { get; set; }
