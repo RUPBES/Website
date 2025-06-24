@@ -566,12 +566,15 @@
     <Content Include="adminlte\css\adminlte.min.css" />
     <Content Include="adminlte\js\adminlte.js" />
     <Content Include="adminlte\js\adminlte.min.js" />
+    <Content Include="Content\Styles\apexcharts.css" />
     <Content Include="Content\Styles\icons\contract.svg" />
     <Content Include="Content\Styles\ImageCheckbox\css\bootstrap-image-checkbox.css" />
     <Content Include="Content\Styles\ImageCheckbox\css\bootstrap-image-checkbox.min.css" />
+    <Content Include="Content\Styles\jsvectormap.min.css" />
     <Content Include="Content\Styles\main.css" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\Styles\admin.css" />
+    <Content Include="Content\Styles\overlayscrollbars.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Jobs\TendersLoader\log.txt" />
     <Content Include="Jobs\TendersLoader\url.txt" />
@@ -638,6 +641,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\overlayscrollbars.min.js" />
+    <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config">
@@ -683,21 +688,14 @@
     <Content Include="Views\Admin\Bosses\Bosses.cshtml" />
     <Content Include="Views\Admin\Bosses\BossesByDepartment.cshtml" />
     <Content Include="Views\Admin\Bosses\_ShowBoss.cshtml" />
-    <Content Include="Views\Admin\AddSingleImage.cshtml" />
     <Content Include="Views\Home\Bosses.cshtml" />
     <Content Include="Views\OneWindow\IndexBel.cshtml" />
-    <Content Include="Views\Admin\_VacSuc.cshtml" />
-    <Content Include="Views\Admin\_ValidVacFail.cshtml" />
-    <Content Include="Views\Admin\_VacFail.cshtml" />
-    <Content Include="Views\Admin\_AddVacSuc.cshtml" />
     <Content Include="Views\Admin\Vacancies\Vacancies.cshtml" />
     <Content Include="Views\Admin\Bosses\DepartmentsForBoss.cshtml" />
     <Content Include="Views\Admin\Bosses\_ShowAddBoss.cshtml" />
     <Content Include="Views\Admin\Realty\Realty.cshtml" />
     <Content Include="Views\Admin\Realty\RealtyByDepartment.cshtml" />
     <Content Include="Views\Admin\Realty\DepartmentsForRealty.cshtml" />
-    <Content Include="Views\Admin\Report.cshtml" />
-    <Content Include="Views\Admin\UsageReport.cshtml" />
     <Content Include="Views\Service\Index.cshtml" />
     <Content Include="Views\Service\Services.cshtml" />
     <Content Include="Views\Service\_GetService.cshtml" />
@@ -706,11 +704,8 @@
     <Content Include="Views\Service\Mechs.cshtml" />
     <Content Include="Views\Service\_GetMech.cshtml" />
     <Content Include="Views\Service\Products.cshtml" />
-    <Content Include="Views\Admin\Departments.cshtml" />
-    <Content Include="Views\Admin\Department.cshtml" />
     <Content Include="Views\Home\Career.cshtml" />
-    <Content Include="Views\Admin\Error.cshtml" />
-    <Content Include="Views\Admin\HashGenPage.cshtml" />
+    <Content Include="Views\Admin\Management\ShowGetHashMD5.cshtml" />
     <Content Include="Views\Directory\Index.cshtml" />
     <Content Include="Views\Directory\_SearchName.cshtml" />
     <Content Include="Views\Directory\_SearchEmpty.cshtml" />
@@ -773,6 +768,13 @@
     <Content Include="Views\Admin\Products\_ShowSubGroupSelectForProduct.cshtml" />
     <Content Include="Views\Admin\Products\AddProduct.cshtml" />
     <Content Include="Views\Admin\Products\GroupProducts.cshtml" />
+    <Content Include="Views\Admin\Products\_ShowProductsById.cshtml" />
+    <Content Include="Views\Admin\Products\_ShowAddVersionProduct.cshtml" />
+    <Content Include="Views\Admin\Products\_ShowVersionProduct.cshtml" />
+    <Content Include="Views\Admin\Products\_ShowSubGroupProducts.cshtml" />
+    <Content Include="Views\Admin\Products\_ShowAddGroupProduct.cshtml" />
+    <Content Include="Views\Admin\Products\_ShowAddSubGroupProduct.cshtml" />
+    <Content Include="Views\Admin\Products\_ShowSubGroupProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

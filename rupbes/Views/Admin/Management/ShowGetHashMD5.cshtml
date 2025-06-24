@@ -1,0 +1,66 @@
+﻿@using rupbes.Models.Products
+@using rupbes.Models.ViewModels
+@model List<GroupProduct>
+
+@{
+    ViewBag.Title = "Получить Md5 hash";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card card-primary card-outline mb-4">
+    <div class="card-header">
+        <div class="card-title"></div>
+    </div>
+    <form id="getHashMD5" action="/Admin/GetHashMD5" method="post">
+        <div class="card-body">
+            <label for="pass1" class="form-label">Значение для кодирования</label>
+            <textarea id="pass1" class="form-control" name="pass" rows="2" required></textarea>
+
+            <label for="answer1" class="form-label">Кодированное значение</label>
+            <textarea id="answer1" class="form-control" rows="2" readonly></textarea>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-warning">Получить значение</button>
+        </div>
+    </form>
+</div>
+
+@section scripts {
+    <script>
+        $('#getHashMD5').on('submit', function (e) {
+            e.preventDefault();
+
+            var form = this;
+            var url = form.action;
+            var formData = new FormData(form);
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false, // важно для отправки FormData
+                contentType: false, // важно для отправки FormData
+                success: function (response) {
+                    if (response.success == true) {
+                        var toastSuccess = new bootstrap.Toast(document.getElementById('toastSuccess'));
+                        $('#toast-body-success').html(Хеш получен);
+                        toastSuccess.show();
+                        $('#answer1').val(response.message);
+                    }
+                    else {
+                        var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                        $('#toast-body-warning').html('Произошла ошибка при получении хеша. ', response.message);
+                        toastWarning.show();
+                        console.error("Ошибка при выполнении AJAX-запроса:", response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                    $('#toast-body-warning').html('Произошла ошибка при получении хеша.');
+                    toastWarning.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        });
+    </script>
+}

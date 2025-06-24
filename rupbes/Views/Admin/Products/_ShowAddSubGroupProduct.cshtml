@@ -1,0 +1,55 @@
+﻿<div class="card card-success card-outline mb-4">
+    <div class="card-header">
+        <div class="card-title">Добавить подгруппу товаров</div>
+    </div>
+    <form id="addSubGroupProduct" action="/Admin/AddSubGroupProduct" method="post">
+        <div class="card-body">
+            <input name="GroupProductId" value="@ViewBag.groupProductId" hidden/>
+            <label for="groupProduct1" class="form-label">Название подгруппы товаров</label>
+            <textarea id="groupProduct1" class="form-control" name="name" rows="3" required></textarea>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success">Сохранить</button>
+        </div>
+    </form>
+</div>
+<script>
+    $('#addSubGroupProduct').on('submit', function (e) {
+        e.preventDefault();
+
+        var form = this;
+        var url = form.action;
+        var formData = new FormData(form);
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            processData: false, // важно для отправки FormData
+            contentType: false, // важно для отправки FormData
+            success: function (response) {
+                if (response.success == true) {
+                    var toastSuccess = new bootstrap.Toast(document.getElementById('toastSuccess'));
+                    $('#toast-body-success').html(response.message);
+                    toastSuccess.show();
+
+                    setTimeout(function () {
+                        ShowGroupProduct(@ViewBag.groupProductId);
+                    }, 1000);
+                }
+                else {
+                    var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                    $('#toast-body-warning').html('Произошла ошибка при отправке формы. ', response.message);
+                    toastWarning.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            },
+            error: function (xhr, status, error) {
+                var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                $('#toast-body-warning').html('Произошла ошибка при отправке формы.');
+                toastWarning.show();
+                console.error("Ошибка при выполнении AJAX-запроса:", error);
+            }
+        });
+    });
+</script>

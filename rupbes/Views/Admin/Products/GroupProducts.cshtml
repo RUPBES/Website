@@ -42,7 +42,7 @@
         function ShowGroupProduct(id) {
             $.ajax({
                 type: "get",
-                url: '@Url.Action("ShowGroupProduct", "Admin")',
+                url: '@Url.Action("ShowSubGroupProducts", "Admin")',
                 data: { id: id },
                 success: function (data) {
                     $('#groupProductDisplay').html(data);

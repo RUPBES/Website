@@ -11,7 +11,7 @@
             <div class="list-group">
                 @foreach (var item in Model)
                 {
-                    <button class="list-group-item list-group-item-action" onclick="ShowProductById(@item.id)">
+                    <button class="list-group-item list-group-item-action" onclick="ShowProductsById(@item.id)">
                         <i class="bi bi-box-sea"></i>@item.name
                     </button>
                 }
@@ -36,6 +36,7 @@
         </div>
     }
 </div>
+
 <script>
     function createPagination(totalPages, currentPage) {
         // Проверяем значение totalPages
@@ -143,10 +144,10 @@
 <script>
     createPagination(@ViewBag.totalPages, @ViewBag.activePage);
 
-    function ShowProductById(id) {
+    function ShowProductsById(id) {
         $.ajax({
             type: "POST",
-            url: '@Url.Action("ShowProductById", "Admin")',
+            url: '@Url.Action("ShowProductsById", "Admin")',
             data: { id: id },
             success: function (data) {
                 $('#productById').html(data);

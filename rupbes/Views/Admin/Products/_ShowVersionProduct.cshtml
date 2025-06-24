@@ -1,6 +1,6 @@
-﻿@using rupbes.Models.ViewModels
-@using rupbes.Models.Products
-@model ProductViewModel
+﻿@using rupbes.Models.Products
+@using rupbes.Models.ViewModels
+@model VersionProductViewModel
 
 <style>
     .file-icon {
@@ -18,41 +18,23 @@
         color: #333;
     }
 </style>
+
 <div class="card card-warning card-outline mb-4">
     <!--begin::Header-->
     <div class="card-header">
         <div class="card-title">
-            <i class="fa fa-tags"></i>@Model.name
+            <i class="fa fa-tags"></i>
+            <span>@Model.name</span>
         </div>
     </div>
     <!--end::Header-->
-    <form id="editProduct" action="/Admin/EditProduct" method="post">
+    <form id="editVersionProduct" action="/Admin/EditVersionProduct" method="post">
         <input name="id" value="@Model.id" hidden />
-        <input name="DepartmentId" value="@Model.DepartmentId" hidden />
+        <input name="ProductId" value="@Model.ProductId" hidden />
         <!--begin::Body-->
         <div class="card-body">
             <div class="g-3">
                 <div class="row">
-                    <div class="col-md-12">
-                        <label for="validationCustom00" class="form-label">Категория товара</label>
-                        <select class="form-select" name="groupProduct" id="validationCustom00" required="">
-                            @foreach (GroupProduct item in ViewBag.groupType)
-                            {
-                                <option value="@item.name" @(item.name == Model.groupProduct ? "selected" : "")>@item.name</option>
-                            }
-                        </select>
-                        <div class="invalid-feedback">Выберите категорию</div>
-                    </div>
-                    <div class="col-md-12" id="divSelectSubGroupProduct">
-                        <label for="validationCustom01" class="form-label">Подкатегория товара</label>
-                        <select class="form-select" name="subGroupProduct" id="validationCustom01" required="">
-                            @foreach (SubGroupProduct item in ViewBag.subGroupType)
-                            {
-                                <option value="@item.name" @(item.name == Model.subGroupProduct ? "selected" : "")>@item.name</option>
-                            }
-                        </select>
-                        <div class="invalid-feedback">Выберите подкатегорию</div>
-                    </div>
                     <!--begin::Col-->
                     <div class="col-md-12">
                         <label for="validationCustom02" class="form-label">Название</label>
@@ -60,22 +42,6 @@
                         <div class="invalid-feedback">Заполните название</div>
                     </div>
                     <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-md-12">
-                        <label for="validationCustom03" class="form-label">Код ТН ВЭД</label>
-                        <input type="text" class="form-control" id="validationCustom03" value="@Model.codeTNVD" name="codeTNVD">
-                    </div>
-                    <!--end::Col-->
-                    <div class="col-md-12">
-                        <label for="validationCustom04" class="form-label">Единица измерения</label>
-                        <select class="form-select" name="UnitId" id="validationCustom04" required="">
-                            @foreach (Unit item in ViewBag.units)
-                            {
-                                <option value="@item.Id" @(item.Id == Model.unitId ? "selected" : "")>@item.name</option>
-                            }
-                        </select>
-                        <div class="invalid-feedback">Выберите единицу измерения</div>
-                    </div>
                     <!--begin::Col-->
                     <div class="col-md-12">
                         <label for="validationCustom05" class="form-label">Примечание</label>
@@ -133,56 +99,7 @@
                         </div>
                         <!--end::Footer-->
                     </div>
-
-                    <div class="card card-danger card-outline mb-4 mt-1">
-                        <!--begin::Header-->
-                        <div class="card-header">
-                            <div class="card-title">Компоненты</div>
-                        </div>
-                        <!--end::Header-->
-                        <!--begin::Body-->
-                        <div class="card-body">
-
-                            <div id="containerComponents">
-                                @if (Model.components.Count() > 0)
-                                {
-                                    foreach (var item in Model.components)
-                                    {
-                                        var idComp = "component" + item.id;
-                                        <div class="row h-100">
-                                            <div class="col-md-11">
-                                                <label for="@idComp" class="form-label">Параметр</label>
-                                                <select class="form-select" name="components[].name" id="@idComp" required="">
-                                                    @foreach (Component component in ViewBag.components)
-                                                    {
-                                                        <option value="@component.name" @(component.name == item.name ? "selected" : "")>@component.name</option>
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div class="col-md-1 d-flex align-items-center justify-content-center">
-                                                <i class="fa fa-times fa-3 align-self-center" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div class="alert alert-info" id="noСomponents" role="alert">
-                                        Пока нет добавленных компонентов.
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                        <!--end::Body-->
-                        <!--begin::Footer-->
-                        <div class="card-footer">
-                            <button type="button" id="addComponent" class="btn btn-success mb-3">
-                                <i class="fa fa-plus"></i> Добавить компонент
-                            </button>
-                        </div>
-                        <!--end::Footer-->
-                    </div>
-                    <!--end::Col-->
+                    <!--end::Body-->
 
                     <div class="col-md-12">
                         <label class="form-label" for="inputGroupFile01">Загрузить изображение/документ</label>
@@ -246,22 +163,6 @@
             <div class="col-md-6">
                 <label class="form-label">Значение</label>
                 <textarea class="form-control" name="properties[$index].value" rows="3"></textarea>
-            </div>
-            <div class="col-md-1 d-flex align-items-center justify-content-center">
-                <i class="fa fa-times fa-3 text-danger cursor-pointer" aria-hidden="true"></i>
-            </div>
-        </div>
-    </template>
-    <template id="componentTemplate">
-        <div class="row h-100">
-            <div class="col-md-11">
-                <label class="form-label">Компонент</label>
-                <select class="form-select" name="components[$index].name" required>
-                    @foreach (Component component in ViewBag.components)
-                    {
-                        <option value="@component.name">@component.name</option>
-                    }
-                </select>
             </div>
             <div class="col-md-1 d-flex align-items-center justify-content-center">
                 <i class="fa fa-times fa-3 text-danger cursor-pointer" aria-hidden="true"></i>
@@ -351,7 +252,7 @@
     $('input').on('input', handleInput);
     $('textarea').on('input', handleInput);
 
-    $('#editProduct').on('submit', function (event) {
+    $('#editVersionProduct').on('submit', function (event) {
         event.preventDefault(); // Отменяем стандартное поведение отправки формы
 
         // Собираем данные формы в объект
@@ -366,27 +267,21 @@
             success: function (response) {
                 if (response.success) {
                     // Показ сообщения об успехе
-                    var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
-                    $('#toast-body-warning').html(response.message); // Используем .html() для обновления содержимого
-                    toastWarning.show();
-                    // Перезагрузка новостей через 1 секунды (1000 миллисекунд)
-                    setTimeout(function () {
-                        var ProductById = document.getElementById('productById');
-                        ProductById.innerHTML = '';
-                        var dataPageValue = $('.page-item.active .page-link').data('page');
-                        loadPage(dataPageValue); // Перезагрузка новостей
-                    }, 1000);
+                    var toastSuccess = new bootstrap.Toast(document.getElementById('toastSuccess'));
+                    $('#toast-body-success').html(response.message); // Используем .html() для обновления содержимого
+                    toastSuccess.show();
+                    ShowProductsById(@Model.ProductId);
                 }
                 else {
                     var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
-                    $('#toast-body-danger').html("Произошла ошибка при редактировании товара.")
+                    $('#toast-body-danger').html("Произошла ошибка при редактировании версии товара.")
                     toastDanger.show();
                     console.error("Ошибка при выполнении AJAX-запроса:", response.message);
                 }
             },
             error: function (xhr, status, error) {
                 var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
-                $('#toast-body-danger').html("Произошла ошибка при редактировании товара.")
+                $('#toast-body-danger').html("Произошла ошибка при редактировании версии товара.")
                 toastDanger.show();
                 console.error("Ошибка при выполнении AJAX-запроса:", error);
             }
@@ -398,11 +293,11 @@
         var alertDiv = document.createElement('div');
         alertDiv.className = 'alert alert-danger';
         alertDiv.innerHTML = `
-                 <strong>Внимание!</strong> Вы уверены, что хотите удалить этот элемент?
-                  <div class="button-container">
-                     <button type="button" class="btn btn-danger" id="confirmDelete" >Да</button>
-                     <button type="button" class="btn btn-light" id="cancelDelete" >Нет</button>
-                   </div>`;
+              <strong>Внимание!</strong> Вы уверены, что хотите удалить этот элемент?
+               <div class="button-container">
+                  <button type="button" class="btn btn-danger" id="confirmDelete" >Да</button>
+                  <button type="button" class="btn btn-light" id="cancelDelete" >Нет</button>
+                </div>`;
 
         // Заменяем содержимое messageContainer на alertDiv
         messageContainer.innerHTML = alertDiv.outerHTML;
@@ -413,7 +308,7 @@
             messageContainer.innerHTML = '';
             $.ajax({
                 type: "POST",
-                url: "/Admin/DeleteProduct",
+                url: "/Admin/DeleteVersionProduct",
                 data: { id: id },
                 dataType: "json", // Указываем, что ожидаем JSON-ответ
                 success: function (response) {
@@ -424,10 +319,7 @@
                         toastWarning.show();
                         // Перезагрузка новостей через 1 секунды (1000 миллисекунд)
                         setTimeout(function () {
-                            var ProductById = document.getElementById('productById');
-                            ProductById.innerHTML = '';
-                            var dataPageValue = $('.page-item.active .page-link').data('page');
-                            loadPage(dataPageValue); // Перезагрузка новостей
+                            ShowProductsById(@Model.ProductId);
                         }, 1000);
                     }
                     else {
@@ -457,46 +349,9 @@
     }
 </script>
 <script>
-    $('#validationCustom00').select2({
-        placeholder: 'Группа товара',
-        tags: true,
-        dropdownAutoWidth: true,
-        width: '100%'
-    });
-
-    $('#validationCustom01').select2({
-        placeholder: 'Подгруппа товара',
-        tags: true,
-        dropdownAutoWidth: true,
-        width: '100%'
-    });
-
-    $('#validationCustom00').on('select2:select', function (e) {
-        var name = e.params.data.text;
-        showSubGroupSelectForProduct(name);
-    });
-
-    function showSubGroupSelectForProduct(name) {
-        $.ajax({
-            type: "post",
-            url: '@Url.Action("ShowSubGroupSelectForProduct", "Admin")',
-            data: { name: name },
-            success: function (data) {
-                $('#divSelectSubGroupProduct').html(data);
-            },
-            error: function (xhr, status, error) {
-                var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
-                $('#toast-body-danger').html("Произошла ошибка при получении подгруппы.");
-                toastDanger.show();
-                console.error("Ошибка при выполнении AJAX-запроса:", error);
-            }
-        })
-    }
-</script>
-<script>
     var containerProp = document.getElementById('containerProperties');
     var template = document.getElementById('propertyTemplate').innerHTML;
-    var index = @Model.properties.Count;
+    var index = @Model.properties.Count();
     updateIndexesProp();
 
     document.getElementById('addProperty').addEventListener('click', function () {
@@ -534,48 +389,5 @@
             });
         });
         index = rows.length;
-    }
-</script>
-<script>
-    var containerComp = document.getElementById('containerComponents');
-    var templateComp = document.getElementById('componentTemplate').innerHTML;
-    var indexComp = @Model.components.Count;
-    updateIndexesComp();
-
-    document.getElementById('addComponent').addEventListener('click', function () {
-        var noComponentsElement = document.getElementById('noСomponents');
-        if (noComponentsElement) {
-            noComponentsElement.remove();
-        }
-
-        var newElement = templateComp.replaceAll('$index', indexComp);
-        var wrapper = document.createElement('div');
-        wrapper.innerHTML = newElement;
-
-        if (wrapper.firstElementChild) {
-            containerComp.appendChild(wrapper.firstElementChild);
-            indexComp++;
-        } else {
-            console.error('Шаблон пустой или содержит ошибки');
-        }
-    });
-
-    // Удаление элемента
-    containerComp.addEventListener('click', function (e) {
-        if (e.target.closest('.fa-times')) {
-            e.target.closest('.row').remove();
-            updateIndexesComp();
-        }
-    });
-
-    // Обновление индексов
-    function updateIndexesComp() {
-        var rowsComp = containerComp.querySelectorAll('.row');
-        rowsComp.forEach((rowsComp, i) => {
-            rowsComp.querySelectorAll('[name^="components["]').forEach(input => {
-                input.name = input.name.replace(/\[.*?\]/, `[${i}]`);
-            });
-        });
-        indexComp = rowsComp.length;
     }
 </script>

@@ -4480,3 +4480,117 @@ Added 7 tenders at 12.06.2025 16:06:53
 --BEGIN OF RECORD--
 Added 7 tenders at 12.06.2025 16:22:44
 --END--
+--BEGIN OF RECORD--
+Added 7 tenders at 13.06.2025 9:30:33
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 13.06.2025 16:12:03
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 18.06.2025 10:46:07
+--END--
+--BEGIN OF RECORD--
+Added 8 tenders at 18.06.2025 11:53:08
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 18.06.2025 13:08:16
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 18.06.2025 13:21:19
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 18.06.2025 14:46:09
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 18.06.2025 16:48:01
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 18.06.2025 17:17:55
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 18.06.2025 17:18:56
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 18.06.2025 17:26:01
+--END--
+--BEGIN OF RECORD--
+Added 7 tenders at 19.06.2025 8:38:26
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 20.06.2025 12:11:37
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 20.06.2025 15:43:01
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 23.06.2025 10:40:55
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 23.06.2025 11:11:21
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 23.06.2025 11:44:51
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 23.06.2025 12:30:41
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 23.06.2025 12:32:18
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 23.06.2025 12:39:35
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 23.06.2025 12:49:33
+--END--
+--BEGIN OF RECORD--
+Added 5 tenders at 23.06.2025 12:52:33
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 23.06.2025 15:35:06
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 23.06.2025 16:31:07
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 23.06.2025 17:21:44
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 23.06.2025 17:23:04
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 9:58:19
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 11:47:13
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 14:56:24
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 15:20:06
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 15:22:34
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 15:25:29
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 15:54:49
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 15:59:29
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 16:00:44
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 16:02:05
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 16:29:59
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 24.06.2025 16:48:21
+--END--

@@ -1,0 +1,122 @@
+﻿@using rupbes.Models.ViewModels
+@using rupbes.Models.Products
+@model Product
+<div class="row g-4">
+    <div class="col-md-12">
+        <div class="card card-primary card-outline mb-4">
+            <div class="card-header">
+                <div class="card-title">Версии продукта</div>
+            </div>
+            <div id="productsButtons" class="card-body">
+                <button id="productButton" onclick="ShowProductById(@Model.id, this)" type="button" class="btn btn-outline-primary">
+                    @Model.name
+                </button>
+                @foreach (VersionProduct item in ViewBag.version)
+                {
+                    <button type="button" onclick="ShowVersion(@item.id, this)" class="btn btn-outline-warning">
+                        @item.name
+                    </button>
+                }
+            </div>
+            <div class="card-footer">
+                <div class="button-container">
+                    <button type="button" onclick="ShowAddVersion(@Model.id)" class="btn btn-outline-success">
+                        Добавить версию
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="elementContainer">
+
+</div>
+<script>
+    // Функция, которая делает AJAX-запрос и вставляет HTML в элемент
+    function ShowProductById(id, element) {
+        $.ajax({
+            url: '/Admin/ShowProductById',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                // Вставляем полученный HTML в контейнер
+                $('#elementContainer').html(response);
+
+                var target = element;
+                // Проверяем существование target
+                if (!target || !target.classList) {
+                    console.error("Target element is undefined");
+                    return;
+                }
+
+                // Удаляем active у всех в контейнере
+                document.getElementById('productsButtons')
+                    ?.querySelectorAll('.active')
+                    .forEach(el => el.classList.remove('active'));
+
+                target.classList.add('active');
+            },
+            error: function (xhr, status, error) {
+                console.error('Ошибка при загрузке продукта:', error);
+                $('#elementContainer').html('<p>Произошла ошибка при загрузке данных.</p>');
+            }
+        });
+    }
+
+    // Вызов функции при загрузке страницы с передачей id из модели
+    document.getElementById('productButton').click();
+
+</script>
+<script>
+    // Функция, которая делает AJAX-запрос и вставляет HTML в элемент
+    function ShowAddVersion(id) {
+        $.ajax({
+            url: '/Admin/ShowAddVersionProduct',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                // Вставляем полученный HTML в контейнер
+                $('#elementContainer').html(response);
+                // Удаляем active у всех в контейнере
+                document.getElementById('productsButtons')
+                    ?.querySelectorAll('.active')
+                    .forEach(el => el.classList.remove('active'));
+            },
+            error: function (xhr, status, error) {
+                console.error('Ошибка при загрузке продукта:', error);
+                $('#elementContainer').html('<p>Произошла ошибка при загрузке данных.</p>');
+            }
+        });
+    }
+
+    // Функция, которая делает AJAX-запрос и вставляет HTML в элемент
+    function ShowVersion(id, element) {
+        $.ajax({
+            url: '/Admin/ShowVersionProduct',
+            type: 'POST',
+            data: { id: id },
+            success: function (response) {
+                // Вставляем полученный HTML в контейнер
+                $('#elementContainer').html(response);
+
+                var target = element;
+                // Проверяем существование target
+                if (!target || !target.classList) {
+                    console.error("Target element is undefined");
+                    return;
+                }
+
+                // Удаляем active у всех в контейнере
+                document.getElementById('productsButtons')
+                    ?.querySelectorAll('.active')
+                    .forEach(el => el.classList.remove('active'));
+
+                target.classList.add('active');
+            },
+            error: function (xhr, status, error) {
+                console.error('Ошибка при загрузке продукта:', error);
+                $('#elementContainer').html('<p>Произошла ошибка при загрузке данных.</p>');
+            }
+        });
+    }
+</script>

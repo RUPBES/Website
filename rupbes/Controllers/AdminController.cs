@@ -50,29 +50,24 @@ namespace rupbes.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
-        [HttpGet]
-        public ActionResult Error(string message)
-        {
-            return View(message);
-        }
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public ActionResult HashGenPage()
+        public async Task<ActionResult> ShowGetHashMD5()
         {
-            return View("HashGenPage");
+            return View("~/Views/Admin/Management/ShowGetHashMD5.cshtml");
         }
 
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public string HashGen(string pass)
+        public async Task<ActionResult> GetHashMD5(string pass)
         {
             using (MD5 md5Hash = MD5.Create())
             {
                 string salt = "$#^@(as()@&";
                 string pre = salt + pass + salt;
                 string hash = HashHelper.GetMd5Hash(md5Hash, pre);
-                return hash;
+                return Json(new { success = true, message = hash });
             }
         }
 
@@ -1788,127 +1783,7 @@ namespace rupbes.Controllers
             await db.SaveChangesAsync();
 
             return Json(new { success = true, message = "Услуга удалена!" });
-        }
-
-        //Инфа о предприятиях
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult Departments()//Все филиалы
-        {
-            return View(db.Departments.ToList());
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult Department(int id)//Страница редактирования предприятия
-        {
-            Departments dep = db.Departments.Find(id);
-            ViewBag.Imgs = db.Imgs.Where(x => x.type_id == 9).ToList();
-            return View(dep);
-        }
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        public ActionResult EditDepartment(int id, string name_ru, string name_bel, string name_eng, string adress_ru, string adress_bel, string adress_eng, string desc_ru, string desc_bel, string desc_eng, int id_img, string link, string short_name_ru, string short_name_bel, string short_name_eng, string main_text_ru, string main_text_bel, string main_text_eng)
-        {
-            Departments dep = db.Departments.Find(id);
-            dep.name_ru = name_ru;
-            dep.name_bel = name_bel;
-            dep.name_eng = name_eng;
-            dep.adress_ru = adress_ru;
-            dep.adress_bel = adress_bel;
-            dep.adress_eng = adress_eng;
-            dep.desc_ru = desc_ru;
-            dep.desc_bel = desc_bel;
-            dep.desc_eng = desc_eng;
-            dep.id_img = id_img;
-            dep.link = link;
-            dep.short_name_ru = short_name_ru;
-            dep.short_name_bel = short_name_bel;
-            dep.short_name_eng = short_name_eng;
-            dep.main_text_bel = main_text_bel;
-            dep.main_text_ru = main_text_ru;
-            Users user = db.Users.FirstOrDefault(x => x.login == User.Identity.Name);
-            Usage_report rep = new Usage_report { title = dep.name_ru, action = "Edit", table = "Departments", date = DateTime.Now, id_user = user.id };
-            db.Entry(dep).State = EntityState.Modified;
-            db.Usage_report.Add(rep);
-            try
-            {
-                db.SaveChanges();
-                return RedirectToAction("Departments");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", new { message = e.Message });
-            }
-        }
-
-
-        //ОТЧЕТ ОБ ИСПОЛЬЗОВАНИИ АДМИНКИ
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult UsageReport()
-        {
-            return View();
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult NewsReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "News"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult ObjectsReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Objects"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult VacanciesReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Vacancies"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult ImgsReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Imgs"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult RealtyReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Realty"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult SaleReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Sale"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult MechsReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Mechanisms"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult ServicesReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Services"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult BossesReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Bosses"));
-        }
-        [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult CertificatesReport()
-        {
-            return View("Report", db.Usage_report.Where(x => x.table == "Certificates"));
-        }
+        }       
 
         [HttpGet]
         [Authorize(Roles = "product, admin")]
@@ -2022,6 +1897,15 @@ namespace rupbes.Controllers
             ViewBag.totalPages = totalPages;
             ViewBag.activePage = page;
             return PartialView("~/Views/Admin/Products/_ShowProductByCategory.cshtml", listProduct);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "product, admin")]
+        public async Task<ActionResult> ShowProductsById(int id)
+        {
+            ViewBag.version = await db.VersionProducts.Where(v => v.ProductId == id).ToListAsync();
+            var viewModel = await db.Products.Where(p => p.id == id).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Products/_ShowProductsById.cshtml", viewModel);
         }
 
         [HttpPost]
@@ -2377,7 +2261,7 @@ namespace rupbes.Controllers
                         property = new Property { name = propModel.name.Trim() };
                         db.Properties.Add(property);
                         existingPropertiesDict[normalizedName] = property;
-                    }                    
+                    }
 
                     // Проверяем, есть ли уже связь для этого свойства и продукта
                     if (existingDict.TryGetValue(normalizedName, out var existingLink))
@@ -2447,7 +2331,7 @@ namespace rupbes.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin, service_master, service")]
+        [Authorize(Roles = "admin, product")]
         public async Task<ActionResult> DeleteProduct(int id)//Удаление товара
         {
             // Получаем пользователя
@@ -2472,9 +2356,293 @@ namespace rupbes.Controllers
             await db.SaveChangesAsync();
 
             return Json(new { success = true, message = "Товар удален!" });
+        }     
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> ShowAddVersionProduct(int id)//Показ формы добавления версии товара
+        {            
+            ViewBag.productId = id;
+            var product = await db.Products.FindAsync(id);
+            if (product == null)
+            {
+                return HttpNotFound("Товар не найден");
+            }
+            ViewBag.productName = product.name;
+            ViewBag.properties = await db.Properties.ToListAsync();           
+            return PartialView("~/Views/Admin/Products/_ShowAddVersionProduct.cshtml");
         }
-                
-        [Authorize(Roles = "admin, service_master, service")]
+
+        [HttpPost]
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> AddVersionProduct(VersionProductViewModel productModel, int[] img_ids)//Добавление нового продукта
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = productModel.name, action = "Add", table = "VersionProduct", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            #region VersionProduct
+            var versionProduct = new VersionProduct();
+            versionProduct.note = productModel.note.Trim();
+            versionProduct.name = productModel.name.Trim();
+            versionProduct.ProductId = productModel.ProductId;
+            db.VersionProducts.Add(versionProduct);
+            #endregion          
+
+            #region Property
+            if (productModel.properties != null && productModel.properties.Count() > 0)
+            {
+                foreach (var prop in productModel.properties)
+                {
+                    if (prop.value != null && prop.value != "")
+                    {
+                        var property = await db.Properties.Where(p => p.name == prop.name).FirstOrDefaultAsync();
+                        if (property == null)
+                        {
+                            property = new Property();
+                            property.name = prop.name.Trim();
+                            db.Properties.Add(property);
+                        }
+                        db.PropertyVersions.Add(new PropertyVersion
+                        {
+                            Property = property,
+                            VersionProduct = versionProduct,
+                            value = prop.value.Trim()
+                        });
+                    }
+                }
+            }
+            #endregion
+
+            #region Image
+            if (img_ids != null)
+            {
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
+                {
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    db.ImgsVersionProduct.Add(new Imgs_to_versionProduct
+                    {
+                        VersionProduct = versionProduct,
+                        Imgs = img
+                    });
+                }
+            }
+            #endregion
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Версия товара успешно добавлена!" });
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> ShowVersionProduct(int id)//Показ формы добавления версии товара
+        {                     
+            #region приведение
+            var viewModel = await
+                db.VersionProducts
+                .Where(p => p.id == id)
+                .Select(p => new VersionProductViewModel
+                {
+                    id = p.id,
+                    ProductId = p.ProductId,
+                    name = p.name,                    
+                    note = p.note
+                }).FirstOrDefaultAsync();
+            viewModel.Imgs = new List<Imgs>();
+            var imgsProduct = await db.ImgsVersionProduct.Where(x => x.VersionProductId == viewModel.id).ToListAsync();
+            foreach (var img in imgsProduct)
+            {
+                viewModel.Imgs.Add(await db.Imgs.Where(x => x.id == img.ImgsId).FirstOrDefaultAsync());
+            }
+            viewModel.properties = new List<PropertyViewModel>();
+            var propVersionProduct = await db.PropertyVersions.Where(x => x.VersionId == viewModel.id).ToListAsync();
+            foreach (var prop in propVersionProduct)
+            {
+                var propView = new PropertyViewModel();
+                propView.value = prop.value;
+                propView.name = await db.Properties.Where(x => x.id == prop.PropertyId).Select(x => x.name).FirstOrDefaultAsync();
+                viewModel.properties.Add(propView);
+            }            
+            #endregion            
+            ViewBag.properties = await db.Properties.ToListAsync();
+            return PartialView("~/Views/Admin/Products/_ShowVersionProduct.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> EditVersionProduct(VersionProductViewModel productModel, int[] img_ids)//редактирование продукта
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = productModel.name, action = "Edit", table = "VersionProduct", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            var product = new VersionProduct();
+            #region VersionProduct                       
+            product.note = productModel.note.Trim();
+            product.id = productModel.id;
+            product.ProductId = productModel.ProductId;            
+            product.name = productModel.name.Trim();
+            
+            var productDB = await db.VersionProducts.Where(s => s.id == productModel.id).FirstOrDefaultAsync();
+            PropertyUpdater.UpdateProperties(productDB, product);            
+            #endregion                      
+
+            #region Property          
+            // Загрузка существующих связей
+            var existingPropertyProducts = await db.PropertyVersions
+                .Include(pp => pp.Property)
+                .Where(pp => pp.VersionId == productModel.id)
+                .ToListAsync();
+
+            // Словарь существующих связей по нормализованному имени
+            var existingDict = existingPropertyProducts
+                .ToDictionary(pp => pp.Property.name.Trim().ToLower());
+            if (productModel.properties != null && productModel.properties.Count() > 0)
+            {
+                // Нормализованные имена из модели
+                var modelPropertyNames = new HashSet<string>(
+                    productModel.properties?.Select(p => p.name.Trim().ToLower()) ?? Enumerable.Empty<string>()
+                );
+
+                // Загрузка существующих свойств из базы, которые есть в модели
+                var existingProperties = await db.Properties
+                    .Where(p => modelPropertyNames.Contains(p.name.Trim().ToLower()))
+                    .ToListAsync();
+
+                var existingPropertiesDict = existingProperties
+                    .ToDictionary(p => p.name.Trim().ToLower());
+
+                // Удаляем связи, которых нет в модели
+                foreach (var existing in existingPropertyProducts)
+                {
+                    var normalizedName = existing.Property.name.Trim().ToLower();
+                    if (!modelPropertyNames.Contains(normalizedName))
+                    {
+                        db.PropertyVersions.Remove(existing);
+                    }
+                }
+
+                // Теперь обрабатываем каждое свойство в модели
+                foreach (var propModel in productModel.properties)
+                {
+                    var normalizedName = propModel.name.Trim().ToLower();
+
+                    // Ищем свойство в загруженных свойствах
+                    if (!existingPropertiesDict.TryGetValue(normalizedName, out var property))
+                    {
+                        property = new Property { name = propModel.name.Trim() };
+                        db.Properties.Add(property);
+                        existingPropertiesDict[normalizedName] = property;
+                    }
+
+                    // Проверяем, есть ли уже связь для этого свойства и продукта
+                    if (existingDict.TryGetValue(normalizedName, out var existingLink))
+                    {
+                        // Если значение изменилось, обновляем
+                        if (existingLink.value != propModel.value)
+                        {
+                            existingLink.value = propModel.value;
+                        }
+                    }
+                    else
+                    {
+                        // Создаем новую связь
+                        db.PropertyVersions.Add(new PropertyVersion
+                        {
+                            VersionId = productModel.id,
+                            Property = property, // используем объект property
+                            value = propModel.value
+                        });
+                    }
+                }
+            }
+            else if (existingPropertyProducts.Count() > 0)
+            {
+                db.PropertyVersions.RemoveRange(existingPropertyProducts);
+            }
+            #endregion
+
+            #region Image
+            if (img_ids != null && img_ids.Any())
+            {
+                // Получим существующие связи продукта с изображениями
+                var existingImgLinks = await db.ImgsVersionProduct
+                    .Where(ip => ip.VersionProductId == product.id) // Используем product.id
+                    .Select(ip => ip.ImgsId)
+                    .ToListAsync();
+
+                // Список для новых связей
+                var newLinks = new List<Imgs_to_versionProduct>();
+
+                foreach (var id in img_ids)
+                {
+                    // Проверяем, существует ли уже такая связь
+                    if (!existingImgLinks.Contains(id))
+                    {
+                        // Проверяем существование самого изображения
+                        var img = await db.Imgs.FindAsync(id);
+                        if (img != null)
+                        {
+                            newLinks.Add(new Imgs_to_versionProduct
+                            {
+                                VersionProductId = product.id, // Используем Id вместо объекта
+                                ImgsId = id
+                            });
+                        }
+                    }
+                }
+
+                // Добавляем все новые связи разом
+                db.ImgsVersionProduct.AddRange(newLinks);
+            }
+            #endregion
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Версия товара успешно сохранена!" });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> DeleteVersionProduct(int id)//Удаление товара
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем версию товара
+            var product = await db.VersionProducts.FirstOrDefaultAsync(x => x.id == id);
+            if (product == null)
+            {
+                return Json(new { success = false, message = "Товар не найден." });
+            }
+
+            Usage_report rep = new Usage_report { title = product.name, action = "Delete", table = "VersionProduct", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем услугу
+            db.VersionProducts.Remove(product);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Версия товара удалена!" });
+        }
+
+        [Authorize(Roles = "admin, product")]
         public async Task<ActionResult> GroupProducts()//Группы товаров
         {
             // Получаем пользователя
@@ -2488,10 +2656,160 @@ namespace rupbes.Controllers
             var groupProducts = await db.GroupProducts.OrderBy(x => x.name.Length).ToListAsync();
             if (groupProducts == null)
             {
-                return Json(new { success = false, message = "Товар не найден." });
+                return Json(new { success = false, message = "Группа не найдена." });
             }
 
             return View("~/Views/Admin/Products/GroupProducts.cshtml", groupProducts);
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> AddGroupProduct(GroupProduct groupProduct)//Группы товаров
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            db.GroupProducts.Add(groupProduct);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Группа товаров добавлена." });
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> ShowAddGroupProduct()//Группы товаров
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            return PartialView("~/Views/Admin/Products/_ShowAddGroupProduct.cshtml");
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> ShowAddSubGroupProduct(int id)//Группы товаров
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+            ViewBag.groupProductId = id;            
+
+            return PartialView("~/Views/Admin/Products/_ShowAddSubGroupProduct.cshtml");
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> AddSubGroupProduct(SubGroupProduct subGroupProduct)//Группы товаров
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            db.SubGroupProducts.Add(subGroupProduct);
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Подгруппа товаров добавлена." });
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> ShowSubGroupProducts(int id)//Подгруппы товаров
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+            ViewBag.groupId = id;
+            ViewBag.groupName = await db.GroupProducts.Where(x => x.id == id).Select(x => x.name).FirstOrDefaultAsync();
+
+            // Получаем товар
+            var subGroupProducts = await db.SubGroupProducts.Where(x => x.GroupProductId == id).OrderBy(x => x.name.Length).ToListAsync();
+            if (subGroupProducts == null)
+            {
+                return Json(new { success = false, message = "Подгруппы не найдены." });
+            }
+
+            return PartialView("~/Views/Admin/Products/_ShowSubGroupProducts.cshtml", subGroupProducts);
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> ShowSubGroupProduct(int id)//Подгруппы товаров
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }           
+
+            // Получаем товар
+            var subGroupProduct = await db.SubGroupProducts.Where(x => x.id == id).FirstOrDefaultAsync();
+            if (subGroupProduct == null)
+            {
+                return Json(new { success = false, message = "Подгруппа не найдена." });
+            }
+
+            return PartialView("~/Views/Admin/Products/_ShowSubGroupProduct.cshtml", subGroupProduct);
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> EditGroupProduct(GroupProduct modelGroupProduct)//Группы товаров
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем группу
+            var groupProduct = await db.GroupProducts.Where(x => x.id == modelGroupProduct.id).FirstOrDefaultAsync();
+            if (groupProduct == null)
+            {
+                return Json(new { success = false, message = "Группа не найдена." });
+            }
+
+            groupProduct.name = modelGroupProduct.name;
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Название группы товаров изменено." });
+        }
+
+        [Authorize(Roles = "admin, product")]
+        public async Task<ActionResult> EditSubGroupProduct(SubGroupProduct modelSubGroupProduct)//Группы товаров
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем подгруппу
+            var subGroupProduct = await db.SubGroupProducts.Where(x => x.id == modelSubGroupProduct.id).FirstOrDefaultAsync();
+            if (subGroupProduct == null)
+            {
+                return Json(new { success = false, message = "Группа не найдена." });
+            }
+
+            subGroupProduct.name = modelSubGroupProduct.name;
+            subGroupProduct.GroupProductId = modelSubGroupProduct.GroupProductId;
+
+            await db.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Название группы товаров изменено." });
         }
 
         public ActionResult Message(string message, string header, string textButton)
