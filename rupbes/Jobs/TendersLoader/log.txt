@@ -4594,3 +4594,12 @@ Added 2 tenders at 24.06.2025 16:29:59
 --BEGIN OF RECORD--
 Added 2 tenders at 24.06.2025 16:48:21
 --END--
+--BEGIN OF RECORD--
+Added 2 tenders at 25.06.2025 8:31:26
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 25.06.2025 8:48:04
+--END--
+--BEGIN OF RECORD--
+Added 2 tenders at 25.06.2025 10:11:53
+--END--

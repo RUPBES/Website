@@ -57,20 +57,24 @@
 <section class="map-block" id="map">
     <script>
         function initMap() {
-            var uluru = { lat: 53.914817, lng: 27.565457 };
+            var position = { lat: 53.914817, lng: 27.565457 };
             var centermap = { lat: 53.9151595, lng: 27.564959 }
-            var map = new google.maps.Map(document.getElementById('map'), {
+            var map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 17,
-                center: centermap
+                center: centermap,
+                mapId: "DEMO_MAP_ID",
             });
-            var marker = new google.maps.Marker({
-                position: uluru,
-                map: map
+
+            var marker = new google.maps.marker.AdvancedMarkerElement({
+                position: position,
+                map: map,
+                title: 'РУП "БелЭнергоСтрой"',          // Всплывающая подсказка при наведении                
             });
         }
     </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABoDk-ytLzGHkwZ2HdxALZN-_VxlLpAHY&callback=initMap">
+    <script async 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABoDk-ytLzGHkwZ2HdxALZN-_VxlLpAHY&loading=async&callback=initMap&v=weekly&libraries=marker"
+            defer>
     </script>
 </section>
 
