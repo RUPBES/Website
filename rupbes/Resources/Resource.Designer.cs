@@ -602,7 +602,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Год качества.
+        ///   Ищет локализованную строку, похожую на Год благоустройства.
         /// </summary>
         public static string MenuCurrentYear {
             get {

@@ -745,7 +745,7 @@ namespace rupbes.Controllers
 
         [HttpPost]
         [Authorize(Roles = "admin, obj")]
-        public async Task<ActionResult> DeleteObject(int id)//Удаление новости
+        public async Task<ActionResult> DeleteObject(int id)//Удаление объекта
         {
             // Получаем пользователя
             Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
