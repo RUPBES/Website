@@ -498,7 +498,6 @@
     <Compile Include="Models\DatabaseBes\Employee.cs" />
     <Compile Include="Models\Products\ComponentProduct.cs" />
     <Compile Include="Models\Products\GroupProduct.cs" />
-    <Compile Include="Models\DatabaseBes\Person.cs" />
     <Compile Include="Models\DatabaseBes\Post.cs" />
     <Compile Include="Models\Products\Imgs_to_product.cs" />
     <Compile Include="Models\Products\Imgs_to_versionProduct.cs" />

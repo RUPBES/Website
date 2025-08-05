@@ -17,8 +17,7 @@ namespace rupbes.Models.DatabaseBes
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<Contact> Contacts { get; set; }
-        public virtual DbSet<Person> Persons { get; set; }
+        public virtual DbSet<Contact> Contacts { get; set; }        
         public virtual DbSet<Tenders> Tenders { get; set; }
 
         public virtual DbSet<CompanyReview> CompanyReviews { get; set; }    
@@ -73,8 +72,7 @@ namespace rupbes.Models.DatabaseBes
             modelBuilder.Entity<Employee>().Property(p => p.Id).HasColumnName("Id");
             modelBuilder.Entity<Employee>().Property(p => p.PostId).HasColumnName("ProffesionId");
             modelBuilder.Entity<Employee>().Property(p => p.DepartmentId).HasColumnName("DepartmentId");
-            modelBuilder.Entity<Employee>().Property(p => p.PersonId).HasColumnName("PersonInfoId");
-            modelBuilder.Entity<Employee>().Property(p => p.TabelNumber).HasColumnName("num_tab");
+            modelBuilder.Entity<Employee>().Property(p => p.PersonId).HasColumnName("PersonInfoId");            
             //Связи сотрудника
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Contacts)
@@ -89,21 +87,6 @@ namespace rupbes.Models.DatabaseBes
                 .HasMany(e => e.Employees)
                 .WithRequired(e => e.Post)
                 .HasForeignKey(e => e.PostId);
-            //Физическое лицо
-            modelBuilder.Entity<Person>().ToTable("PersonInfo");
-            modelBuilder.Entity<Person>().Property(p => p.Id).HasColumnName("Id");
-            modelBuilder.Entity<Person>().Property(p => p.FirstName).HasColumnName("first_name");
-            modelBuilder.Entity<Person>().Property(p => p.LastName).HasColumnName("last_name");
-            modelBuilder.Entity<Person>().Property(p => p.FatherName).HasColumnName("father_name");
-            //Связи физ лица
-            modelBuilder.Entity<Person>()
-                .HasMany(e => e.Contacts)
-                .WithMany(e => e.Persons)
-                .Map(m => m.ToTable("_PersonInfoContact").MapLeftKey("PersonInfoId").MapRightKey("ContactId"));
-            modelBuilder.Entity<Person>()
-                .HasMany(e => e.Employees)
-                .WithRequired(e => e.Person)
-                .HasForeignKey(e => e.PersonId);
 
             //Контакт
             modelBuilder.Entity<Contact>().ToTable("Contact");

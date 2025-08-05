@@ -16,26 +16,29 @@ namespace rupbes.Models.DatabaseBes
         [Key]
         public int Id { get; set; }
 
+        public string first_name { get; set; }
+        [Display(Name = "Фамилия")]
+        public string last_name { get; set; }
+        [Display(Name = "Отчество")]
+        public string father_name { get; set; }
+
         public int PostId { get; set; }
 
         public int DepartmentId { get; set; }
 
         public int PersonId { get; set; }
 
-        public string TabelNumber { get; set; }
-
         public bool is_work { get; set; }
 
         public bool is_email { get; set; }
 
         public bool is_phone { get; set; }
+
         public bool is_confirm_email { get; set; }
 
         public virtual Department Department { get; set; }
 
         public virtual Post Post { get; set; }
-
-        public virtual Person Person { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Contact> Contacts { get; set; }
@@ -46,13 +49,13 @@ namespace rupbes.Models.DatabaseBes
         public int Compare(Employee p1, Employee p2)
         {
             int fl;
-            fl = string.Compare(p1.Person.LastName, p2.Person.LastName);
+            fl = string.Compare(p1.last_name, p2.last_name);
             if (fl == 0)
             {
-               fl = string.Compare(p1.Person.FirstName, p2.Person.FirstName);
+               fl = string.Compare(p1.first_name, p2.first_name);
                if (fl == 0)
                {
-                  return string.Compare(p1.Person.FatherName, p2.Person.FatherName);
+                  return string.Compare(p1.father_name, p2.father_name);
                }
                else return fl;
             }

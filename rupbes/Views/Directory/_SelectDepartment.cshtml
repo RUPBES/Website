@@ -22,14 +22,14 @@
         {
             <tr class="dir-table-row">
                 <td class="dir-table-cell">
-                    @employee.Person.LastName @employee.Person.FirstName @employee.Person.FatherName
+                    @employee.last_name @employee.first_name @employee.father_name
                 </td>
                 <td class="dir-table-cell">
                     @employee.Post.Name
                 </td>
                 <td class="dir-table-cell">
                     @{
-                        if (employee.Contacts.Any(x => x.ContactsTypeId == 2))
+                        if (employee.is_phone && employee.Contacts.Any(x => x.ContactsTypeId == 2))
                         {
                             foreach (rupbes.Models.DatabaseBes.Contact contact in employee.Contacts.Where(x => x.ContactsTypeId == 2))
                             {

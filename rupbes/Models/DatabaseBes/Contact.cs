@@ -12,8 +12,7 @@ namespace rupbes.Models.DatabaseBes
         public Contact()
         {
             Companies = new HashSet<Company>();
-            Departments = new HashSet<Department>();
-            Persons = new HashSet<Person>();
+            Departments = new HashSet<Department>();            
             Employees = new HashSet<Employee>();
         }
 
@@ -31,10 +30,7 @@ namespace rupbes.Models.DatabaseBes
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Department> Departments { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Persons { get; set; }
-
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Employee> Employees { get; set; }
     }

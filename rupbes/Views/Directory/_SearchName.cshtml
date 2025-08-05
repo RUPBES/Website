@@ -9,40 +9,52 @@
     </tr>
     @foreach (rupbes.Models.DatabaseBes.Employee employee in Model)
     {
-    <tr class="dir-table-row">
-        <td class="dir-table-cell">
-            @employee.Person.LastName @employee.Person.FirstName @employee.Person.FatherName
-        </td>
-        <td class="dir-table-cell">
-            @employee.Post.Name
-        </td>
-        <td class="dir-table-cell">
-            @{
-                if (employee.Contacts.Any(x => x.ContactsTypeId == 2))
-                {
-                    foreach (rupbes.Models.DatabaseBes.Contact contact in employee.Contacts.Where(x => x.ContactsTypeId == 2))
+        <tr class="dir-table-row">
+            <td class="dir-table-cell">
+                @employee.last_name @employee.first_name @employee.father_name
+            </td>
+            <td class="dir-table-cell">
+                @employee.Post.Name
+            </td>
+            <td class="dir-table-cell">
+                @{
+                    if (employee.is_phone && employee.Contacts.Any(x => x.ContactsTypeId == 2))
                     {
-                        <a href="tel:@contact.ContactName"> @contact.ContactName</a>
+                        foreach (rupbes.Models.DatabaseBes.Contact contact in employee.Contacts.Where(x => x.ContactsTypeId == 2))
+                        {
+                            <a href="tel:@contact.ContactName"> @contact.ContactName</a>
+                        }
+                    }
+                    else
+                    {
+                        <span>-</span>
                     }
                 }
-                else
+            </td>
+            <td class="dir-table-cell">
+                @if (employee.is_email == true)
                 {
-                    <span>-</span>
+                    foreach (rupbes.Models.DatabaseBes.Contact contact in employee.Contacts.Where(x => x.ContactsTypeId == 1))
+                    {
+                        if (employee.is_confirm_email == true)
+                        {
+                            <a href="mailto:@contact.ContactName"> @Html.Raw(contact.ContactName.Replace("@", "<wbr>@"))</a>
+                        }
+                        else
+                        {
+                            <span>
+                                @Html.Raw(contact.ContactName.Replace("@", "<wbr>@")) (почта еще не создана)
+                            </span>
+                        }
+                    }
                 }
-            }
-        </td>
-        <td class="dir-table-cell">
-            @foreach (rupbes.Models.DatabaseBes.Contact contact in employee.Contacts.Where(x => x.ContactsTypeId == 1))
-            {
-                <a href="mailto:@contact.ContactName"> @Html.Raw(contact.ContactName.Replace("@", "<wbr>@"))</a>
-            }
-        </td>
-        <td class="dir-table-cell">            
-            @employee.Department.Company.Abbreviation            
-        </td>
-        <td class="dir-table-cell">            
-            @employee.Department.Name            
-        </td>
-    </tr>
+            </td>
+            <td class="dir-table-cell">
+                @employee.Department.Company.Abbreviation
+            </td>
+            <td class="dir-table-cell">
+                @employee.Department.Name
+            </td>
+        </tr>
     }
 </table>

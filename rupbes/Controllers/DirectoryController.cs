@@ -31,12 +31,12 @@ namespace rupbes.Controllers
             foreach (Employee employee in employeesall)
             {
                 var e = string.Concat(
-                employee.Person.LastName, " ", employee.Person.FirstName, " ", employee.Person.FatherName, " ",
-                employee.Person.FirstName, " ", employee.Person.LastName, " ", employee.Person.FatherName, " ",
-                employee.Person.LastName, " ", employee.Person.FatherName, " ", employee.Person.FirstName, " ",
-                employee.Person.FirstName, " ", employee.Person.FatherName, " ", employee.Person.LastName, " ",
-                employee.Person.FatherName, " ", employee.Person.LastName, " ", employee.Person.FirstName, " ",
-                employee.Person.FatherName, " ", employee.Person.FirstName, " ", employee.Person.LastName).ToLower();
+                employee.last_name, " ", employee.first_name, " ", employee.father_name, " ",
+                employee.first_name, " ", employee.last_name, " ", employee.father_name, " ",
+                employee.last_name, " ", employee.father_name, " ", employee.first_name, " ",
+                employee.first_name, " ", employee.father_name, " ", employee.last_name, " ",
+                employee.father_name, " ", employee.last_name, " ", employee.first_name, " ",
+                employee.father_name, " ", employee.first_name, " ", employee.last_name).ToLower();
                 if(e.Contains(searchStr))
                 {
                     employees.Add(employee);
