@@ -24,9 +24,7 @@ namespace rupbes.Models.DatabaseBes
 
         public int PostId { get; set; }
 
-        public int DepartmentId { get; set; }
-
-        public int PersonId { get; set; }
+        public int DepartmentId { get; set; }  
 
         public bool is_work { get; set; }
 
