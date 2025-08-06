@@ -71,8 +71,7 @@ namespace rupbes.Models.DatabaseBes
             modelBuilder.Entity<Employee>().ToTable("Employee");
             modelBuilder.Entity<Employee>().Property(p => p.Id).HasColumnName("Id");
             modelBuilder.Entity<Employee>().Property(p => p.PostId).HasColumnName("ProffesionId");
-            modelBuilder.Entity<Employee>().Property(p => p.DepartmentId).HasColumnName("DepartmentId");
-            modelBuilder.Entity<Employee>().Property(p => p.PersonId).HasColumnName("PersonInfoId");            
+            modelBuilder.Entity<Employee>().Property(p => p.DepartmentId).HasColumnName("DepartmentId");                        
             //Связи сотрудника
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Contacts)
