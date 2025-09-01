@@ -33,7 +33,7 @@
                         {
                             foreach (rupbes.Models.DatabaseBes.Contact contact in employee.Contacts.Where(x => x.ContactsTypeId == 2))
                             {
-                                <a href="tel:@contact.ContactName"> @contact.ContactName</a>
+                                <a href="tel:@contact.ContactName"> @contact.ContactName</a><br />
                             }
                         }
                         else
