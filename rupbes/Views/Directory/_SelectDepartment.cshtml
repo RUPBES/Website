@@ -1,4 +1,59 @@
 ﻿@model List<rupbes.Models.DatabaseBes.Employee>
+
+<style>
+    /* Стиль для строки сотрудника в отпуске */
+    .dir-table-row.on-vacation {
+        background-color: #fff3cd;
+        opacity: 0.8;
+    }
+
+    /* Бейдж "В отпуске" */
+    .vacation-badge {
+        background-color: #ffc107;
+        color: #856404;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        margin-left: 8px;
+        font-weight: bold;
+        display: inline-block;
+        cursor: help;
+        position: relative;
+    }
+
+    /* Даты отпуска */
+    .vacation-dates {
+        font-size: 0.9em;
+        font-weight: normal;
+        margin-left: 4px;
+    }
+
+    /* Затемнение контактов для сотрудников в отпуске */
+    .dir-table-row.on-vacation a {
+        color: #6c757d !important;
+        text-decoration: line-through;
+        pointer-events: none;
+    }
+
+    /* Подсказка при наведении */
+    .vacation-badge:hover::after {
+        content: attr(title);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8em;
+        white-space: nowrap;
+        z-index: 1000;
+        margin-bottom: 5px;
+    }
+</style>
+
+<input type="hidden" id="typeSearch" value="Department" />
 @if (ViewBag.Department.Contacts.Count > 0)
 {
     <div class="dir-label">
@@ -20,9 +75,16 @@
         </tr>
         @foreach (rupbes.Models.DatabaseBes.Employee employee in Model)
         {
-            <tr class="dir-table-row">
+            <tr class="dir-table-row @(employee.is_on_vacation == true ? "on-vacation" : "")">
                 <td class="dir-table-cell">
                     @employee.last_name @employee.first_name @employee.father_name
+                    @if (employee.is_on_vacation == true)
+                    {
+                        var currentVacation = employee.Vacations?.FirstOrDefault(v => v.date_begin <= DateTime.Now && v.date_end >= DateTime.Now);
+                        <span class="vacation-badge" title="В отпуске до @(currentVacation?.date_end.ToString("dd.MM.yyyy"))">
+                            В отпуске                          
+                        </span>
+                    }
                 </td>
                 <td class="dir-table-cell">
                     @employee.Post.Name
@@ -41,7 +103,6 @@
                             <span>-</span>
                         }
                     }
- 
                 </td>
                 <td class="dir-table-cell">
                     @{

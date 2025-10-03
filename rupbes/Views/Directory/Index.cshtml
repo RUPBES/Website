@@ -31,6 +31,12 @@
             </div>
             <div id="selDepBlock" class="dir-label"></div>
         </div>
+        <div class="dir-label">
+            <label for="showWorkers">
+                <input id="showWorkers" name="showWorkers" type="checkbox" value="true" />
+                Показывать рабочих
+            </label>
+        </div>
         <div id="searchResult"></div>
     </section>
 </div>
@@ -44,22 +50,35 @@
         var selCompany = $("#selCompany");
         var selDepBlock = $("#selDepBlock");
         var selDepartment = $('#selDepartment');
+        var showWorkersCheckbox = document.getElementById('showWorkers');
 
         var check_ready = 1;
         var queue = 0;
         var req_stack = new Array();
 
+        // Функция для получения значения чекбокса
+        function getShowWorkersValue() {
+            return showWorkersCheckbox ? showWorkersCheckbox.checked : false;
+        }
+
+        // Добавляем обработчик на изменение чекбокса
+        if (showWorkersCheckbox) {
+            showWorkersCheckbox.addEventListener('change', function () {
+                handleTypeSearchChange();
+            });
+        }
+
         searchFormJS.oninput = function () {
             searchName(searchFormJS.value);
         }
 
-        function searchName(str) {
+        function searchName(str) {            
             advSearchForm.style.display = 'none';
             if (str.length > 2) {
                     $.ajax({
                         type: "post",
                         url: '@Url.Action("SearchName", "Directory")',
-                        data: { 'searchStr': str },
+                        data: { 'searchStr': str, 'showWorkers': getShowWorkersValue() },
                         success: function (data) {
                             searchResult.html(data);
                             check_ready = 1;
@@ -80,7 +99,7 @@
             $.ajax({
                     type: "post",
                     url: '@Url.Action("SelectCompany","Directory")',
-                    data: { 'companyId': this.value },
+                data: { 'companyId': this.value},
                         success: function (data) {
                             selDepBlock.html(data);
                         }
@@ -98,7 +117,29 @@
                 advSearchForm.style.display = 'none';
             }
 
+        }    
+
+    // Функция для обработки изменения типа поиска
+        function handleTypeSearchChange() {
+            var typeSearch = document.getElementById('typeSearch');            
+            if (!typeSearch) return;                
+            var searchType = typeSearch.value;
+            if (searchType === "Department") {
+                // Если тип поиска "Department", настраиваем обработчик для выбора департамента
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Action("SelectDepartment","Directory")',
+                        data: {
+                            'depId': selDepartment.val(),
+                            'showWorkers': getShowWorkersValue()
+                        },
+                        success: function (data) {
+                            searchResult.html(data);
+                        }
+                    });
+            } else {                
+                searchName(searchFormJS.value);                         
+            }
         }
     </script>
-
 }

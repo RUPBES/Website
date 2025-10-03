@@ -489,6 +489,8 @@
     <Compile Include="Models\DatabaseBes\Besi_unit.cs" />
     <Compile Include="Models\DatabaseBes\Company.cs" />
     <Compile Include="Models\DatabaseBes\CompanyReview.cs" />
+    <Compile Include="Models\DatabaseBes\EmployeeCategory.cs" />
+    <Compile Include="Models\DatabaseBes\Vacation.cs" />
     <Compile Include="Models\Products\Component.cs" />
     <Compile Include="Models\DatabaseBes\Contact.cs" />
     <Compile Include="Models\DatabaseBes\ContactsType.cs" />

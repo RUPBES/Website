@@ -17,8 +17,10 @@ namespace rupbes.Models.DatabaseBes
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<EmployeeCategory> EmployeeCategories { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }        
         public virtual DbSet<Tenders> Tenders { get; set; }
+        public virtual DbSet<Vacation> Vacations { get; set; }
 
         public virtual DbSet<CompanyReview> CompanyReviews { get; set; }    
 
@@ -71,12 +73,21 @@ namespace rupbes.Models.DatabaseBes
             modelBuilder.Entity<Employee>().ToTable("Employee");
             modelBuilder.Entity<Employee>().Property(p => p.Id).HasColumnName("Id");
             modelBuilder.Entity<Employee>().Property(p => p.PostId).HasColumnName("ProffesionId");
+            modelBuilder.Entity<Employee>().Property(p => p.CategoryId).HasColumnName("CategoryId");
             modelBuilder.Entity<Employee>().Property(p => p.DepartmentId).HasColumnName("DepartmentId");                        
             //Связи сотрудника
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Contacts)
                 .WithMany(e => e.Employees)
                 .Map(m => m.ToTable("_EmployeeContact").MapLeftKey("EmployeeId").MapRightKey("ContactId"));
+            modelBuilder.Entity<Employee>()
+            .HasOptional(e => e.EmployeeCategory)
+            .WithMany()
+            .HasForeignKey(e => e.CategoryId);
+            //Категория сотрудника
+            modelBuilder.Entity<EmployeeCategory>().ToTable("Employee_Category");
+            modelBuilder.Entity<EmployeeCategory>().Property(p => p.Id).HasColumnName("Id");
+            modelBuilder.Entity<EmployeeCategory>().Property(p => p.name).HasColumnName("name");
             //Должность
             modelBuilder.Entity<Post>().ToTable("Proffesion");
             modelBuilder.Entity<Post>().Property(p => p.Id).HasColumnName("Id");
@@ -129,6 +140,18 @@ namespace rupbes.Models.DatabaseBes
                 .HasMany(e => e.Besi_Type_Products_Drawing)
                 .WithRequired(e => e.Drawing)
                 .HasForeignKey(e => e.IdDrawing);
+
+            //отпуска
+            modelBuilder.Entity<Vacation>().ToTable("Vacation");
+            modelBuilder.Entity<Vacation>().Property(o => o.Id).HasColumnName("Id");
+            modelBuilder.Entity<Vacation>().Property(o => o.date_begin).HasColumnName("date_begin");
+            modelBuilder.Entity<Vacation>().Property(o => o.date_end).HasColumnName("date_end");
+            modelBuilder.Entity<Vacation>().Property(o => o.EmployeeId).HasColumnName("EmployeeId");
+
+            modelBuilder.Entity<Vacation>()
+                .HasRequired(e => e.Employee)
+                .WithMany(e => e.Vacations)
+                .HasForeignKey(e => e.EmployeeId);
 
             //Продукты БЭСИ
             modelBuilder.Entity<Besi_unit>().ToTable("Besi_Unit");
