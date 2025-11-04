@@ -4645,3 +4645,39 @@ Added 1 tenders at 03.10.2025 15:20:15
 --BEGIN OF RECORD--
 Added 1 tenders at 03.10.2025 15:43:44
 --END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 15:12:25
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 15:30:21
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 15:31:38
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:21:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:22:16
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:25:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:31:41
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:42:40
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:44:07
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:46:58
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:52:42
+--END--
+--BEGIN OF RECORD--
+No tenders added at 04.11.2025 16:54:39
+--END--

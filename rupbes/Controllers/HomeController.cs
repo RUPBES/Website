@@ -1,11 +1,13 @@
-﻿using System;
+﻿using rupbes.Classes;
+using rupbes.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-using rupbes.Classes;
-using System.Data.Entity;
-using rupbes.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace rupbes.Controllers
 {
@@ -191,6 +193,47 @@ namespace rupbes.Controllers
             }
             return View(departments);
         }
+
+        private string ConvertUrlsToLinks(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            // Шаблон для поиска URL с возможным текстом в скобках после
+            string pattern = @"(https?://[^\s<>""']+)(?:\s*\(([^)]+)\))?";
+
+            return Regex.Replace(text, pattern, match =>
+            {
+                string url = match.Value;
+                string fullMatch = match.Value;
+
+                // Проверяем, не является ли URL уже частью ссылки
+                if (IsUrlInsideHtmlTag(text, match.Index, match.Length))
+                    return fullMatch;
+
+                // Извлекаем URL и текст из скобок
+                string cleanUrl = match.Groups[1].Value;
+                string bracketText = match.Groups[2].Success ? match.Groups[2].Value : null;
+
+                Uri uri = new Uri(cleanUrl);
+
+                // Определяем текст для отображения
+                string displayText = "🔗 " + (bracketText ?? uri.Host);
+
+                return $"<a href=\"{cleanUrl}\" target=\"_blank\" style=\"background: #fff3cd; padding: 3px 8px; border-radius: 4px; text-decoration: none; color: #856404; font-weight: 500; border: 1px solid #ffeaa7; margin: 0 2px;\">{displayText}</a>";
+            });
+        }
+
+        private bool IsUrlInsideHtmlTag(string text, int urlIndex, int urlLength)
+        {
+            // Проверяем, находится ли URL внутри HTML-тега
+            int startCheck = Math.Max(0, urlIndex - 50);
+            int endCheck = Math.Min(text.Length, urlIndex + urlLength + 50);
+            string surroundingText = text.Substring(startCheck, endCheck - startCheck);
+
+            return surroundingText.Contains("<a") && surroundingText.Contains("href=");
+        }
+
         [HttpGet]
         public ActionResult News()
         {
@@ -201,7 +244,9 @@ namespace rupbes.Controllers
             foreach (News itemNews in news)
             {
                 itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
+                itemNews.body_ru = ConvertUrlsToLinks(itemNews.body_ru);
                 itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+                itemNews.body_bel = ConvertUrlsToLinks(itemNews.body_bel);
             }
             if (cookie != null && cookie.Value == "be")
             {
@@ -216,20 +261,25 @@ namespace rupbes.Controllers
         }
         [HttpGet]
         public ActionResult ShowNews(int id)
-        {
+        {           
             HttpCookie cookie = Request.Cookies["lang"];
             var news = db.News.Where(x => x.id == id).FirstOrDefault();
+
+            news.body_ru = news.body_ru.Replace(Environment.NewLine, "<br />");
+            news.body_ru = ConvertUrlsToLinks(news.body_ru);
+
             if (cookie != null && cookie.Value == "be")
-            {
-                news.body_ru = news.body_ru.Replace(Environment.NewLine, "<br />");
+            {               
                 news.title_ru = news.title_bel;
                 news.body_ru = news.body_bel;
+                news.body_ru = news.body_ru.Replace(Environment.NewLine, "<br />");
+                news.body_ru = ConvertUrlsToLinks(news.body_ru);
             }
             return PartialView("_News", news);
         }
         [HttpGet]
         public ActionResult SocialNews()
-        {
+        {           
             HttpCookie cookie = Request.Cookies["lang"];
             List<News> news = db.News.Where(x => x.News_type.id == 2 && x.Departments.id == 3).ToList();
             news.Sort((x, y) => x.date.CompareTo(y.date));
@@ -238,6 +288,8 @@ namespace rupbes.Controllers
             {
                 itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
                 itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+                itemNews.body_ru = ConvertUrlsToLinks(itemNews.body_ru);                
+                itemNews.body_bel = ConvertUrlsToLinks(itemNews.body_bel);
             }
             if (cookie != null && cookie.Value == "be")
             {
@@ -261,6 +313,8 @@ namespace rupbes.Controllers
             {
                 itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
                 itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+                itemNews.body_ru = ConvertUrlsToLinks(itemNews.body_ru);
+                itemNews.body_bel = ConvertUrlsToLinks(itemNews.body_bel);
             }
             if (cookie != null && cookie.Value == "be")
             {
@@ -284,6 +338,8 @@ namespace rupbes.Controllers
             {
                 itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
                 itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+                itemNews.body_ru = ConvertUrlsToLinks(itemNews.body_ru);
+                itemNews.body_bel = ConvertUrlsToLinks(itemNews.body_bel);
             }
             if (cookie != null && cookie.Value == "be")
             {
@@ -298,7 +354,7 @@ namespace rupbes.Controllers
         }
 
         public ActionResult RoadSafetyNews()
-        {
+        {           
             HttpCookie cookie = Request.Cookies["lang"];
             List<News> news = db.News.Where(x => x.News_type.id == 5 & x.Departments.id == 3).ToList();
             news.Sort((x, y) => x.date.CompareTo(y.date));
@@ -307,6 +363,8 @@ namespace rupbes.Controllers
             {
                 itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
                 itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+                itemNews.body_ru = ConvertUrlsToLinks(itemNews.body_ru);
+                itemNews.body_bel = ConvertUrlsToLinks(itemNews.body_bel);
             }
             if (cookie != null && cookie.Value == "be")
             {
@@ -330,6 +388,8 @@ namespace rupbes.Controllers
             {
                 itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
                 itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+                itemNews.body_ru = ConvertUrlsToLinks(itemNews.body_ru);
+                itemNews.body_bel = ConvertUrlsToLinks(itemNews.body_bel);
             }
             if (cookie != null && cookie.Value == "be")
             {
@@ -353,6 +413,8 @@ namespace rupbes.Controllers
             {
                 itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
                 itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+                itemNews.body_ru = ConvertUrlsToLinks(itemNews.body_ru);
+                itemNews.body_bel = ConvertUrlsToLinks(itemNews.body_bel);
             }
             if (cookie != null && cookie.Value == "be")
             {
@@ -366,7 +428,7 @@ namespace rupbes.Controllers
             return View();
         }
         public ActionResult EAES()
-        {
+        {         
             HttpCookie cookie = Request.Cookies["lang"];
             List<News> news = db.News.Where(x => x.News_type.id == 8 & x.Departments.id == 3).ToList();
             news.Sort((x, y) => x.date.CompareTo(y.date));
@@ -375,6 +437,8 @@ namespace rupbes.Controllers
             {
                 itemNews.body_ru = itemNews.body_ru.Replace(Environment.NewLine, "<br />");
                 itemNews.body_bel = itemNews.body_bel.Replace(Environment.NewLine, "<br />");
+                itemNews.body_ru = ConvertUrlsToLinks(itemNews.body_ru);
+                itemNews.body_bel = ConvertUrlsToLinks(itemNews.body_bel);
             }
             if (cookie != null && cookie.Value == "be")
             {
