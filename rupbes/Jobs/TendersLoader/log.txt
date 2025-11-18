@@ -4681,3 +4681,9 @@ No tenders added at 04.11.2025 16:52:42
 --BEGIN OF RECORD--
 No tenders added at 04.11.2025 16:54:39
 --END--
+--BEGIN OF RECORD--
+Added 6 tenders at 18.11.2025 9:29:02
+--END--
+--BEGIN OF RECORD--
+Added 6 tenders at 18.11.2025 9:34:23
+--END--

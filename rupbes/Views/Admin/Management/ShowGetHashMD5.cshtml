@@ -20,36 +20,43 @@
             <textarea id="answer1" class="form-control" rows="2" readonly></textarea>
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-warning">Получить значение</button>
+            <button type="button" id="getHashBtn" class="btn btn-warning">Получить значение</button>
         </div>
     </form>
 </div>
 
 @section scripts {
     <script>
-        $('#getHashMD5').on('submit', function (e) {
+        $('#getHashBtn').on('click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
-            var form = this;
-            var url = form.action;
-            var formData = new FormData(form);
+            // Получаем URL из формы, а не из кнопки
+            var url = $('#getHashMD5').attr('action');
+            var passValue = $('#pass1').val();
+
+            // Валидация
+            if (!passValue.trim()) {
+                var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
+                $('#toast-body-warning').html('Введите значение для кодирования');
+                toastWarning.show();
+                return;
+            }
 
             $.ajax({
                 type: 'POST',
                 url: url,
-                data: formData,
-                processData: false, // важно для отправки FormData
-                contentType: false, // важно для отправки FormData
+                data: { pass: passValue },                
                 success: function (response) {
                     if (response.success == true) {
                         var toastSuccess = new bootstrap.Toast(document.getElementById('toastSuccess'));
-                        $('#toast-body-success').html(Хеш получен);
+                        $('#toast-body-success').html('Хеш получен');
                         toastSuccess.show();
                         $('#answer1').val(response.message);
                     }
                     else {
                         var toastWarning = new bootstrap.Toast(document.getElementById('toastWarning'));
-                        $('#toast-body-warning').html('Произошла ошибка при получении хеша. ', response.message);
+                        $('#toast-body-warning').html('Произошла ошибка при получении хеша. ' + response.message);
                         toastWarning.show();
                         console.error("Ошибка при выполнении AJAX-запроса:", response.message);
                     }
