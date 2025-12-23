@@ -11,17 +11,14 @@ namespace rupbes.Models
     {
         public int id { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required]        
         [Display(Name = "Вакансия")]
         public string vacancy_ru { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required]        
         [Display(Name = "Вакансия на беларусском языке")]
         public string vacancy_bel { get; set; }
-
-        [StringLength(50)]
+                
         [Display(Name = "Заработная плата")]
         public string payment { get; set; }
 

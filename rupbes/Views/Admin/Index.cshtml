@@ -15,8 +15,7 @@
         <div class="alert alert-info" role="alert">
             Есть доступ к следующим разделам:<br />
             Новости
-        </div>
-        @Html.ActionLink("Новости", "News", "Admin")
+        </div>        
     }
 
     else if (User.IsInRole("ok_master") || User.IsInRole("ok"))
