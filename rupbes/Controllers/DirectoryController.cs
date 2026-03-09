@@ -29,7 +29,9 @@ namespace rupbes.Controllers
                 employeesall = db.Employees.Where(x => x.is_work &&
                                     (x.EmployeeCategory == null ||
                                      x.EmployeeCategory.name == "Руководители" ||
-                                     x.EmployeeCategory.name == "Специалисты")).ToList();
+                                     x.EmployeeCategory.name == "Специалисты" ||
+                                     x.EmployeeCategory.name == "Руководители структурных подразделений"
+                                     )).ToList();
             }
             else
             {
@@ -83,7 +85,8 @@ namespace rupbes.Controllers
                                      x.DepartmentId == depId &&
                                      (x.EmployeeCategory == null ||
                                      x.EmployeeCategory.name == "Руководители" ||
-                                     x.EmployeeCategory.name == "Специалисты")).ToList();
+                                     x.EmployeeCategory.name == "Специалисты" ||
+                                     x.EmployeeCategory.name == "Руководители структурных подразделений")).ToList();
             }
             else
             {

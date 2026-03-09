@@ -76,6 +76,14 @@ namespace rupbes.Models.DatabaseBes
                     return positionPriorityCompare;
             }
 
+            // Если обе категории "Руководители", сортируем по приоритету должности
+            if (GetCategoryPriority(p1) == 1 && GetCategoryPriority(p2) == 1)
+            {
+                int positionPriorityCompare = GetPositionPriority(p1).CompareTo(GetPositionPriority(p2));
+                if (positionPriorityCompare != 0)
+                    return positionPriorityCompare;
+            }
+
             // Затем сортируем по ФИО
             int fl = string.Compare(p1.last_name, p2.last_name);
             if (fl == 0)
@@ -94,12 +102,14 @@ namespace rupbes.Models.DatabaseBes
         {
             if (employee?.EmployeeCategory?.name == "Руководители")
                 return 0;
-            else if (employee?.EmployeeCategory?.name == "Специалисты")
+            else if (employee?.EmployeeCategory?.name == "Руководители структурных подразделений")
                 return 1;
-            else if (employee?.EmployeeCategory?.name == "Рабочие")
+            else if (employee?.EmployeeCategory?.name == "Специалисты")
                 return 2;
+            else if (employee?.EmployeeCategory?.name == "Рабочие")
+                return 3;
             else
-                return 3; // Для остальных категорий
+                return 4;
         }
 
         private int GetPositionPriority(Employee employee)
