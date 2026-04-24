@@ -4688,8 +4688,53 @@ Added 6 tenders at 18.11.2025 9:29:02
 Added 6 tenders at 18.11.2025 9:34:23
 --END--
 --BEGIN OF RECORD--
-Added 4 tenders at 17.12.2025 14:31:00
+Added 3 tenders at 12.12.2025 14:58:46
 --END--
 --BEGIN OF RECORD--
-Added 4 tenders at 17.12.2025 14:45:27
+Added 3 tenders at 12.12.2025 15:00:16
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 12.12.2025 15:06:23
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.01.2026 10:37:36
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.01.2026 10:42:06
+--END--
+--BEGIN OF RECORD--
+No tenders added at 05.01.2026 10:54:34
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.01.2026 12:37:53
+--END--
+--BEGIN OF RECORD--
+Added 1 tenders at 14.01.2026 13:02:19
+--END--
+--BEGIN OF RECORD--
+Added 3 tenders at 23.01.2026 14:31:59
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 13.02.2026 14:59:17
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 13.02.2026 15:03:23
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 13.02.2026 15:04:52
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 13.02.2026 15:06:20
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 13.02.2026 15:13:33
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 13.02.2026 15:17:58
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 13.02.2026 15:19:30
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 13.02.2026 15:20:10
 --END--

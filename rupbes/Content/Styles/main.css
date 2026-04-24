@@ -386,7 +386,7 @@ form {
     padding-bottom: 10px;
     border-bottom: 1px solid #ba5600;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .adress-text {

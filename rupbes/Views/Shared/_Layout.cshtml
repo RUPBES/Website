@@ -134,10 +134,10 @@
                             blocks: [
                                 {
                                     title: 'Использование файлов cookie 🔏', /*📢*/
-                                    description: 'Мы используем файлы cookie для обеспечения работоспособности основных функций веб-сайта. Для каждой категории файлов cookie Вы можете выбрать возможность включения/отключения их в любое время в настройках Вашего браузера. Для получения более подробной информации о файлах cookie и других конфиденциальных данных ознакомьтесь с полной версией <a href="#" class="cc-link">политики конфиденциальности</a>'
+                                    description: 'Мы используем файлы cookie для обеспечения работоспособности основных функций веб-сайта. Для каждой категории файлов cookie Вы можете выбрать возможность включения/отключения их в любое время в настройках Вашего браузера. Для получения более подробной информации о файлах cookie и других конфиденциальных данных ознакомьтесь с полной версией <a href="/Content/Files/Политика в отношении обработки cookie-файлов.pdf" class="cc-link">политики в отношении обработки cookie-файлов </a>'
                                 }, {
                                     title: 'Технические/функциональные (обязательные) cookie-файлы',
-                                    description: 'Данный тип cookie-файлов требуется для обеспечения корректного функционирования веб-сайта и не подлежит отключению. Эти сookie-файлы не сохраняют какую-либо информацию о пользователе, которая может быть использована в маркетинговых целях или для учета посещаемых сайтов в сети Интернет',
+                                    description: 'Данный тип cookie-файлов требуется для обеспечения корректного функционирования веб-сайта и не подлежит отключению. Эти сookie-файлы не сохраняют какую-либо информацию о пользователе, которая может быть использована в маркетинговых целях или для учета посещаемых сайтов в сети Интернет. Запоминают выборы, которые вы ранее сделали на веб-сайте (язык, регион и т.д.) и обеспечивают получение Вами более персонализированного опыта при использовании веб-сайта. Все данные анонимизированы и не могут быть использованы для Вашей идентификации',
                                     toggle: {
                                         value: 'necessary',
                                         enabled: true,
@@ -155,25 +155,25 @@
                                         {
                                             col1: '^_ga',       // match all cookies starting with "_ga"
                                             col2: 'google.com',
-                                            col3: '6 месяцев',
-                                            col4: 'основной файл cookie Google Analytics',
+                                            col3: '180 дней',
+                                            col4: 'Основной файл cookie Google Analytics, который спользуется для идентификации уникальных пользователей, которые посещают сайт. Позволяет Google Analytics распознавать одного и того же пользователя',
                                             is_regex: true
                                         },
                                         {
                                             col1: '_gid',
                                             col2: 'google.com',
-                                            col3: '1 день',
-                                            col4: 'файл cookie сеанса, используется для идентификации пользователей',
+                                            col3: '24 часа',
+                                            col4: 'Файл cookie сеанса, также используется для различения пользователей.',
                                         }
                                     ]
                                 }, {
-                                    title: 'Целевые cookie-файлы', //Рекламные и таргентинговые файлы cookie
-                                    description: 'Запоминают выборы, которые вы ранее сделали на веб-сайте (язык, регион и т.д.) и обеспечивают получение Вами более персонализированного опыта при использовании нашего веб-сайта. Все данные анонимизированы и не могут быть использованы для Вашей идентификации',
-                                    toggle: {
-                                        value: 'targeting',
-                                        enabled: false,
-                                        readonly: false
-                                    }
+                                    //title: 'Целевые cookie-файлы', //Рекламные и таргентинговые файлы cookie
+                                    //description: 'Запоминают выборы, которые вы ранее сделали на веб-сайте (язык, регион и т.д.) и обеспечивают получение Вами более персонализированного опыта при использовании нашего веб-сайта. Все данные анонимизированы и не могут быть использованы для Вашей идентификации',
+                                    //toggle: {
+                                    //    value: 'targeting',
+                                    //    enabled: false,
+                                    //    readonly: false
+                                    // }
                                 }, //{
                                 //    title: 'More information',
                                 //    description: 'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="#yourcontactpage">contact us</a>.',
@@ -265,7 +265,7 @@
         var endTime = performance.now();
         console.log(`Время загрузки интеграции cookie: ${(endTime - startTime).toFixed(2)} мс`);
         startTime = endTime;
-    </script> 
+    </script>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function (d, w, c) {
@@ -360,6 +360,9 @@
     <footer class="footer-2lvl">
         <div class="adress-block">
             <span class="adress-text">@Resources.Resource.Requisites</span>
+            <a href="https://president.gov.by/ru/documents/ukaz-no-1-ot-1-anvara-2026-g" class="outlink-item">
+                <img src="/Content/Styles/icons/woman.jpg" @*style="height:100px; width:200px"*@ />
+            </a>
         </div>
         <div class="outlink-block">
             <a href="http://president.gov.by/" class="outlink-item">
@@ -377,9 +380,9 @@
             <a href="https://pravo.by" class="outlink-item">
                 <img src="/Content/Styles/icons/pravo.jpg" style="height:100px; width:220px" />
             </a>
-            <a href="https://president.gov.by/ru/documents/ukaz-no-1-ot-3-anvara-2025-g" class="outlink-item">
-                <img src="/Content/Styles/icons/Year2025.jpg" style="height:100px; width:220px" />
-            </a>
+            @*<a href="https://president.gov.by/ru/documents/ukaz-no-1-ot-1-anvara-2026-g" class="outlink-item">
+                <img src="/Content/Styles/icons/woman.jpg" style="height:100px; width:200px" />
+            </a>*@
             <a href="https://rupbes.by/Home/EAES" class="outlink-item">
                 <img src="/Content/Styles/icons/EAES.png" style="height:100px; width:220px" />
             </a>
@@ -665,7 +668,7 @@
     </script>
     <script>
         var endTime = performance.now();
-        console.log(`Время загрузки lang-select: ${(endTime - startTime).toFixed(2)} мс`);        
-    </script>  
+        console.log(`Время загрузки lang-select: ${(endTime - startTime).toFixed(2)} мс`);
+    </script>
 </body>
 </html> 
