@@ -1,0 +1,143 @@
+﻿@using rupbes.Models
+@model List<Engine>
+@{
+    ViewBag.Title = "Услуги";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card card-primary card-outline mb-4">
+            <div class="card-header">
+                <div class="card-title">
+                    Инженерные услуги
+                    <input type="hidden" id="hdnIsReview" value="@ViewBag.isReview" name="isReview" />
+                    <input type="hidden" id="hdnIsCertificate" value="@ViewBag.isCertificate" name="isCertificate" />
+                    <input type="hidden" id="hdnIsPartner" value="@ViewBag.isPartner" name="isPartner" />
+                    <div class="btn-group ms-3" role="group" aria-label="Фильтр услуг">
+                        <a href="@Url.Action("Engine", "Admin", new { isReview = true, isCertificate = false, isPartner = false })"
+                           class="btn btn-sm btn-outline-secondary filter-link"
+                           data-filter="review">
+                            Отзывы
+                        </a>
+                        <a href="@Url.Action("Engine", "Admin", new { isReview = false, isCertificate = true, isPartner = false })"
+                           class="btn btn-sm btn-outline-secondary filter-link"
+                           data-filter="certificate">
+                            Сертификаты
+                        </a>
+                        <a href="@Url.Action("Engine", "Admin", new { isReview = false, isCertificate = false, isPartner = true })"
+                           class="btn btn-sm btn-outline-secondary filter-link"
+                           data-filter="partner">
+                            Партнеры
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="servicesList">
+                    @if (Model.Count > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            bool isReview = ViewBag.isReview != null && ViewBag.isReview == true;
+                            bool isCertificate = ViewBag.isCertificate != null && ViewBag.isCertificate == true;
+                            bool isPartner = ViewBag.isPartner != null && ViewBag.isPartner == true;
+
+                            <button type="button" onclick="ShowEngine(@item.Id)"
+                                    class="btn btn-outline-primary service-btn">
+                                @item.Name
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info" role="alert">
+                            Пока не добавили записей.
+                        </div>
+                    }
+                </div>
+                <hr>
+                <button class="btn btn-success" onclick="ShowAddEngine()">
+                    @if (ViewBag.isReview == true)
+                    {
+                        @:Добавить отзыв
+                    }
+                    else if (ViewBag.isCertificate == true)
+                    {
+                        @:Добавить сертификат
+                    }
+                    else if (ViewBag.isPartner == true)
+                    {
+                        @:Добавить партнера
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="engineDisplay" class="col-md-6" style="display:none">
+        <!--область для карточки услуги-->
+    </div>
+</div>
+@section scripts{
+    <script>
+     // Получаем значения из ViewBag
+    let isReviewActive = @(ViewBag.isReview != null && ViewBag.isReview ? "true" : "false");
+    let isCertificateActive = @(ViewBag.isCertificate != null && ViewBag.isCertificate ? "true" : "false");
+    let isPartnerActive = @(ViewBag.isPartner != null && ViewBag.isPartner ? "true" : "false");
+
+    // Устанавливаем активную ссылку при загрузке (добавляем класс active к нужной ссылке)
+    if (isReviewActive) {
+        document.querySelector('.filter-link[data-filter="review"]').classList.add('active');
+    } else if (isCertificateActive) {
+        document.querySelector('.filter-link[data-filter="certificate"]').classList.add('active');
+    } else if (isPartnerActive) {
+        document.querySelector('.filter-link[data-filter="partner"]').classList.add('active');
+    }
+
+        function ShowEngine(id) {
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("ShowEngine", "Admin")',
+                data: { id: id },
+                success: function (data) {
+                    $('#engineDisplay').html(data);
+                    $('#engineDisplay').show();
+                },
+                error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при получении услуги.");
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        }
+
+        function ShowAddEngine(id) {
+            const isReview = document.getElementById('hdnIsReview')?.value === 'True' ||
+                document.getElementById('hdnIsReview')?.value === 'true';
+            const isCertificate = document.getElementById('hdnIsCertificate')?.value === 'True' ||
+                document.getElementById('hdnIsCertificate')?.value === 'true';
+            const isPartner = document.getElementById('hdnIsPartner')?.value === 'True' ||
+                document.getElementById('hdnIsPartner')?.value === 'true';
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("ShowAddEngine", "Admin")',
+                data: {
+                    isReview: isReview,
+                    isCertificate: isCertificate,
+                    isPartner: isPartner
+                },
+                success: function (data) {
+                    $('#engineDisplay').html(data);
+                    $('#engineDisplay').show();
+                },
+                error: function (xhr, status, error) {
+                    var toastDanger = new bootstrap.Toast(document.getElementById('toastDanger'));
+                    $('#toast-body-danger').html("Произошла ошибка при отображении страницы для добавления услуги.");
+                    toastDanger.show();
+                    console.error("Ошибка при выполнении AJAX-запроса:", error);
+                }
+            });
+        }
+    </script>
+}

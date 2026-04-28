@@ -1,0 +1,129 @@
+﻿<link rel="stylesheet" href="~/js/cookieconsent-master/dist/cookieconsent.css" />
+<script defer src="~/js/cookieconsent-master/dist/cookieconsent.js"></script>
+<script>
+    window.addEventListener('load', function () {
+
+        // Получаем экземпляр плагина cookie consent
+        var cc = initCookieConsent();
+
+        // Запуск плагина с настройками
+        cc.run({
+            // Основные настройки
+            current_lang: 'en',
+            autoclear_cookies: true,
+            page_scripts: true,
+            mode: 'opt-in',
+            delay: 0,
+            auto_language: '',
+            autorun: true,
+            force_consent: false,
+            hide_from_bots: true,
+            remove_cookie_tables: false,
+
+            // Настройки cookie файла
+            cookie_name: 'cc_cookie',
+            cookie_expiration: 182,
+            cookie_necessary_only_expiration: 182,
+            cookie_domain: location.hostname,
+            cookie_path: '/',
+            cookie_same_site: 'Lax',
+            use_rfc_cookie: false,
+            revision: 0,
+
+            // Колбэки (обратные вызовы)
+            onFirstAction: function (user_preferences, cookie) { },
+            onAccept: function (cookie) { },
+            onChange: function (cookie, changed_categories) { },
+
+            // Тексты и переводы
+            languages: {
+                'en': {
+                    // Главное окно согласия
+                    consent_modal: {
+                        title: 'Мы используем файлы cookie!',
+                        description: 'Этот веб-сайт использует файлы cookie для обеспечения его корректной работы и файлы для отслеживания действий, чтобы понять, как Вы с ним взаимодействуете. Последние будут установлены только в случае Вашего согласия. В случае блокировки файлов cookie Вы отказываетесь от полноценного использования веб-сайта <button type="button" data-cc="c-settings" class="cc-link">Настроить cookies 🍪</button>',
+                        primary_btn: {
+                            text: 'Принять',
+                            role: 'accept_all'
+                        },
+                        secondary_btn: {
+                            text: 'Отклонить',
+                            role: 'accept_necessary'
+                        }
+                    },
+
+                    // Окно настроек
+                    settings_modal: {
+                        title: 'Настройки cookies',
+                        save_settings_btn: 'Сохранить настройки',
+                        accept_all_btn: 'Принять',
+                        reject_all_btn: 'Отклонить',
+                        close_btn_label: 'Закрыть',
+
+                        // Заголовки таблицы
+                        cookie_table_headers: [
+                            { col1: 'Имя' },
+                            { col2: 'Домен' },
+                            { col3: 'Длительность' },
+                            { col4: 'Описание' }
+                        ],
+
+                        // Блоки настроек
+                        blocks: [
+                            // Блок 1: Общая информация
+                            {
+                                title: 'Использование файлов cookie 🔏',
+                                description: 'Мы используем файлы cookie для обеспечения работоспособности основных функций веб-сайта. Для каждой категории файлов cookie Вы можете выбрать возможность включения/отключения их в любое время в настройках Вашего браузера. Для получения более подробной информации о файлах cookie и других конфиденциальных данных ознакомьтесь с полной версией <a href="#" class="cc-link">политики конфиденциальности</a>'
+                            },
+                            // Блок 2: Обязательные cookie
+                            {
+                                title: 'Технические/функциональные (обязательные) cookie-файлы',
+                                description: 'Данный тип cookie-файлов требуется для обеспечения корректного функционирования веб-сайта и не подлежит отключению. Эти сookie-файлы не сохраняют какую-либо информацию о пользователе, которая может быть использована в маркетинговых целях или для учета посещаемых сайтов в сети Интернет',
+                                toggle: {
+                                    value: 'necessary',
+                                    enabled: true,
+                                    readonly: true
+                                }
+                            },
+                            // Блок 3: Аналитические cookie
+                            {
+                                title: 'Аналитические cookie-файлы',
+                                description: 'Собирают информацию о том, как часто Вы посещаете наш веб-сайт, какие разделы сайта просматриваете, на какие ссылки нажимаете и как в целом перемещаетесь по веб-сайту',
+                                toggle: {
+                                    value: 'analytics',
+                                    enabled: false,
+                                    readonly: false
+                                },
+                                cookie_table: [
+                                    {
+                                        col1: '^_ga',
+                                        col2: 'google.com',
+                                        col3: '6 месяцев',
+                                        col4: 'основной файл cookie Google Analytics',
+                                        is_regex: true
+                                    },
+                                    {
+                                        col1: '_gid',
+                                        col2: 'google.com',
+                                        col3: '1 день',
+                                        col4: 'файл cookie сеанса, используется для идентификации пользователей',
+                                    }
+                                ]
+                            },
+                            // Блок 4: Целевые cookie
+                            {
+                                title: 'Целевые cookie-файлы',
+                                description: 'Запоминают выборы, которые вы ранее сделали на веб-сайте (язык, регион и т.д.) и обеспечивают получение Вами более персонализированного опыта при использовании нашего веб-сайта. Все данные анонимизированы и не могут быть использованы для Вашей идентификации',
+                                toggle: {
+                                    value: 'targeting',
+                                    enabled: false,
+                                    readonly: false
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        });
+    });
+</script>

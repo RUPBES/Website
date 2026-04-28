@@ -1,0 +1,643 @@
+﻿@model List<rupbes.Models.Engine>
+@{
+    ViewBag.Title = "Инженерные услуги - Белэнергострой";
+    ViewBag.Description = "РУП «Белэнергострой» - комплексное управление строительной деятельностью, технический надзор, инженерно-геодезические изыскания. Аттестованные специалисты с 1958 года.";
+    ViewBag.Keywords = "технический надзор, инженерные изыскания, управление строительством, Белэнергострой, геодезические работы, строительный надзор";
+}
+
+<style>
+    /* Сброс flex-конфликтов внутри секций */
+    .section .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Исправление сеток - ключевое решение */
+    .services-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+        gap: 30px !important;
+        width: 100% !important;
+        margin-top: 40px !important;
+    }
+
+    .certs-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        gap: 30px !important;
+        width: 100% !important;
+        margin-top: 40px !important;
+    }
+
+    .partners-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+        gap: 30px !important;
+        width: 100% !important;
+        margin-top: 40px !important;
+        align-items: center !important;
+        justify-items: center !important;
+    }
+
+    .reviews-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+        gap: 30px !important;
+        width: 100% !important;
+        margin-top: 40px !important;
+    }
+
+    .contacts-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        gap: 30px !important;
+        width: 100% !important;
+        margin-top: 40px !important;
+    }
+
+    /* Карточки */
+    .service-card {
+        background: white;
+        padding: 28px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+        text-align: left;
+    }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #3859d0;
+        }
+
+    .service-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+        .service-list li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+
+            .service-list li:last-child {
+                border-bottom: none;
+            }
+
+            .service-list li:before {
+                content: "✓";
+                color: #3859d0;
+                position: absolute;
+                left: 0;
+                font-weight: bold;
+            }
+
+    .cert-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+        .cert-card:hover {
+            transform: scale(1.02);
+        }
+
+        .cert-card img {
+            width: 100%;
+            max-height: 280px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .cert-card p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+    .partner-item {
+        text-align: center;
+    }
+
+        .partner-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+    .review-card {
+        cursor: pointer;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s;
+    }
+
+        .review-card:hover {
+            transform: scale(1.02);
+        }
+
+        .review-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+    .contact-card {
+        background: white;
+        padding: 28px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+        .contact-card h3 {
+            margin-bottom: 20px;
+            color: #3859d0;
+        }
+
+        .contact-card a {
+            color: #3859d0;
+            text-decoration: none;
+        }
+
+            .contact-card a:hover {
+                text-decoration: underline;
+            }
+
+    /* Стили для секций */
+    .section {
+        width: 100%;
+        padding: 60px 0;
+    }
+
+    .hero {
+        background: linear-gradient(135deg, #0b2b4f 0%, #1a4975 100%);
+        color: white;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin-top: -20px;
+    }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+    .btn {
+        display: inline-block;
+        background: #3859d0;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 40px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background: #1d2e38;
+            transform: translateY(-2px);
+        }
+
+    /* Анимация */
+    .fade-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    /* Навигация */
+    .section-nav {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(8px);
+        padding: 12px 10px;
+        border-radius: 40px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+        .section-nav a {
+            width: 10px;
+            height: 10px;
+            background: #3859d0;
+            border-radius: 50%;
+            transition: all 0.3s;
+            cursor: pointer;
+            opacity: 0.4;
+        }
+
+            .section-nav a.active {
+                opacity: 1;
+                transform: scale(1.3);
+                background: #112954;
+            }
+
+    /* Модальное окно */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.9);
+        cursor: pointer;
+    }
+
+    .modal-content {
+        margin: auto;
+        display: block;
+        max-width: 90%;
+        max-height: 90%;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .close {
+        position: absolute;
+        right: 35px;
+        top: 20px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .close:hover {
+            color: #ccc;
+        }
+
+    @@media (max-width: 768px) {
+        .hero h1 {
+            font-size: 1.8rem;
+        }
+
+        .section {
+            padding: 40px 0;
+        }
+
+        .section-nav {
+            display: none;
+        }
+    }
+</style>
+
+<!-- Навигация -->
+<div class="section-nav" id="sectionNav"></div>
+
+<!-- Модальное окно -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
+
+<!-- Секция 0 - Герой -->
+<section id="section-0" class="section hero">
+    <div style="max-width: 1300px; width: 100%; margin: 0 auto; padding: 0 20px;">
+        <h1 style="text-align: center;">Инженерные услуги<br>РУП «Белэнергострой»</h1>
+        <p style="text-align: center; font-size: 1.3rem; opacity: 0.95;">Технический надзор • Инженерно-геодезические изыскания • Управление строительством</p>
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap;">
+            <a href="#section-2" class="btn">Наши услуги</a>
+            <a href="#section-6" class="btn" style="background: transparent; border: 2px solid white; margin-left: 15px;">Связаться</a>
+        </div>
+    </div>
+</section>
+
+<!-- Секция 1 - Ключевые направления (была секция 3, теперь секция 1) -->
+<section id="section-1" class="section" style="background: #e9ecef;">
+    <div class="container fade-up">
+        <h2>Ключевые направления деятельности</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>🏗️ Комплексное управление строительной деятельностью</h3>
+                <p>Полный цикл управления проектами любой сложности</p>
+            </div>
+            <div class="service-card">
+                <h3>🔍 Технический надзор в строительстве</h3>
+                <p>Контроль качества и соответствия проектным решениям</p>
+            </div>
+            <div class="service-card">
+                <h3>📐 Инженерно-геодезические изыскания</h3>
+                <p>Геодезические работы и изыскания для строительства</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция 2 - Полный список услуг -->
+<section id="section-2" class="section services">
+    <div class="container fade-up">
+        <h2>Наши услуги</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>🏗️ Комплексное управление строительной деятельностью</h3>
+                <ul class="service-list">
+                    <li>Общестроительные работы</li>
+                    <li>Монтаж тепловых сетей, систем отопления</li>
+                    <li>Монтаж систем вентиляции и кондиционирования</li>
+                    <li>Монтаж систем водоснабжения и канализации</li>
+                    <li>Монтаж систем электроснабжения и автоматизации</li>
+                    <li>Монтаж систем связи и сигнализации, видеонаблюдения</li>
+                    <li>Монтаж технологических трубопроводов и оборудования</li>
+                    <li>Работы по благоустройству территории</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h3>🔍 Технический надзор</h3>
+                <ul class="service-list">
+                    <li>Контроль качества строительства</li>
+                    <li>Проверка соответствия проектной документации</li>
+                    <li>Приемка выполненных работ</li>
+                    <li>Ведение исполнительной документации</li>
+                    <li>Контроль сроков выполнения</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h3>📐 Инженерно-геодезические изыскания</h3>
+                <ul class="service-list">
+                    <li>Топографическая съемка</li>
+                    <li>Геодезическое сопровождение строительства</li>
+                    <li>Исполнительные съемки</li>
+                    <li>Создание геодезической разбивочной основы</li>
+                    <li>Лазерное сканирование</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция 3 - Аттестаты (ИН, ИЗ, СТ) -->
+<section id="section-3" class="section certificates">
+    <div class="container fade-up">
+        <h2>Аттестаты и лицензии</h2>
+        <div class="certs-grid">
+            @if (Model != null && Model.Any(x => x.IsCertificate == true))
+            {
+                var certificates = Model.Where(x => x.IsCertificate == true).ToList();
+                foreach (var cert in certificates)
+                {
+                    <!-- Проверяем есть ли изображения у сертификата -->
+                    if (cert.Imgs != null && cert.Imgs.Any())
+                    {
+                        foreach (var img in cert.Imgs)
+                        {
+                            <div class="cert-card">
+                                @if (!string.IsNullOrEmpty(img.src) && (img.src.ToLower().EndsWith(".jpg") ||
+                                     img.src.ToLower().EndsWith(".jpeg") ||
+                                     img.src.ToLower().EndsWith(".png") ||
+                                     img.src.ToLower().EndsWith(".gif")))
+                                {
+                                    <img src="@img.src" alt="@cert.Name" onclick="openImageModal('@img.src')" style="cursor: pointer;">
+                                }
+                                else if (!string.IsNullOrEmpty(img.src) && img.src.ToLower().EndsWith(".pdf"))
+                                {
+                                    <img src="/images/pdf-icon.png" alt="PDF" onclick="openPdfModal('@img.src')" style="cursor: pointer;">
+                                    <span class="pdf-badge">PDF</span>
+                                }
+                                else
+                                {
+                                    <img src="https://placehold.co/300x400/003366/white?text=@cert.Name" alt="@cert.Name">
+                                }
+                                <p>@cert.Name</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <!-- Если нет изображений, показываем заглушку -->
+                        <div class="cert-card">
+                            <img src="https://placehold.co/300x400/003366/white?text=@cert.Name" alt="@cert.Name">
+                            <p>@cert.Name</p>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <p style="text-align: center; color: #666;">Нет доступных сертификатов</p>
+                </div>
+            }
+        </div>
+        <p style="text-align: center; margin-top: 30px; color: #666;">* Для просмотра полного изображения нажмите на фото</p>
+    </div>
+</section>
+
+<!-- Секция 4 - Партнеры (Заказчики) -->
+<section id="section-4" class="section partners">
+    <div class="container fade-up">
+        <h2>Наши партнеры и заказчики</h2>
+        <div class="partners-grid">
+            @if (Model != null && Model.Any(x => x.IsPartner == true))
+            {
+                var partners = Model.Where(x => x.IsPartner == true).ToList();
+                foreach (var partner in partners)
+                {
+                    var firstImg = partner.Imgs?.FirstOrDefault();
+                    var imageUrl = firstImg?.src ?? "https://placehold.co/100x100/003366/white?text=" + partner.Name;
+                    var isImage = imageUrl.ToLower().EndsWith(".jpg") ||
+                                  imageUrl.ToLower().EndsWith(".jpeg") ||
+                                  imageUrl.ToLower().EndsWith(".png") ||
+                                  imageUrl.ToLower().EndsWith(".gif");
+
+                    <div class="partner-item">
+                        @if (isImage)
+                        {
+                            <img src="@imageUrl" alt="@partner.Name" onclick="openImageModal('@imageUrl')" style="cursor: pointer;">
+                        }
+                        else
+                        {
+                            <img src="@imageUrl" alt="@partner.Name">
+                        }
+                        <p>@partner.Name</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <p style="text-align: center; color: #666;">Нет партнеров</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Секция 5 - Отзывы -->
+<section id="section-5" class="section reviews">
+    <div class="container fade-up">
+        <h2>Отзывы наших клиентов</h2>
+        <div class="reviews-grid">
+            @if (Model != null && Model.Any(x => x.IsReview == true))
+            {
+                var reviews = Model.Where(x => x.IsReview == true).ToList();
+                foreach (var review in reviews)
+                {
+                    var firstImg = review.Imgs?.FirstOrDefault();
+                    var imageUrl = firstImg?.src ?? "https://placehold.co/400x300/cccccc/666?text=" + review.Name;
+                    var isImage = imageUrl.ToLower().EndsWith(".jpg") ||
+                                  imageUrl.ToLower().EndsWith(".jpeg") ||
+                                  imageUrl.ToLower().EndsWith(".png") ||
+                                  imageUrl.ToLower().EndsWith(".gif");
+
+                    <div class="review-card">
+                        @if (isImage)
+                        {
+                            <img src="@imageUrl" alt="@review.Name" onclick="openImageModal('@imageUrl')" style="cursor: pointer;">
+                        }
+                        else
+                        {
+                            <img src="@imageUrl" alt="@review.Name">
+                        }
+                        @if (!string.IsNullOrEmpty(review.Name))
+                        {
+                            <p class="review-title">@review.Name</p>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <p style="text-align: center; color: #666;">Нет отзывов от клиентов</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Секция 6 - Контакты -->
+<section id="section-6" class="section contacts">
+    <div class="container fade-up">
+        <h2>Контакты</h2>
+        <div class="contacts-grid">
+            <div class="contact-card">
+                <h3>📞 Отдел инженерных услуг</h3>
+                <p><a href="tel:+375173630049">8-017-363-00-49</a></p>
+                <p><a href="tel:+375173630050">8-017-363-00-50</a></p>
+            </div>
+            <div class="contact-card">
+                <h3>👩‍💼 Начальник отдела инженерных услуг<br>руководитель проекта</h3>
+                <p><strong>Ещенко Елена Николаевна</strong></p>
+                <p><a href="tel:+375173630048">8-017-363-00-48</a></p>
+            </div>
+            <div class="contact-card">
+                <h3>📍 Адрес</h3>
+                <p>Республика Беларусь, г. Минск</p>
+                <p>ул. Чичерина, д. 19</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Навигация по секциям
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.section-nav a');
+
+    if (sections.length > 0 && navLinks.length > 0) {
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = index;
+                }
+            });
+
+            navLinks.forEach((link, index) => {
+                link.classList.remove('active');
+                if (index == current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    }
+
+    // Анимация появления
+    const fadeElements = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    fadeElements.forEach(el => observer.observe(el));
+
+    // Модальное окно для фото
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+
+    function openModal(imgSrc) {
+        if (modal && modalImg) {
+            modal.style.display = 'block';
+            modalImg.src = imgSrc;
+        }
+    }
+
+    function closeModal() {
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Добавляем клик на все изображения в аттестатах и отзывах
+    document.querySelectorAll('.cert-card img, .review-card img').forEach(img => {
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openModal(img.src);
+        });
+    });
+
+    // Закрытие по ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>

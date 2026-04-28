@@ -348,5 +348,13 @@ namespace rupbes.Controllers
             }
             return PartialView("_SelectSubGroupProduct", answer);
         }
+
+        [HttpGet]
+        public ActionResult EngineService()
+        {
+            var engine = db.Engines.Include(x => x.Imgs).ToList();
+            return View(engine);
+        }
+
     }
 }

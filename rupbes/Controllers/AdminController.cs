@@ -1783,8 +1783,208 @@ namespace rupbes.Controllers
             await db.SaveChangesAsync();
 
             return Json(new { success = true, message = "Услуга удалена!" });
-        }       
+        }
 
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> Engine(bool isReview = false, bool isCertificate = false, bool isPartner = false)//Инженерные услуги
+        {  
+            var engines = await db.Engines.Where(x => x.IsReview == isReview && x.IsCertificate == isCertificate && x.IsPartner == isPartner).
+                OrderBy(x => x.Name).ToListAsync();
+            ViewBag.isReview = isReview;
+            ViewBag.isCertificate = isCertificate;
+            ViewBag.isPartner = isPartner;
+            return View("~/Views/Admin/Services/Engine.cshtml", engines);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> ShowEngine(int id)//Показать выбранную инж.
+        {
+            var engineView = await db.Engines.Where(x => x.Id == id).Include(x => x.Imgs).FirstOrDefaultAsync();
+            return PartialView("~/Views/Admin/Services/_ShowEngine.cshtml", engineView);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> ShowAddEngine(bool isReview, bool isCertificate, bool isPartner)//Страница добавления новой инж.
+        {
+            ViewBag.isReview = isReview;
+            ViewBag.isCertificate = isCertificate;
+            ViewBag.isPartner = isPartner;
+            return PartialView("~/Views/Admin/Services/_ShowAddEngine.cshtml");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> AddEngine(Engine engineModel, int[] img_ids)//Добавление новой инж.
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Определяем тип добавляемого объекта для сообщения
+            string entityType = "инженерная услуга";
+            if (engineModel.IsReview)
+            {
+                entityType = "Отзыв";
+            }
+            else if (engineModel.IsCertificate)
+            {
+                entityType = "Сертификат";
+            }
+            else if (engineModel.IsPartner)
+            {
+                entityType = "Партнер";
+            }
+
+            Usage_report rep = new Usage_report { title = engineModel.Name, action = "Add", table = "Engine", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            if (img_ids != null)
+            {
+                Imgs img = new Imgs();
+                foreach (var id in img_ids)
+                {
+                    img = await db.Imgs.Where(x => x.id == id).FirstOrDefaultAsync();
+                    engineModel.Imgs.Add(img);
+                }
+            }
+
+            db.Engines.Add(engineModel);
+
+            await db.SaveChangesAsync();
+
+            // Формируем сообщение в зависимости от типа
+            string successMessage = $"{entityType} успешно добавлен";           
+            return Json(new { success = true, message = successMessage });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> EditEngine(Engine engineModel, int[] img_ids)//Изменение инж.
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем инж. инф.
+            Engine engine = await db.Engines.Include(o => o.Imgs).FirstOrDefaultAsync(x => x.Id == engineModel.Id);
+            if (engine == null)
+            {
+                return Json(new { success = false, message = "Услуга не найдена." });
+            }
+
+            #region Присваивание измененных значений            
+            PropertyUpdater.UpdateProperties(engine, engineModel);
+            // Обработка изображений
+            if (img_ids != null)
+            {
+                var currentImgIds = engine.Imgs.Select(i => i.id).ToList();
+
+                // Удаляем изображения, которые не включены в img_ids
+                foreach (var imgId in currentImgIds)
+                {
+                    if (!img_ids.Contains(imgId))
+                    {
+                        var imgToRemove = engine.Imgs.FirstOrDefault(i => i.id == imgId);
+                        if (imgToRemove != null)
+                        {
+                            engine.Imgs.Remove(imgToRemove);
+                        }
+                    }
+
+                    // Добавляем новые изображения
+                    var ImgList = await db.Imgs.Where(x => img_ids.Contains(x.id)).ToListAsync();
+                    foreach (var img in ImgList)
+                    {
+                        if (!engine.Imgs.Any(i => i.id == img.id)) // Проверка на дублирование
+                        {
+                            engine.Imgs.Add(img);
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            // Определяем тип добавляемого объекта для сообщения
+            string entityType = "инженерная услуга";
+            if (engineModel.IsReview)
+            {
+                entityType = "Отзыв";
+            }
+            else if (engineModel.IsCertificate)
+            {
+                entityType = "Сертификат";
+            }
+            else if (engineModel.IsPartner)
+            {
+                entityType = "Партнер";
+            }
+
+            Usage_report rep = new Usage_report { title = engineModel.Name, action = "Edit", table = "Engine", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            await db.SaveChangesAsync();
+
+            // Формируем сообщение в зависимости от типа
+            string successMessage = $"{entityType} успешно изменен";            
+            return Json(new { success = true, message = successMessage });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin, service_master, service")]
+        public async Task<ActionResult> DeleteEngine(int id)//Удаление инж.
+        {
+            // Получаем пользователя
+            Users user = await db.Users.FirstOrDefaultAsync(x => x.login == User.Identity.Name);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Пользователь не найден." });
+            }
+
+            // Получаем услугу
+            Engine engine = await db.Engines.FirstOrDefaultAsync(x => x.Id == id);
+            if (engine == null)
+            {
+                return Json(new { success = false, message = "Услуга не найдена." });
+            }
+
+            // Определяем тип добавляемого объекта для сообщения
+            string entityType = "инженерная услуга";
+            if (engine.IsReview )
+            {
+                entityType = "Отзыв";
+            }
+            else if (engine.IsCertificate)
+            {
+                entityType = "Сертификат";
+            }
+            else if (!engine.IsPartner)
+            {
+                entityType = "Партнер";
+            }
+
+            Usage_report rep = new Usage_report { title = engine.Name, action = "Delete", table = "Engine", date = DateTime.Now, id_user = user.id };
+            db.Usage_report.Add(rep);
+
+            // Удаляем услугу
+            db.Engines.Remove(engine);
+            await db.SaveChangesAsync();
+
+            // Формируем сообщение в зависимости от типа
+            string successMessage = $"{entityType} успешно удален";          
+            return Json(new { success = true, message = successMessage });
+        }
+
+
+        //Продукты производства
         [HttpGet]
         [Authorize(Roles = "product, admin")]
         public async Task<ActionResult> Products()

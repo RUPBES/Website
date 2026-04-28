@@ -33,6 +33,7 @@ namespace rupbes.Models
         public virtual DbSet<Realty> Realty { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Services> Services { get; set; }
+        public virtual DbSet<Engine> Engines { get; set; }
         public virtual DbSet<Usage_report> Usage_report { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Vacancies> Vacancies { get; set; }
@@ -177,6 +178,11 @@ namespace rupbes.Models
                 .HasMany(e => e.Services)
                 .WithMany(e => e.Imgs)
                 .Map(m => m.ToTable("Imgs_to_services", "rupbesby_admin").MapLeftKey("id_img").MapRightKey("id_service"));
+
+            modelBuilder.Entity<Imgs>()
+               .HasMany(e => e.Engines)
+               .WithMany(e => e.Imgs)
+               .Map(m => m.ToTable("Imgs_to_engine", "rupbesby_admin").MapLeftKey("id_img").MapRightKey("id_engine"));
 
             modelBuilder.Entity<News>()
                 .Property(e => e.body_ru)

@@ -12,3 +12,12 @@
         <a href="@Url.Action("ServiceByDepartment", "Admin",  new { id = department.id })" class="btn btn-primary">@department.short_name_ru</a>
     }
 </div>
+
+<p class="h4 text-center">Инженерные услуги</p>
+<br />
+<div class="d-grid gap-2 col-4 mx-auto">
+
+    <a href="@Url.Action("Engine", "Admin",  new { isReview = true, isCertificate = false, isPartner = false })" class="btn btn-primary">Отзывы</a>
+    <a href="@Url.Action("Engine", "Admin",  new { isReview = false, isCertificate = true, isPartner = false })" class="btn btn-primary">Аттестаты</a>
+    <a href="@Url.Action("Engine", "Admin",  new { isReview = false, isCertificate = false, isPartner = true })" class="btn btn-primary">Аттестаты</a>
+</div>

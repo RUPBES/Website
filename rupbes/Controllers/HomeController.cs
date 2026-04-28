@@ -563,9 +563,6 @@ namespace rupbes.Controllers
                 }
             }
             return View(bosses);
-        }
-
-
-
+        }     
     }
 }

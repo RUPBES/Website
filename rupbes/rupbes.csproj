@@ -491,6 +491,7 @@
     <Compile Include="Models\DatabaseBes\CompanyReview.cs" />
     <Compile Include="Models\DatabaseBes\EmployeeCategory.cs" />
     <Compile Include="Models\DatabaseBes\Vacation.cs" />
+    <Compile Include="Models\Engine.cs" />
     <Compile Include="Models\Products\Component.cs" />
     <Compile Include="Models\DatabaseBes\Contact.cs" />
     <Compile Include="Models\DatabaseBes\ContactsType.cs" />
@@ -567,8 +568,10 @@
     <Content Include="adminlte\css\adminlte.min.css" />
     <Content Include="adminlte\js\adminlte.js" />
     <Content Include="adminlte\js\adminlte.min.js" />
+    <Content Include="Content\Logo\16683896_.png" />
     <Content Include="Content\Styles\apexcharts.css" />
     <Content Include="Content\Styles\icons\contract.svg" />
+    <Content Include="Content\Styles\icons\engineer-config.svg" />
     <Content Include="Content\Styles\ImageCheckbox\css\bootstrap-image-checkbox.css" />
     <Content Include="Content\Styles\ImageCheckbox\css\bootstrap-image-checkbox.min.css" />
     <Content Include="Content\Styles\jsvectormap.min.css" />
@@ -646,6 +649,7 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\rupbes-widget.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -776,6 +780,17 @@
     <Content Include="Views\Admin\Products\_ShowAddGroupProduct.cshtml" />
     <Content Include="Views\Admin\Products\_ShowAddSubGroupProduct.cshtml" />
     <Content Include="Views\Admin\Products\_ShowSubGroupProduct.cshtml" />
+    <Content Include="Views\Service\EngineService.cshtml" />
+    <Content Include="Views\Shared\_Head.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_Analytics.cshtml" />
+    <Content Include="Views\Shared\_CookieConsent.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Modals.cshtml" />
+    <Content Include="Views\Shared\_Scripts.cshtml" />
+    <Content Include="Views\Admin\Services\Engine.cshtml" />
+    <Content Include="Views\Admin\Services\_ShowEngine.cshtml" />
+    <Content Include="Views\Admin\Services\_ShowAddEngine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -789,6 +804,7 @@
     <Folder Include="Content\Images\Product\min\" />
     <Folder Include="Content\Images\Realty\min\" />
     <Folder Include="Content\Images\Service\min\" />
+    <Folder Include="Views\Admin\Engine\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

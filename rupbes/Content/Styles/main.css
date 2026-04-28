@@ -951,6 +951,10 @@ form {
     background-image: url(icons/products.svg);
 }
 
+.service-item:nth-child(7) > .service-item-logo {
+    background-image: url(icons/engineer-config.svg);
+}
+
 .service-item-electronic-services:nth-child(1) > .service-item-logo {
     background-image: url(icons/ARM_OTPB.svg);
 }
