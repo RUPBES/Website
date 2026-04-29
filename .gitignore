@@ -260,3 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 /rupbes/Content/Files/film.mp4
+
+# Игнорируем конкретный файл виджета
+/Scripts/rupbes-widget.js
