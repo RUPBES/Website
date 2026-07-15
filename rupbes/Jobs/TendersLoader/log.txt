@@ -4777,3 +4777,9 @@ No tenders added at 06.07.2026 14:25:08
 --BEGIN OF RECORD--
 No tenders added at 06.07.2026 14:27:05
 --END--
+--BEGIN OF RECORD--
+No tenders added at 15.07.2026 9:56:26
+--END--
+--BEGIN OF RECORD--
+No tenders added at 15.07.2026 10:06:23
+--END--

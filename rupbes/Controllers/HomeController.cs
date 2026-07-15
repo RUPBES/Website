@@ -203,8 +203,7 @@ namespace rupbes.Controllers
             string pattern = @"(https?://[^\s<>""']+)(?:\s*\(([^)]+)\))?";
 
             return Regex.Replace(text, pattern, match =>
-            {
-                string url = match.Value;
+            {             
                 string fullMatch = match.Value;
 
                 // Проверяем, не является ли URL уже частью ссылки
@@ -215,12 +214,28 @@ namespace rupbes.Controllers
                 string cleanUrl = match.Groups[1].Value;
                 string bracketText = match.Groups[2].Success ? match.Groups[2].Value : null;
 
-                Uri uri = new Uri(cleanUrl);
+                // 🔥 ЗАЩИТА: пробуем создать Uri с проверкой
+                if (!Uri.TryCreate(cleanUrl, UriKind.Absolute, out Uri uri))
+                {
+                    // Если не удалось создать Uri - выводим ссылку с предупреждением
+                    string displayText = bracketText ?? cleanUrl;
+                    return $@"<a href=""{cleanUrl}"" target=""_blank"" 
+                      style=""background: #f8d7da; padding: 3px 8px; border-radius: 4px; 
+                             text-decoration: none; color: #721c24; font-weight: 500; 
+                             border: 1px solid #f5c6cb; margin: 0 2px;"">
+                      ⚠️ {displayText}
+                     </a>";
+                }
 
                 // Определяем текст для отображения
-                string displayText = "🔗 " + (bracketText ?? uri.Host);
+                string displayTextNormal = "🔗 " + (bracketText ?? uri.Host);
 
-                return $"<a href=\"{cleanUrl}\" target=\"_blank\" style=\"background: #fff3cd; padding: 3px 8px; border-radius: 4px; text-decoration: none; color: #856404; font-weight: 500; border: 1px solid #ffeaa7; margin: 0 2px;\">{displayText}</a>";
+                return $@"<a href=""{cleanUrl}"" target=""_blank"" 
+                   style=""background: #fff3cd; padding: 3px 8px; border-radius: 4px; 
+                          text-decoration: none; color: #856404; font-weight: 500; 
+                          border: 1px solid #ffeaa7; margin: 0 2px;"">
+                   {displayTextNormal}
+                  </a>";
             });
         }
 
