@@ -356,5 +356,11 @@ namespace rupbes.Controllers
             return View(engine);
         }
 
+        [HttpGet]
+        public ActionResult LaboratoryService()
+        {            
+            return View();
+        }
+
     }
 }

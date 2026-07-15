@@ -1,0 +1,516 @@
+﻿@model List<rupbes.Models.Engine>
+@{
+    ViewBag.Title = "Лаборатория дефектоскопии - Белэнергострой";
+    ViewBag.Description = "Лаборатория дефектоскопии и сварки РУП «Белэнергострой». Ультразвуковая (UT) и радиографическая (RT) дефектоскопия сварных швов. Аккредитация ГП «БГЦА» № BY/112 2.4906.";
+    ViewBag.Keywords = "дефектоскопия, ультразвуковая дефектоскопия, радиографическая дефектоскопия, UT, RT, контроль сварных швов, лаборатория дефектоскопии, Белэнергострой";
+}
+
+<style>
+    /* Сброс flex-конфликтов внутри секций */
+    .section .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .section {
+        width: 100%;
+        padding: 60px 0;
+    }
+
+    .hero {
+        background: linear-gradient(135deg, #0b2b4f 0%, #1a4975 100%);
+        color: white;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin-top: -20px;
+    }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+    .btn {
+        display: inline-block;
+        background: #3859d0;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 40px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background: #1d2e38;
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid white;
+    }
+
+        .btn-outline:hover {
+            background: white;
+            color: #0b2b4f;
+        }
+
+    /* Карточки */
+    .feature-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+        gap: 30px !important;
+        width: 100% !important;
+        margin-top: 40px !important;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-left: 4px solid #3859d0;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        .feature-card h3 {
+            color: #3859d0;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            .feature-card ul li {
+                padding: 6px 0 6px 24px;
+                position: relative;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+                .feature-card ul li:last-child {
+                    border-bottom: none;
+                }
+
+                .feature-card ul li:before {
+                    content: "✔";
+                    color: #3859d0;
+                    position: absolute;
+                    left: 0;
+                    font-weight: bold;
+                }
+
+    /* Сетка аттестатов */
+    .certs-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        gap: 30px !important;
+        width: 100% !important;
+        margin-top: 40px !important;
+    }
+
+    .cert-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .cert-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+    .cert-image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .cert-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+    .cert-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 51, 102, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+    }
+
+    .cert-image-wrapper:hover .cert-overlay {
+        opacity: 1;
+    }
+
+    .download-icon {
+        font-size: 48px;
+        color: white;
+    }
+
+    .download-text {
+        color: white;
+        font-size: 16px;
+        margin-top: 10px;
+        font-weight: 500;
+    }
+
+    .cert-card p {
+        padding: 15px 15px 5px;
+        margin: 0;
+        font-weight: 600;
+        text-align: center;
+        color: #003366;
+    }
+
+    .download-btn {
+        display: inline-block;
+        margin: 5px 15px 15px;
+        padding: 8px 20px;
+        background: #003366;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: background 0.3s ease;
+        text-align: center;
+    }
+
+        .download-btn:hover {
+            background: #004d99;
+            color: white;
+            text-decoration: none;
+        }
+
+        .download-btn span {
+            margin-right: 8px;
+        }
+
+    /* Контакты */
+    .contacts-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        gap: 30px !important;
+        width: 100% !important;
+        margin-top: 40px !important;
+    }
+
+    .contact-card {
+        background: white;
+        padding: 28px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s;
+    }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .contact-card h3 {
+            margin-bottom: 20px;
+            color: #3859d0;
+        }
+
+        .contact-card a {
+            color: #3859d0;
+            text-decoration: none;
+        }
+
+            .contact-card a:hover {
+                text-decoration: underline;
+            }
+
+        .contact-card .phone {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+    /* Анимация */
+    .fade-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    /* Адаптив */
+    @@media (max-width: 768px) {
+        .hero h1 {
+            font-size: 1.8rem;
+        }
+
+        .section {
+            padding: 40px 0;
+        }
+    }
+
+    .badge-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+    }
+
+    .badge {
+        background: white;
+        padding: 15px 25px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        text-align: center;
+        min-width: 200px;
+    }
+
+        .badge .number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3859d0;
+        }
+
+        .badge .label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+</style>
+
+<!-- Секция 0 - Герой -->
+<section class="section hero">
+    <div style="max-width: 1300px; width: 100%; margin: 0 auto; padding: 0 20px;">
+        <h1>Лаборатория дефектоскопии и сварки</h1>
+        <p style="font-size: 1.3rem; opacity: 0.95; max-width: 800px; margin: 0 auto;">
+            Ультразвуковая (UT) и радиографическая (RT) дефектоскопия сварных швов трубопроводов,
+            металлоконструкций и ответственных объектов
+        </p>
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap;">
+            <a href="#certificates" class="btn">Аттестаты лаборатории</a>
+            <a href="#contacts" class="btn btn-outline">Связаться</a>
+        </div>
+    </div>
+</section>
+
+<!-- Секция 1 - Аккредитация -->
+<section class="section" style="background: #f8f9fa;">
+    <div class="container fade-up">
+        <h2 style="text-align: center;">Аккредитация и разрешения</h2>
+        <div class="badge-container">
+            <div class="badge">
+                <div class="number">№ BY/112 2.4906</div>
+                <div class="label">Аккредитация ГП «БГЦА»<br>ГОСТ ISO/IES 17025-2019</div>
+            </div>
+            <div class="badge">
+                <div class="number">№ 11-02-062-2022</div>
+                <div class="label">Разрешение МЧС РБ<br>Аттестация электрогазосварщиков</div>
+            </div>
+        </div>
+        <p style="text-align: center; max-width: 800px; margin: 20px auto 0; color: #555;">
+            Наша лаборатория дефектоскопии и сварки аккредитована в соответствии с требованиями
+            ГОСТ ISO/IES 17025-2019 и имеет разрешение на право проведения аттестации электрогазосварщиков.
+        </p>
+    </div>
+</section>
+
+<!-- Секция 2 - Методы и преимущества -->
+<section class="section">
+    <div class="container fade-up">
+        <h2 style="text-align: center;">Методы контроля и преимущества</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🔬 Ультразвуковая дефектоскопия (UT)</h3>
+                <ul>
+                    <li>Высокая чувствительность к трещинам, порам, непроварам</li>
+                    <li>Быстрое получение результатов контроля</li>
+                    <li>Возможность контроля без доступа к обратной стороне</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>📷 Радиографическая дефектоскопия (RT)</h3>
+                <ul>
+                    <li>Высокая чувствительность к трещинам, порам, непроварам</li>
+                    <li>Фиксация результатов на радиографических снимках</li>
+                    <li>Соответствие требованиям ГОСТ, СТБ, СП</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>⚙️ Оборудование</h3>
+                <ul>
+                    <li>Ультразвуковой дефектоскоп УСД-60</li>
+                    <li>Ультразвуковой дефектоскоп УСД-60ФР</li>
+                    <li>Рентгеновский аппарат ПАМИР-300</li>
+                    <li>Рентгеновский аппарат РПД-180</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция 3 - Объекты контроля -->
+<section class="section" style="background: #f8f9fa;">
+    <div class="container fade-up">
+        <h2 style="text-align: center;">Объекты контроля</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 30px; color: #555;">
+            Проводим контроль сварных соединений на следующих объектах:
+        </p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🔥 Трубопроводы</h3>
+                <ul>
+                    <li>Трубопроводы пара и горячей воды</li>
+                    <li>Тепловые сети</li>
+                    <li>Технологические трубопроводы</li>
+                    <li>Газопроводы</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>🏗️ Металлоконструкции</h3>
+                <ul>
+                    <li>Несущие металлические конструкции</li>
+                    <li>Сварные узлы и соединения</li>
+                    <li>Опорные конструкции</li>
+                    <li>Элементы каркасов</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>📋 Результаты</h3>
+                <ul>
+                    <li>Официальные протоколы испытаний</li>
+                    <li>По ГОСТ ISO/IES 17025-2019</li>
+                    <li>Фиксация на радиографических снимках</li>
+                    <li>Заключения по результатам контроля</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция 4 - Аттестаты (заголовок с якорем) -->
+<section id="certificates" class="section">
+    <div class="container fade-up">
+        <h2 style="text-align: center;">Аттестаты и разрешения</h2>
+        <div class="certs-grid">
+            <!-- Аттестат 1 -->
+            <div class="cert-card">
+                <div class="cert-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Cert_Laboratory_1.jpg"
+                         alt="Аттестат аккредитации № BY/112 2.4906"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_Laboratory_1.pdf')"
+                         style="cursor: pointer;">
+                    <div class="cert-overlay" onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_Laboratory_1.pdf')">
+                        <span class="download-icon">📄</span>
+                        <span class="download-text">Открыть PDF</span>
+                    </div>
+                </div>
+                <p>Аттестат аккредитации № BY/112 2.4906</p>
+                <a href="https://rupbes.by/Content/Images/Engine/Cert_Laboratory_1.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
+
+            <!-- Аттестат 2 -->
+            <div class="cert-card">
+                <div class="cert-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Cert_Laboratory_2.jpg"
+                         alt="Разрешение МЧС РБ № 11-02-062-2022"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_Laboratory_2.pdf')"
+                         style="cursor: pointer;">
+                    <div class="cert-overlay" onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_Laboratory_2.pdf')">
+                        <span class="download-icon">📄</span>
+                        <span class="download-text">Открыть PDF</span>
+                    </div>
+                </div>
+                <p>Разрешение МЧС РБ № 11-02-062-2022</p>
+                <a href="https://rupbes.by/Content/Images/Engine/Cert_Laboratory_2.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 30px; color: #666;">* Для просмотра полной версии нажмите на изображение или кнопку скачивания</p>
+    </div>
+</section>
+
+<!-- Секция 5 - Контакты -->
+<section id="contacts" class="section" style="background: #f8f9fa;">
+    <div class="container fade-up">
+        <h2 style="text-align: center;">Контакты лаборатории</h2>
+        <div class="contacts-grid">
+            <div class="contact-card">
+                <h3>👨‍💼 Начальник лаборатории</h3>
+                <p><strong>Бесараб Сергей Васильевич</strong></p>
+                <p class="phone"><a href="tel:+375297740090">+375 (29) 774-00-90</a></p>
+                <p style="color: #888;">МТС</p>
+            </div>
+            <div class="contact-card">
+                <h3>👨‍🔧 Ведущий инженер</h3>
+                <p><strong>Шаньков Станислав Алексеевич</strong></p>
+                <p class="phone"><a href="tel:+375257686003">+375 (25) 768-60-03</a></p>
+                <p style="color: #888;">life</p>
+            </div>
+            <div class="contact-card">
+                <h3>📧 E-mail</h3>
+                <p style="font-size: 1.2rem; margin-top: 10px;">
+                    <a href="mailto:betss.ldis@rupbes.by">betss.ldis@rupbes.by</a>
+                </p>
+                <p style="color: #888; margin-top: 10px;">Отдел инженерных услуг</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function openPdfModal(pdfUrl) {
+        window.open(pdfUrl, '_blank');
+    }
+
+    // Анимация появления
+    const fadeElements = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    fadeElements.forEach(el => observer.observe(el));
+</script>

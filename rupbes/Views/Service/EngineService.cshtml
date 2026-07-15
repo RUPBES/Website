@@ -106,31 +106,99 @@
             }
 
     .cert-card {
-        background: white;
-        border-radius: 16px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: transform 0.3s;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        position: relative;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
         .cert-card:hover {
-            transform: scale(1.02);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
         }
 
-        .cert-card img {
+    .cert-image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .cert-image-wrapper img {
             width: 100%;
-            max-height: 280px;
-            object-fit: contain;
-            border-radius: 12px;
-            margin-bottom: 15px;
+            height: auto;
+            display: block;
         }
 
-        .cert-card p {
-            margin: 0;
-            font-weight: 500;
+    .cert-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 51, 102, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+    }
+
+    .cert-image-wrapper:hover .cert-overlay {
+        opacity: 1;
+    }
+
+    .download-icon {
+        font-size: 48px;
+        color: white;
+    }
+
+    .download-text {
+        color: white;
+        font-size: 16px;
+        margin-top: 10px;
+        font-weight: 500;
+    }
+
+    .cert-card p {
+        padding: 15px 15px 5px;
+        margin: 0;
+        font-weight: 600;
+        text-align: center;
+        color: #003366;
+    }
+
+    .download-btn {
+        display: inline-block;
+        margin: 5px 15px 15px;
+        padding: 8px 20px;
+        background: #003366;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: background 0.3s ease;
+        text-align: center;
+    }
+
+        .download-btn:hover {
+            background: #004d99;
+            color: white;
+            text-decoration: none;
         }
+
+        .download-btn span {
+            margin-right: 8px;
+        }
+
+    .certs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        padding: 20px 0;
+    }
 
     .partner-item {
         text-align: center;
@@ -413,95 +481,58 @@
     <div class="container fade-up">
         <h2>Аттестаты и лицензии</h2>
         <div class="certs-grid">
-            @if (Model != null && Model.Any(x => x.IsCertificate == true))
-            {
-                var certificates = Model.Where(x => x.IsCertificate == true).ToList();
-                foreach (var cert in certificates)
-                {
-                    <!-- Проверяем есть ли изображения у сертификата -->
-                    if (cert.Imgs != null && cert.Imgs.Any())
-                    {
-                        foreach (var img in cert.Imgs)
-                        {
-                            <div class="cert-card">
-                                @if (!string.IsNullOrEmpty(img.src) && (img.src.ToLower().EndsWith(".jpg") ||
-                                     img.src.ToLower().EndsWith(".jpeg") ||
-                                     img.src.ToLower().EndsWith(".png") ||
-                                     img.src.ToLower().EndsWith(".gif")))
-                                {
-                                    <img src="@img.src" alt="@cert.Name" onclick="openImageModal('@img.src')" style="cursor: pointer;">
-                                }
-                                else if (!string.IsNullOrEmpty(img.src) && img.src.ToLower().EndsWith(".pdf"))
-                                {
-                                    <img src="/images/pdf-icon.png" alt="PDF" onclick="openPdfModal('@img.src')" style="cursor: pointer;">
-                                    <span class="pdf-badge">PDF</span>
-                                }
-                                else
-                                {
-                                    <img src="https://placehold.co/300x400/003366/white?text=@cert.Name" alt="@cert.Name">
-                                }
-                                <p>@cert.Name</p>
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <!-- Если нет изображений, показываем заглушку -->
-                        <div class="cert-card">
-                            <img src="https://placehold.co/300x400/003366/white?text=@cert.Name" alt="@cert.Name">
-                            <p>@cert.Name</p>
-                        </div>
-                    }
-                }
-            }
-            else
-            {
-                <div class="col-12">
-                    <p style="text-align: center; color: #666;">Нет доступных сертификатов</p>
-                </div>
-            }
-        </div>
-        <p style="text-align: center; margin-top: 30px; color: #666;">* Для просмотра полного изображения нажмите на фото</p>
-    </div>
-</section>
-
-<!-- Секция 4 - Партнеры (Заказчики) -->
-<section id="section-4" class="section partners">
-    <div class="container fade-up">
-        <h2>Наши партнеры и заказчики</h2>
-        <div class="partners-grid">
-            @if (Model != null && Model.Any(x => x.IsPartner == true))
-            {
-                var partners = Model.Where(x => x.IsPartner == true).ToList();
-                foreach (var partner in partners)
-                {
-                    var firstImg = partner.Imgs?.FirstOrDefault();
-                    var imageUrl = firstImg?.src ?? "https://placehold.co/100x100/003366/white?text=" + partner.Name;
-                    var isImage = imageUrl.ToLower().EndsWith(".jpg") ||
-                                  imageUrl.ToLower().EndsWith(".jpeg") ||
-                                  imageUrl.ToLower().EndsWith(".png") ||
-                                  imageUrl.ToLower().EndsWith(".gif");
-
-                    <div class="partner-item">
-                        @if (isImage)
-                        {
-                            <img src="@imageUrl" alt="@partner.Name" onclick="openImageModal('@imageUrl')" style="cursor: pointer;">
-                        }
-                        else
-                        {
-                            <img src="@imageUrl" alt="@partner.Name">
-                        }
-                        <p>@partner.Name</p>
+            <!-- Аттестат 1 -->
+            <div class="cert-card">
+                <div class="cert-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Cert_0003258.jpg"
+                         alt="Аттестат ИН-1"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_0003258.pdf')"
+                         style="cursor: pointer;">
+                    <div class="cert-overlay" onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_0003258.pdf')">
+                        <span class="download-icon">📄</span>
+                        <span class="download-text">Открыть PDF</span>
                     </div>
-                }
-            }
-            else
-            {
-                <div class="col-12">
-                    <p style="text-align: center; color: #666;">Нет партнеров</p>
                 </div>
-            }
+                <a href="https://rupbes.by/Content/Images/Engine/Cert_0003258.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
+
+            <!-- Аттестат 2 -->
+            <div class="cert-card">
+                <div class="cert-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Cert_0017130.jpg"
+                         alt="Аттестат ИЗ-2"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_0017130.pdf')"
+                         style="cursor: pointer;">
+                    <div class="cert-overlay" onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_0017130.pdf')">
+                        <span class="download-icon">📄</span>
+                        <span class="download-text">Открыть PDF</span>
+                    </div>
+                </div>
+                <a href="https://rupbes.by/Content/Images/Engine/Cert_0017130.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
+
+            <!-- Аттестат 3 -->
+            <div class="cert-card">
+                <div class="cert-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Cert_geo.jpg"
+                         alt="Аттестат СТ-3"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_geo.pdf')"
+                         style="cursor: pointer;">
+                    <div class="cert-overlay" onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Cert_geo.pdf')">
+                        <span class="download-icon">📄</span>
+                        <span class="download-text">Открыть PDF</span>
+                    </div>
+                </div>
+                <a href="https://rupbes.by/Content/Images/Engine/Cert_geo.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
         </div>
+        <p style="text-align: center; margin-top: 30px; color: #666;">* Для просмотра полной версии нажмите на изображение или кнопку скачивания</p>
     </div>
 </section>
 
@@ -510,41 +541,59 @@
     <div class="container fade-up">
         <h2>Отзывы наших клиентов</h2>
         <div class="reviews-grid">
-            @if (Model != null && Model.Any(x => x.IsReview == true))
-            {
-                var reviews = Model.Where(x => x.IsReview == true).ToList();
-                foreach (var review in reviews)
-                {
-                    var firstImg = review.Imgs?.FirstOrDefault();
-                    var imageUrl = firstImg?.src ?? "https://placehold.co/400x300/cccccc/666?text=" + review.Name;
-                    var isImage = imageUrl.ToLower().EndsWith(".jpg") ||
-                                  imageUrl.ToLower().EndsWith(".jpeg") ||
-                                  imageUrl.ToLower().EndsWith(".png") ||
-                                  imageUrl.ToLower().EndsWith(".gif");
+            <!-- Отзыв 1 -->
+            <div class="review-card">
+                <div class="review-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Review.jpg"
+                         alt="Отзыв клиента 1"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Review.pdf')"
+                         style="cursor: pointer;">                   
+                </div>        
+                <a href="https://rupbes.by/Content/Images/Engine/Review.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
 
-                    <div class="review-card">
-                        @if (isImage)
-                        {
-                            <img src="@imageUrl" alt="@review.Name" onclick="openImageModal('@imageUrl')" style="cursor: pointer;">
-                        }
-                        else
-                        {
-                            <img src="@imageUrl" alt="@review.Name">
-                        }
-                        @if (!string.IsNullOrEmpty(review.Name))
-                        {
-                            <p class="review-title">@review.Name</p>
-                        }
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="col-12">
-                    <p style="text-align: center; color: #666;">Нет отзывов от клиентов</p>
-                </div>
-            }
+            <!-- Отзыв 2 -->
+            <div class="review-card">
+                <div class="review-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Review-2.jpg"
+                         alt="Отзыв клиента 2"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Review-2.pdf')"
+                         style="cursor: pointer;">                 
+                </div>    
+                <a href="https://rupbes.by/Content/Images/Engine/Review-2.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
+
+            <!-- Отзыв 3 -->
+            <div class="review-card">
+                <div class="review-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Review-3.jpg"
+                         alt="Отзыв клиента 3"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Review-3.pdf')"
+                         style="cursor: pointer;">                
+                </div>      
+                <a href="https://rupbes.by/Content/Images/Engine/Review-3.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
+
+            <!-- Отзыв 4 -->
+            <div class="review-card">
+                <div class="review-image-wrapper">
+                    <img src="https://rupbes.by/Content/Images/Engine/min/Review-4.jpg"
+                         alt="Отзыв клиента 4"
+                         onclick="openPdfModal('https://rupbes.by/Content/Images/Engine/Review-4.pdf')"
+                         style="cursor: pointer;">            
+                </div>      
+                <a href="https://rupbes.by/Content/Images/Engine/Review-4.pdf" download class="download-btn">
+                    <span>⬇</span> Скачать PDF
+                </a>
+            </div>
         </div>
+        <p style="text-align: center; margin-top: 30px; color: #666;">* Для просмотра полной версии нажмите на изображение или кнопку скачивания</p>
     </div>
 </section>
 
@@ -573,6 +622,10 @@
 </section>
 
 <script>
+    function openPdfModal(pdfUrl) {
+        window.open(pdfUrl, '_blank');
+    }
+
     // Навигация по секциям
     const sections = document.querySelectorAll('.section');
     const navLinks = document.querySelectorAll('.section-nav a');

@@ -2,12 +2,39 @@
     ViewBag.Title = Resources.Resource.CompanyName;
 }
 <style>
- 
+    .btn-light {
+        background: #f9faff !important;
+        color: #32374b !important;
+        border: 1px solid rgba(56, 89, 208, 0.2) !important; /* Лучше использовать синий из темы */
+        transition: all 0.3s ease !important;
+        display: inline-block;
+        border-radius: 40px;
+        padding: 10px 24px;
+        text-decoration: none;
+    }
+
+        .btn-light:hover {
+            background: #ffffff !important;
+            color: #3859d0 !important; /* Добавить изменение цвета текста при ховере */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-light a {
+            color: inherit !important;
+            text-decoration: none !important;
+            display: block;
+        }
 </style>
 
 <section class="main-page-content">
-    <div class="button button-color-back-darkorange" style=" margin-left: auto; margin-right: 10px;">
-        <a href="https://corp.rupbes.by:5000/">@Resources.Resource.Platform</a>
+    <div style="display: flex; align-self: flex-end;">
+        <div class="button btn-light" style="margin-right: 10px;">
+            <a href="https://corp.rupbes.by:5000/">Корпоративная платформа</a>
+        </div>
+        <div class="button btn-light">
+            <a href="/Admin">Для сотрудников</a>
+        </div>
     </div>
     <div class="logo"><div class="logo-text"><span>@Resources.Resource.CompanyAbbr</span><span>@Resources.Resource.CompanyName</span></div></div>
     <div class="main-page-content-block">
@@ -31,5 +58,9 @@
             <div class="item-logo"></div>
             <div class="item-text">@Resources.Resource.MainPageFilials</div>
         </a>
+        <a href="https://fcviten.by/" class="main-page-content-item">
+            <div class="item-logo"></div>
+            <div class="item-text">Команда по мини-футболу "Витэн"</div>
+        </a>       
     </div>
 </section>

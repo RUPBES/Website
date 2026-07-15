@@ -4738,3 +4738,42 @@ Added 4 tenders at 13.02.2026 15:19:30
 --BEGIN OF RECORD--
 Added 4 tenders at 13.02.2026 15:20:10
 --END--
+--BEGIN OF RECORD--
+Added 4 tenders at 14.05.2026 15:19:20
+--END--
+--BEGIN OF RECORD--
+Added 4 tenders at 14.05.2026 15:26:24
+--END--
+--BEGIN OF RECORD--
+No tenders added at 02.07.2026 15:50:59
+--END--
+--BEGIN OF RECORD--
+No tenders added at 02.07.2026 15:59:17
+--END--
+--BEGIN OF RECORD--
+No tenders added at 02.07.2026 16:02:14
+--END--
+--BEGIN OF RECORD--
+No tenders added at 02.07.2026 16:03:03
+--END--
+--BEGIN OF RECORD--
+No tenders added at 02.07.2026 16:15:18
+--END--
+--BEGIN OF RECORD--
+No tenders added at 02.07.2026 16:16:02
+--END--
+--BEGIN OF RECORD--
+No tenders added at 06.07.2026 9:04:39
+--END--
+--BEGIN OF RECORD--
+No tenders added at 06.07.2026 14:10:21
+--END--
+--BEGIN OF RECORD--
+No tenders added at 06.07.2026 14:18:54
+--END--
+--BEGIN OF RECORD--
+No tenders added at 06.07.2026 14:25:08
+--END--
+--BEGIN OF RECORD--
+No tenders added at 06.07.2026 14:27:05
+--END--

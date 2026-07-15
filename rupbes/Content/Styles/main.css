@@ -512,9 +512,9 @@ form {
 .main-page-content {
     width: 100%;
     min-height: calc(100vh - 9.875rem);
-    background-image: url(images/main-back1.jpg);
+    background-image: url(images/main-back1.jpg);    
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover;    
     background-position: center;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -595,7 +595,7 @@ form {
 }
 
 .main-page-content-item:nth-child(6) > .item-logo {
-    background-image: url(icons/wallet1.png);
+    background-image: url(icons/logo-Viten.png);
 }
 
 .item-text {
@@ -923,12 +923,14 @@ form {
     height: 140px;
     background-repeat: no-repeat;
     background-position: center;
+    background-size: contain;
 }
 /*.service-item:not(:first-child) {
     order: 1;
 }*/
 .service-item:nth-child(1) > .service-item-logo {
     background-image: url(icons/software.svg);
+    background-size: inherit;
 }
 
 .service-item:nth-child(5) > .service-item-logo {
@@ -953,6 +955,10 @@ form {
 
 .service-item:nth-child(7) > .service-item-logo {
     background-image: url(icons/engineer-config.svg);
+}
+
+.service-item:nth-child(8) > .service-item-logo {
+    background-image: url(icons/laboratory.svg);
 }
 
 .service-item-electronic-services:nth-child(1) > .service-item-logo {

@@ -649,7 +649,6 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\rupbes-widget.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -791,6 +790,7 @@
     <Content Include="Views\Admin\Services\Engine.cshtml" />
     <Content Include="Views\Admin\Services\_ShowEngine.cshtml" />
     <Content Include="Views\Admin\Services\_ShowAddEngine.cshtml" />
+    <Content Include="Views\Service\LaboratoryService.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
